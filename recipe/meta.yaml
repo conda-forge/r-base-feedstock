@@ -8,8 +8,6 @@ package:
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
   sha256: d294ad21e9f574fb4828ebb3a94b8cb34f4f304a41687a994be00dd41a4e514c
-  # No openjdk on win32.
-  skip: true  # [win32]
   patches:
     - mac-unicode.patch  # [osx]
     - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch
@@ -29,6 +27,8 @@ build:
     - lib/R/lib/
     - lib/
   detect_binary_files_with_prefix: true
+  # No openjdk on win32.
+  skip: true  # [win32]
 
 requirements:
   build:
