@@ -3,7 +3,7 @@ About r-base
 
 Home: http://www.r-project.org/
 
-Package license: GPLv3
+Package license: GPL-3.0
 
 Feedstock license: BSD 3-Clause
 
