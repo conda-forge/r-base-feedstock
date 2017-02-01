@@ -22,7 +22,7 @@ source:
     - 0012-macOS-include-cairo_h-not-cairo-xlib_h.patch
 
 build:
-  number: 2
+  number: 3
   rpaths:
     - lib/R/lib/
     - lib/
@@ -57,7 +57,7 @@ requirements:
     - {{native}}bwidget        # [win]
     - {{native}}tktable        # [win]
     - {{native}}pcre
-    - {{native}}icu 56.*       # [not win]
+    - {{native}}icu 58.*       # [not win]
     - {{native}}pango 1.40.*   # [not win]
     - {{native}}tk 8.6.*       # [win]
     - {{native}}tk 8.5.*       # [not win]
@@ -90,7 +90,7 @@ requirements:
     - {{native}}libsndfile     # [win]
     - {{native}}bwidget        # [win]
     - {{native}}tktable        # [win]
-    - {{native}}icu 56.*       # [not win]
+    - {{native}}icu 58.*       # [not win]
     - {{native}}pango 1.40.*   # [not win]
     - {{native}}tk 8.6.*       # [win]
     - {{native}}tk 8.5.*       # [not win]
