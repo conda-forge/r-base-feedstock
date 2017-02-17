@@ -22,7 +22,7 @@ source:
     - 0012-macOS-include-cairo_h-not-cairo-xlib_h.patch
 
 build:
-  number: 3
+  number: 4
   rpaths:
     - lib/R/lib/
     - lib/
@@ -69,6 +69,7 @@ requirements:
     - {{native}}libpng >=1.6.28,<1.7  # [not win]
     - {{native}}libtiff 4.0.*
     - {{native}}libxml2 2.9.*
+    - miktex  # [win]
   run:
     - m2-texinfo-tex           # [win]
     - m2-texinfo               # [win]
@@ -117,6 +118,8 @@ test:
     - Rfe --help       # [win]
     - Rterm --help     # [win]
     - Rterm --version  # [win]
+    # check include files
+    - if not exist %PREFIX%\\R\\include\\R.h exit 1    # [win]
     - conda inspect linkages -p $PREFIX r-base  # [not win]
     - conda inspect objects -p $PREFIX r-base  # [osx]
 
