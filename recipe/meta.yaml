@@ -22,7 +22,7 @@ source:
     - 0012-macOS-include-cairo_h-not-cairo-xlib_h.patch
 
 build:
-  number: 4
+  number: 5
   rpaths:
     - lib/R/lib/
     - lib/
@@ -107,11 +107,14 @@ requirements:
     - {{native}}libxml2 2.9.*
 
 test:
+  requires:
+    - openjdk
   commands:
     - R -h
     - R --version
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
+    - R CMD javareconf  # [unix]
     - open  # [win]
     # There doesn't seem to be a way to test this one
     # - RSetReg        # [win]
@@ -133,3 +136,4 @@ extra:
   recipe-maintainers:
     - johanneskoester
     - ocefpaf
+    - sodre

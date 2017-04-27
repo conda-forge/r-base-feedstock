@@ -23,6 +23,7 @@ Linux() {
     # We cannot use cairo without this since it depends on a good few X11 things.
     export PKG_CONFIG_PATH=/usr/lib/pkgconfig
     export JAVA_CPPFLAGS="-I$JAVA_HOME/include -I$JAVA_HOME/include/linux"
+    export JAVA_LIBS="-Wl,-rpath,$JAVA_LD_LIBRARY_PATH -L$JAVA_LD_LIBRARY_PATH -ljvm"
     export R_JAVA_LD_LIBRARY_PATH=${JAVA_HOME}/lib
 
     mkdir -p $PREFIX/lib
@@ -58,8 +59,8 @@ Linux() {
 Mingw_w64_autotools() {
     . ${RECIPE_DIR}/java.rc
     if [ -n "$JDK_HOME" -a -n "$JAVA_HOME" ]; then
-        export JAVA_CPPFLAGS="-I$JDK_HOME/include -I$JDK_HOME/include/linux"
-        export JAVA_LD_LIBRARY_PATH=${JAVA_HOME}/lib/amd64/server
+        export JAVA_CPPFLAGS="-I$JAVA_HOME/include -I$JAVA_HOME/include/linux"
+        export JAVA_LIBS="-Wl,-rpath,$JAVA_LD_LIBRARY_PATH -L$JAVA_LD_LIBRARY_PATH -ljvm"
     else
         echo warning: JDK_HOME and JAVA_HOME not set
     fi
@@ -315,6 +316,8 @@ CXX=clang++
 F77=gfortran
 OBJC=clang
 EOF
+    export JAVA_CPPFLAGS="-I$JAVA_HOME/include -I$JAVA_HOME/include/darwin"
+    export JAVA_LIBS="-Wl,-rpath,$JAVA_LD_LIBRARY_PATH -L$JAVA_LD_LIBRARY_PATH -ljvm"
 
     # --without-internal-tzcode to avoid warnings:
     # unknown timezone 'Europe/London'
