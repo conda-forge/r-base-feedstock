@@ -22,7 +22,7 @@ source:
     - 0012-macOS-include-cairo_h-not-cairo-xlib_h.patch
 
 build:
-  number: 5
+  number: 6
   rpaths:
     - lib/R/lib/
     - lib/
