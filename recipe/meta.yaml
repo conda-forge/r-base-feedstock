@@ -10,9 +10,16 @@ source:
   sha256: 288e9ed42457c47720780433b3d5c3c20983048b789291cc6a7baa11f9428b91
   patches:
     #- 0001-Win32-Stop-confusing-PECOFF_SHLIBS-with-CYGWIN_BUILD.patch  # [win]
+    # without this patch, R cannot build on windows
     - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch  # [win]
-    #- 0003-Win32-Do-not-static-libgcc-link.patch  # [win]
-    #- 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch  # [win]
+    # Without this one DLL unloading will cause crashes. 
+    # It is only appropriate for builds of R where DLLs never load 
+    # other DLLs which is not the approach we have gone for 
+    # (because it defeats the purpose of building a distro out of shared libraries).
+    - 0003-Win32-Do-not-static-libgcc-link.patch  # [win]
+    # Without this patch, R cannot build any of its packages that require 
+    # calling configure (about half of the ones that require compilation, maybe more).
+    - 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch  # [win]
 
 build:
   number: 0
