@@ -8,6 +8,11 @@ package:
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
   sha256: 288e9ed42457c47720780433b3d5c3c20983048b789291cc6a7baa11f9428b91
+  patches:
+    - 0001-Win32-Stop-confusing-PECOFF_SHLIBS-with-CYGWIN_BUILD.patch  # [win]
+    - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch  # [win]
+    - 0003-Win32-Do-not-static-libgcc-link.patch  # [win]
+    - 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch  # [win]
 
 build:
   number: 0
