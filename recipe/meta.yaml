@@ -1,4 +1,4 @@
-{% set version = '3.3.2' %}
+{% set version = '3.4.0' %}
 {% set native = 'm2w64-' if win else '' %}
 
 package:
@@ -7,22 +7,10 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: d294ad21e9f574fb4828ebb3a94b8cb34f4f304a41687a994be00dd41a4e514c
-  patches:
-    - mac-unicode.patch  # [osx]
-    - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch
-    - 0003-Win32-Do-not-static-libgcc-link.patch  # This patch is only correct if using MSYS2's tcltk.
-    - 0004-Win32-Use-TCL_VERSION_86.patch         # This patch is only correct if using MSYS2's tcltk.
-    - 0005-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
-    - 0006-Win32-GCC-5.3-Fix-ISNAN-int-emits-UD2-insn.patch
-    - 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch
-    - 0008-Darwin-set-DYLD_FALLBACK_LIBRARY_PATH.patch
-    - 0009-R-3.3.0-Use-AC_SEARCH_LIBS-to-search-for-ncurses.patch
-    - 0011-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0012-macOS-include-cairo_h-not-cairo-xlib_h.patch
+  sha256: 288e9ed42457c47720780433b3d5c3c20983048b789291cc6a7baa11f9428b91
 
 build:
-  number: 5
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
@@ -135,5 +123,6 @@ about:
 extra:
   recipe-maintainers:
     - johanneskoester
+    - bgruening
     - ocefpaf
     - sodre
