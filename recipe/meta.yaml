@@ -45,7 +45,7 @@ requirements:
     - automake                 # [not win]
     - openjdk
     - {{native}}pkg-config
-    - {{native}}bzip2 1.0.*    # [not osx]
+    - {{native}}bzip2 1.0.*    # [not osx]     
     - {{native}}libjpeg-turbo  # [win]
     - {{native}}toolchain      # [win]
     - {{native}}libiconv       # [win]
@@ -64,11 +64,9 @@ requirements:
     # R does not build with zlib 1.2.11
     # See https://github.com/conda-forge/r-base-feedstock/issues/4
     - {{native}}zlib 1.2.8
-    - {{native}}gsl
     - {{native}}libpng >=1.6.21,<1.7  # [win]
     - {{native}}libpng >=1.6.28,<1.7  # [not win]
     - {{native}}libtiff 4.0.*
-    - {{native}}libxml2 2.9.*
     - miktex  # [win]
   run:
     - m2-texinfo-tex           # [win]
@@ -102,9 +100,7 @@ requirements:
     # R does not build with zlib 1.2.11
     # See https://github.com/conda-forge/r-base-feedstock/issues/4
     - {{native}}zlib 1.2.8
-    - {{native}}gsl
     - {{native}}libtiff 4.0.*
-    - {{native}}libxml2 2.9.*
 
 test:
   requires:
