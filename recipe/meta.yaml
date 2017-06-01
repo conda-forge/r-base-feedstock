@@ -12,12 +12,12 @@ source:
     #- 0001-Win32-Stop-confusing-PECOFF_SHLIBS-with-CYGWIN_BUILD.patch  # [win]
     # without this patch, R cannot build on windows
     - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch  # [win]
-    # Without this one DLL unloading will cause crashes. 
-    # It is only appropriate for builds of R where DLLs never load 
-    # other DLLs which is not the approach we have gone for 
+    # Without this one DLL unloading will cause crashes.
+    # It is only appropriate for builds of R where DLLs never load
+    # other DLLs which is not the approach we have gone for
     # (because it defeats the purpose of building a distro out of shared libraries).
     - 0003-Win32-Do-not-static-libgcc-link.patch  # [win]
-    # Without this patch, R cannot build any of its packages that require 
+    # Without this patch, R cannot build any of its packages that require
     # calling configure (about half of the ones that require compilation, maybe more).
     - 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch  # [win]
 
@@ -33,13 +33,13 @@ build:
 requirements:
   build:
     # shared libraries
-    - {{native}}icu 58.*       # [not win]
+    - {{native}}icu 58.*              # [not win]
     - {{native}}libpng >=1.6.21,<1.7  # [win]
     - {{native}}libpng >=1.6.28,<1.7  # [not win]
-    - curl                     # [not win]
-    - jpeg 9*                  # [not win]
-    - readline 6.2*            # [not win]
-    - ncurses 5.9*             # [not win]
+    - curl                            # [not win]
+    - jpeg 9*                         # [not win]
+    - readline 6.2*                   # [not win]
+    - ncurses 5.9*                    # [not win]
     - {{native}}xz 5.2.*
     - {{native}}pcre
     - {{native}}tk 8.6.*       # [win]
@@ -65,41 +65,41 @@ requirements:
     - posix                    # [win]
 
     # unknown
-    - {{native}}libjpeg-turbo  # [win]
-    - {{native}}libiconv       # [win]
-    - {{native}}gmp            # [win]
-    - {{native}}fftw           # [win]
-    - {{native}}mpfr           # [win]
-    - {{native}}libsndfile     # [win]
-    - {{native}}bwidget        # [win]
-    - {{native}}tktable        # [win]
+    - {{native}}libjpeg-turbo 1.4.*  # [win]
+    - {{native}}libiconv 1.14        # [win]
+    - {{native}}gmp 6.1.*            # [win]
+    - {{native}}fftw 3.3.*           # [win]
+    - {{native}}mpfr 3.1.*           # [win]
+    - {{native}}libsndfile 1.0.*     # [win]
+    - {{native}}bwidget 1.9.*        # [win]
+    - {{native}}tktable 2.10         # [win]
   run:
-    - m2-texinfo-tex           # [win]
-    - m2-texinfo               # [win]
-    - m2-curl                  # [win]
-    - m2-p7zip                 # [win]
-    - readline 6.2*            # [not win]
-    - ncurses 5.9*             # [not win]
-    - libgcc                   # [not win]
-    - jpeg 9*                  # [not win]
-    - curl                     # [not win]
-    - {{native}}bzip2 1.0.*    # [not osx]
-    - {{native}}gcc-libs       # [win]
-    - {{native}}libjpeg-turbo  # [win]
-    - {{native}}toolchain      # [win]
-    - {{native}}libiconv       # [win]
-    - {{native}}gmp            # [win]
-    - {{native}}fftw           # [win]
-    - {{native}}mpfr           # [win]
-    - {{native}}libsndfile     # [win]
-    - {{native}}bwidget        # [win]
-    - {{native}}tktable        # [win]
-    - {{native}}icu 58.*       # [not win]
-    - {{native}}pango 1.40.*   # [not win]
-    - {{native}}tk 8.6.*       # [win]
-    - {{native}}tk 8.5.*       # [not win]
-    - {{native}}libpng >=1.6.21,<1.7  # [win]
-    - {{native}}libpng >=1.6.28,<1.7  # [not win]
+    - m2-texinfo-tex                 # [win]
+    - m2-texinfo                     # [win]
+    - m2-curl                        # [win]
+    - m2-p7zip                       # [win]
+    - readline 6.2*                  # [not win]
+    - ncurses 5.9*                   # [not win]
+    - libgcc                         # [not win]
+    - jpeg 9*                        # [not win]
+    - curl                           # [not win]
+    - {{native}}bzip2 1.0.*          # [not osx]
+    - {{native}}gcc-libs             # [win]
+    - {{native}}libjpeg-turbo 1.4.*  # [win]
+    - {{native}}toolchain            # [win]
+    - {{native}}libiconv 1.14        # [win]
+    - {{native}}gmp 6.1.*            # [win]
+    - {{native}}fftw 3.3.*           # [win]
+    - {{native}}mpfr 3.1.*           # [win]
+    - {{native}}libsndfile 1.0.*     # [win]
+    - {{native}}bwidget 1.9.*        # [win]
+    - {{native}}tktable 2.10         # [win]
+    - {{native}}icu 58.*             # [not win]
+    - {{native}}pango 1.40.*         # [not win]
+    - {{native}}tk 8.6.*             # [win]
+    - {{native}}tk 8.5.*             # [not win]
+    - {{native}}libpng >=1.6.21,<1.7 # [win]
+    - {{native}}libpng >=1.6.28,<1.7 # [not win]
     - {{native}}xz 5.2.*
     - {{native}}pcre
     # R does not build with zlib 1.2.11
