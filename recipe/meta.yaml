@@ -1,4 +1,4 @@
-{% set version = '3.3.2' %}
+{% set version = '3.4.0' %}
 {% set native = 'm2w64-' if win else '' %}
 
 package:
@@ -7,22 +7,22 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: d294ad21e9f574fb4828ebb3a94b8cb34f4f304a41687a994be00dd41a4e514c
+  sha256: 288e9ed42457c47720780433b3d5c3c20983048b789291cc6a7baa11f9428b91
   patches:
-    - mac-unicode.patch  # [osx]
-    - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch
-    - 0003-Win32-Do-not-static-libgcc-link.patch  # This patch is only correct if using MSYS2's tcltk.
-    - 0004-Win32-Use-TCL_VERSION_86.patch         # This patch is only correct if using MSYS2's tcltk.
-    - 0005-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
-    - 0006-Win32-GCC-5.3-Fix-ISNAN-int-emits-UD2-insn.patch
-    - 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch
-    - 0008-Darwin-set-DYLD_FALLBACK_LIBRARY_PATH.patch
-    - 0009-R-3.3.0-Use-AC_SEARCH_LIBS-to-search-for-ncurses.patch
-    - 0011-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0012-macOS-include-cairo_h-not-cairo-xlib_h.patch
+    #- 0001-Win32-Stop-confusing-PECOFF_SHLIBS-with-CYGWIN_BUILD.patch  # [win]
+    # without this patch, R cannot build on windows
+    - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch  # [win]
+    # Without this one DLL unloading will cause crashes.
+    # It is only appropriate for builds of R where DLLs never load
+    # other DLLs which is not the approach we have gone for
+    # (because it defeats the purpose of building a distro out of shared libraries).
+    - 0003-Win32-Do-not-static-libgcc-link.patch  # [win]
+    # Without this patch, R cannot build any of its packages that require
+    # calling configure (about half of the ones that require compilation, maybe more).
+    - 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch  # [win]
 
 build:
-  number: 5
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
@@ -32,69 +32,72 @@ build:
 
 requirements:
   build:
-    - posix                    # [win]
+    # shared libraries
+    - {{native}}icu 58.*              # [not win]
+    - {{native}}libpng >=1.6.21,<1.7  # [win]
+    - {{native}}libpng >=1.6.28,<1.7  # [not win]
+    - curl                            # [not win]
+    - jpeg 9*                         # [not win]
+    - readline 6.2*                   # [not win]
+    - ncurses 5.9*                    # [not win]
+    - {{native}}xz 5.2.*
+    - {{native}}pcre
+    - {{native}}tk 8.6.*       # [win]
+    - {{native}}tk 8.5.*       # [not win]
+    # R does not build with zlib 1.2.11
+    # See https://github.com/conda-forge/r-base-feedstock/issues/4
+    - {{native}}zlib 1.2.8
+    - {{native}}libtiff 4.0.*
+    - {{native}}bzip2 1.0.*    # [not osx]
+    - {{native}}pango 1.40.*   # [not win]
+
+    # other
+    - gcc                      # [not win]
     - m2-texinfo-tex           # [win]
     - m2-texinfo               # [win]
     - m2-curl                  # [win]
     - m2-p7zip                 # [win]
-    - readline 6.2*            # [not win]
-    - ncurses 5.9*             # [not win]
-    - gcc                      # [not win]
-    - jpeg 9*                  # [not win]
-    - curl                     # [not win]
     - automake                 # [not win]
     - openjdk
     - {{native}}pkg-config
-    - {{native}}bzip2 1.0.*    # [not osx]
-    - {{native}}libjpeg-turbo  # [win]
+    - miktex                   # [win]
     - {{native}}toolchain      # [win]
-    - {{native}}libiconv       # [win]
-    - {{native}}gmp            # [win]
-    - {{native}}fftw           # [win]
-    - {{native}}xz 5.2.*
-    - {{native}}mpfr           # [win]
-    - {{native}}libsndfile     # [win]
-    - {{native}}bwidget        # [win]
-    - {{native}}tktable        # [win]
-    - {{native}}pcre
-    - {{native}}icu 58.*       # [not win]
-    - {{native}}pango 1.40.*   # [not win]
-    - {{native}}tk 8.6.*       # [win]
-    - {{native}}tk 8.5.*       # [not win]
-    # R does not build with zlib 1.2.11
-    # See https://github.com/conda-forge/r-base-feedstock/issues/4
-    - {{native}}zlib 1.2.8
-    - {{native}}gsl
-    - {{native}}libpng >=1.6.21,<1.7  # [win]
-    - {{native}}libpng >=1.6.28,<1.7  # [not win]
-    - {{native}}libtiff 4.0.*
-    - {{native}}libxml2 2.9.*
-    - miktex  # [win]
+    - posix                    # [win]
+
+    # unknown
+    - {{native}}libjpeg-turbo 1.4.*  # [win]
+    - {{native}}libiconv 1.14        # [win]
+    - {{native}}gmp 6.1.*            # [win]
+    - {{native}}fftw 3.3.*           # [win]
+    - {{native}}mpfr 3.1.*           # [win]
+    - {{native}}libsndfile 1.0.*     # [win]
+    - {{native}}bwidget 1.9.*        # [win]
+    - {{native}}tktable 2.10         # [win]
   run:
-    - m2-texinfo-tex           # [win]
-    - m2-texinfo               # [win]
-    - m2-curl                  # [win]
-    - m2-p7zip                 # [win]
-    - readline 6.2*            # [not win]
-    - ncurses 5.9*             # [not win]
-    - libgcc                   # [not win]
-    - jpeg 9*                  # [not win]
-    - curl                     # [not win]
-    - {{native}}bzip2 1.0.*    # [not osx]
-    - {{native}}gcc-libs       # [win]
-    - {{native}}libjpeg-turbo  # [win]
-    - {{native}}toolchain      # [win]
-    - {{native}}libiconv       # [win]
-    - {{native}}gmp            # [win]
-    - {{native}}fftw           # [win]
-    - {{native}}mpfr           # [win]
-    - {{native}}libsndfile     # [win]
-    - {{native}}bwidget        # [win]
-    - {{native}}tktable        # [win]
-    - {{native}}icu 58.*       # [not win]
-    - {{native}}pango 1.40.*   # [not win]
-    - {{native}}tk 8.6.*       # [win]
-    - {{native}}tk 8.5.*       # [not win]
+    - m2-texinfo-tex                  # [win]
+    - m2-texinfo                      # [win]
+    - m2-curl                         # [win]
+    - m2-p7zip                        # [win]
+    - readline 6.2*                   # [not win]
+    - ncurses 5.9*                    # [not win]
+    - libgcc                          # [not win]
+    - jpeg 9*                         # [not win]
+    - curl                            # [not win]
+    - {{native}}bzip2 1.0.*           # [not osx]
+    - {{native}}libjpeg-turbo 1.4.*   # [win]
+    - {{native}}toolchain             # [win]
+    - {{native}}libiconv 1.14         # [win]
+    - {{native}}gmp 6.1.*             # [win]
+    - {{native}}fftw 3.3.*            # [win]
+    - {{native}}mpfr 3.1.*            # [win]
+    - {{native}}libsndfile 1.0.*      # [win]
+    - {{native}}bwidget 1.9.*         # [win]
+    - {{native}}tktable 2.10          # [win]
+    - {{native}}icu 58.*              # [not win]
+    - {{native}}pango 1.40.*          # [not win]
+    - {{native}}tk 8.6.*              # [win]
+    - {{native}}tk 8.5.*              # [not win]
+    - {{native}}gcc-libs              # [win]
     - {{native}}libpng >=1.6.21,<1.7  # [win]
     - {{native}}libpng >=1.6.28,<1.7  # [not win]
     - {{native}}xz 5.2.*
@@ -102,9 +105,7 @@ requirements:
     # R does not build with zlib 1.2.11
     # See https://github.com/conda-forge/r-base-feedstock/issues/4
     - {{native}}zlib 1.2.8
-    - {{native}}gsl
     - {{native}}libtiff 4.0.*
-    - {{native}}libxml2 2.9.*
 
 test:
   requires:
@@ -135,5 +136,6 @@ about:
 extra:
   recipe-maintainers:
     - johanneskoester
+    - bgruening
     - ocefpaf
     - sodre
