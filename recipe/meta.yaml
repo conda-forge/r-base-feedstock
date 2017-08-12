@@ -62,7 +62,7 @@ requirements:
     - {{native}}libiconv       # [win]
     - {{native}}gmp            # [win]
     - {{native}}fftw           # [win]
-    - {{native}}xz 5.2.*       # [win]
+    - {{native}}xz             # [win]
     - {{native}}mpfr           # [win]
     - {{native}}libsndfile     # [win]
     - {{native}}bwidget        # [win]
