@@ -54,8 +54,8 @@ requirements:
     - libpng >=1.6.28,<1.7     # [not win]
     - {{posix}}pkg-config
     - {{posix}}autoconf
-    - {{posix}}automake-wrapper # [win]
-    - {{posix}}automake         # [not win]
+    - {{posix}}automake-wrapper  # [win]
+    - {{posix}}automake          # [not win]
     - {{native}}bzip2 1.0.*    # [not osx]
     - {{native}}libjpeg-turbo  # [win]
     - {{native}}toolchain      # [win]
@@ -113,12 +113,12 @@ test:
     - R --version
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
-    - open # [win]
+    - open  # [win]
     # There doesn't seem to be a way to test this one
-    # - RSetReg # [win]
-    - Rfe --help # [win]
-    - Rterm --help # [win]
-    - Rterm --version # [win]
+    # - RSetReg  # [win]
+    - Rfe --help  # [win]
+    - Rterm --help  # [win]
+    - Rterm --version  # [win]
 
 about:
   home: http://www.r-project.org/
