@@ -1,5 +1,6 @@
-{% set version = '3.3.2' %}
 {% set native = 'm2w64-' if win else '' %}
+{% set posix= 'm2-' if win else '' %}
+{% set version= '3.4.1' %}
 
 package:
   name: r-base
@@ -7,12 +8,11 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: d294ad21e9f574fb4828ebb3a94b8cb34f4f304a41687a994be00dd41a4e514c
+  sha256: 02b1135d15ea969a3582caeb95594a05e830a6debcdb5b85ed2d5836a6a3fc78
   patches:
-    - mac-unicode.patch  # [osx]
+    - mac-unicode.patch # [osx]
     - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch
-    - 0003-Win32-Do-not-static-libgcc-link.patch  # This patch is only correct if using MSYS2's tcltk.
-    - 0004-Win32-Use-TCL_VERSION_86.patch         # This patch is only correct if using MSYS2's tcltk.
+    - 0003-Win32-Do-not-static-libgcc-link.patch              # This patch is only correct if using MSYS2's tcltk.
     - 0005-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
     - 0006-Win32-GCC-5.3-Fix-ISNAN-int-emits-UD2-insn.patch
     - 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch
@@ -20,15 +20,23 @@ source:
     - 0009-R-3.3.0-Use-AC_SEARCH_LIBS-to-search-for-ncurses.patch
     - 0011-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
     - 0012-macOS-include-cairo_h-not-cairo-xlib_h.patch
+    - 0013-javareconf-do-not-fail-on-compile-fail.patch
 
 build:
-  number: 5
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
+  no_link:
+    # These files are modified by R CMD javareconf and can
+    # point to different Java implementations in each env.
+    - lib/R/etc/Makeconf
+    - lib/R/etc/ldpaths
+    - lib/R/etc/javaconf
+    - lib/R/etc/x64/Makeconf
+    - lib/R/etc/x64/ldpaths
+    - lib/R/etc/x64/javaconf
   detect_binary_files_with_prefix: true
-  # No openjdk on win32.
-  skip: true  # [win32]
 
 requirements:
   build:
@@ -37,103 +45,87 @@ requirements:
     - m2-texinfo               # [win]
     - m2-curl                  # [win]
     - m2-p7zip                 # [win]
-    - readline 6.2*            # [not win]
-    - ncurses 5.9*             # [not win]
+    - readline                 # [not win]
+    - ncurses 5.9.*            # [not win]
     - gcc                      # [not win]
     - jpeg 9*                  # [not win]
     - curl                     # [not win]
-    - automake                 # [not win]
-    - openjdk
-    - {{native}}pkg-config
-    - {{native}}bzip2 1.0.*    # [not osx]
+    - xz 5.2.*                 # [not win]
+    - libpng >=1.6.27,<1.7     # [not win]
+    - {{posix}}pkg-config
+    - {{posix}}autoconf
+    - {{posix}}automake-wrapper # [win]
+    - {{posix}}automake         # [not win]
+    - {{native}}bzip2          # [not osx]
     - {{native}}libjpeg-turbo  # [win]
     - {{native}}toolchain      # [win]
     - {{native}}libiconv       # [win]
     - {{native}}gmp            # [win]
     - {{native}}fftw           # [win]
-    - {{native}}xz 5.2.*
+    - {{native}}xz             # [win]
     - {{native}}mpfr           # [win]
     - {{native}}libsndfile     # [win]
     - {{native}}bwidget        # [win]
     - {{native}}tktable        # [win]
-    - {{native}}pcre
-    - {{native}}icu 58.*       # [not win]
+    - {{native}}libpng         # [win]
     - {{native}}pango 1.40.*   # [not win]
-    - {{native}}tk 8.6.*       # [win]
-    - {{native}}tk 8.5.*       # [not win]
-    # R does not build with zlib 1.2.11
-    # See https://github.com/conda-forge/r-base-feedstock/issues/4
-    - {{native}}zlib 1.2.8
+    - {{native}}icu 54.*       # [not win]
+    - {{native}}pcre 8.39*     # [not win]
+    - {{native}}pcre           # [win]
+    - {{native}}tk
+    - {{native}}zlib
     - {{native}}gsl
-    - {{native}}libpng >=1.6.21,<1.7  # [win]
-    - {{native}}libpng >=1.6.28,<1.7  # [not win]
-    - {{native}}libtiff 4.0.*
-    - {{native}}libxml2 2.9.*
-    - miktex  # [win]
+    - {{native}}libtiff
+    - {{native}}libxml2
+#   - mkl
+
   run:
-    - m2-texinfo-tex           # [win]
-    - m2-texinfo               # [win]
-    - m2-curl                  # [win]
-    - m2-p7zip                 # [win]
-    - readline 6.2*            # [not win]
+    - readline                 # [not win]
     - ncurses 5.9*             # [not win]
     - libgcc                   # [not win]
+    - {{native}}gcc-libs       # [win]
     - jpeg 9*                  # [not win]
     - curl                     # [not win]
-    - {{native}}bzip2 1.0.*    # [not osx]
-    - {{native}}gcc-libs       # [win]
+    - xz 5.2.*                 # [not win]
+    - libpng >=1.6.27,<1.7     # [not win]
+    - {{native}}bzip2          # [not osx]
     - {{native}}libjpeg-turbo  # [win]
-    - {{native}}toolchain      # [win]
     - {{native}}libiconv       # [win]
     - {{native}}gmp            # [win]
     - {{native}}fftw           # [win]
+    - {{native}}xz             # [win]
     - {{native}}mpfr           # [win]
     - {{native}}libsndfile     # [win]
     - {{native}}bwidget        # [win]
     - {{native}}tktable        # [win]
-    - {{native}}icu 58.*       # [not win]
+    - {{native}}libpng         # [win]
     - {{native}}pango 1.40.*   # [not win]
-    - {{native}}tk 8.6.*       # [win]
-    - {{native}}tk 8.5.*       # [not win]
-    - {{native}}libpng >=1.6.21,<1.7  # [win]
-    - {{native}}libpng >=1.6.28,<1.7  # [not win]
-    - {{native}}xz 5.2.*
-    - {{native}}pcre
-    # R does not build with zlib 1.2.11
-    # See https://github.com/conda-forge/r-base-feedstock/issues/4
-    - {{native}}zlib 1.2.8
+    - {{native}}icu 54.*       # [not win]
+    - {{native}}pcre 8.39*     # [not win]
+    - {{native}}pcre           # [win]
+    - {{native}}tk
+    - {{native}}zlib
     - {{native}}gsl
-    - {{native}}libtiff 4.0.*
-    - {{native}}libxml2 2.9.*
+    - {{native}}libtiff
+    - {{native}}libxml2
+#   - mkl
 
 test:
-  requires:
-    - openjdk
   commands:
     - R -h
     - R --version
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
-    - R CMD javareconf  # [unix]
-    - open  # [win]
+    - open # [win]
     # There doesn't seem to be a way to test this one
-    # - RSetReg        # [win]
-    - Rfe --help       # [win]
-    - Rterm --help     # [win]
-    - Rterm --version  # [win]
-    # check include files
-    - if not exist %PREFIX%\\R\\include\\R.h exit 1    # [win]
-    - conda inspect linkages -p $PREFIX r-base  # [not win]
-    - conda inspect objects -p $PREFIX r-base  # [osx]
+    # - RSetReg # [win]
+    - Rfe --help # [win]
+    - Rterm --help # [win]
+    - Rterm --version # [win]
 
 about:
   home: http://www.r-project.org/
   license: GPL-3.0
+  license_family: GPL
   license_file: COPYING
   summary: 'R is a free software environment for statistical computing and graphics.'
-
-extra:
-  recipe-maintainers:
-    - johanneskoester
-    - ocefpaf
-    - sodre

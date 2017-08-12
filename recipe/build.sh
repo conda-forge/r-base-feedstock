@@ -1,5 +1,8 @@
 #!/bin/bash
 
+aclocal -I m4
+autoconf
+
 # Without setting these, R goes off and tries to find things on its own, which
 # we don't want (we only want it to find stuff in the build environment).
 
@@ -19,12 +22,15 @@ export TCL_LIBRARY=$PREFIX/lib/tcl8.5
 export TK_LIBRARY=$PREFIX/lib/tk8.5
 
 Linux() {
+    # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
+    # for any value (except JAVA_HOME) then 'R CMD javareconf' will never
+    # change it, so we prevent configure from finding Java.  post-install
+    # and activate scripts now call 'R CMD javareconf'.
+    unset JAVA_HOME
+
     # This is needed to force pkg-config to *also* search for system libraries.
     # We cannot use cairo without this since it depends on a good few X11 things.
     export PKG_CONFIG_PATH=/usr/lib/pkgconfig
-    export JAVA_CPPFLAGS="-I$JAVA_HOME/include -I$JAVA_HOME/include/linux"
-    export JAVA_LIBS="-Wl,-rpath,$JAVA_LD_LIBRARY_PATH -L$JAVA_LD_LIBRARY_PATH -ljvm"
-    export R_JAVA_LD_LIBRARY_PATH=${JAVA_HOME}/lib
 
     mkdir -p $PREFIX/lib
 
@@ -57,13 +63,7 @@ Linux() {
 # it should be compiling sys-win32.c instead. Eventually it would be nice to fix
 # the Autotools build framework so that can be used for Windows builds too.
 Mingw_w64_autotools() {
-    . ${RECIPE_DIR}/java.rc
-    if [ -n "$JDK_HOME" -a -n "$JAVA_HOME" ]; then
-        export JAVA_CPPFLAGS="-I$JAVA_HOME/include -I$JAVA_HOME/include/linux"
-        export JAVA_LIBS="-Wl,-rpath,$JAVA_LD_LIBRARY_PATH -L$JAVA_LD_LIBRARY_PATH -ljvm"
-    else
-        echo warning: JDK_HOME and JAVA_HOME not set
-    fi
+    unset JAVA_HOME
 
     mkdir -p ${PREFIX}/lib
     export TCL_CONFIG=$PREFIX/Library/mingw-w64/lib/tclConfig.sh
@@ -176,9 +176,9 @@ Mingw_w64_makefiles() {
         # The thing to is probably to make stub programs launching the right binaries in mingw-w64/bin
         # .. perhaps launcher.c can be generalized?
         mkdir -p "${SRC_DIR}/Tcl"
-        conda install -c https://conda.anaconda.org/msys2 \
-                      --no-deps --yes --copy --prefix "${SRC_DIR}/Tcl" \
-                      m2w64-{tcl,tk,bwidget,tktable}
+        conda.bat install -c https://conda.anaconda.org/msys2 \
+                          --no-deps --yes --copy --prefix "${SRC_DIR}/Tcl" \
+                          m2w64-{tcl,tk,bwidget,tktable}
         mv "${SRC_DIR}"/Tcl/Library/mingw-w64/* "${SRC_DIR}"/Tcl/
         rm -Rf "${SRC_DIR}"/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
         if [[ "${ARCH}" == "64" ]]; then
@@ -203,7 +203,7 @@ Mingw_w64_makefiles() {
     fi
 
     # Horrible. We need MiKTeX or something like it (for pdflatex.exe. Building from source
-    # may be posslbe but requires CLisp and I've not got time for that at present).  w32tex
+    # may be possible but requires CLisp and I've not got time for that at present).  w32tex
     # looks a little less horrible than MiKTex (just read their build instructions and cry:
     # For  example:
     # Cygwin
@@ -241,14 +241,17 @@ Mingw_w64_makefiles() {
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        curl -C - -o ${DLCACHE}/miktex-portable-2.9.5857.exe -SLO http://mirrors.ctan.org/systems/win32/miktex/setup/miktex-portable-2.9.5857.exe || true
-        echo "Extracting miktex-portable-2.9.5857.exe, this will take some time ..."
-        7za x -y ${DLCACHE}/miktex-portable-2.9.5857.exe > /dev/null
+        curl -C - -o ${DLCACHE}/miktex-portable-2.9.6361.exe -SLO http://ctan.mirrors.hoobly.com/systems/win32/miktex/setup/miktex-portable-2.9.6361.exe || true
+        echo "Extracting miktex-portable-2.9.6361.exe, this will take some time ..."
+        7za x -y ${DLCACHE}/miktex-portable-2.9.6361.exe > /dev/null
         # We also need the url, incolsolata and mptopdf packages and
         # do not want a GUI to prompt us about installing these.
-        sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
+        # sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
         #see also: http://tex.stackexchange.com/q/302679
-        PATH=${PWD}/miktex/bin:${PATH}
+        PATH=${PWD}/texmfs/install/miktex/bin:${PATH}
+        initexmf.exe --set-config-value [MPM]AutoInstall=1
+        initexmf.exe --update-fndb
+        cat texmfs/config/miktex/config/miktex.ini
       popd
     fi
 
@@ -293,6 +296,7 @@ Mingw_w64_makefiles() {
 }
 
 Darwin() {
+    unset JAVA_HOME
     # Without this, it will not find libgfortran. We do not use
     # DYLD_LIBRARY_PATH because that screws up some of the system libraries
     # that have older versions of libjpeg than the one we are using
@@ -308,21 +312,23 @@ Darwin() {
     # DYLD_FALLBACK_LIBRARY_PATH and LDFLAGS for different stages of configure.
     export LDFLAGS=$LDFLAGS" -L${PREFIX}"
 
-    export PATH=$PREFIX/bin:/usr/bin:/bin:/usr/sbin:/sbin
-
     cat >> config.site <<EOF
 CC=clang
 CXX=clang++
 F77=gfortran
 OBJC=clang
 EOF
-    export JAVA_CPPFLAGS="-I$JAVA_HOME/include -I$JAVA_HOME/include/darwin"
-    export JAVA_LIBS="-Wl,-rpath,$JAVA_LD_LIBRARY_PATH -L$JAVA_LD_LIBRARY_PATH -ljvm"
 
     # --without-internal-tzcode to avoid warnings:
     # unknown timezone 'Europe/London'
     # unknown timezone 'GMT'
     # https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
+
+    echo $PATH | grep texlive > /dev/null 2>&1
+    if [[ $? != 0 ]]; then
+      echo "no texlive in PATH, refusing to build this, conda or conda-build are buggy or tex failed to install or something"
+      exit 1
+    fi
 
     ./configure --prefix=$PREFIX                    \
                 --with-blas="-framework Accelerate" \
@@ -343,9 +349,13 @@ EOF
 case `uname` in
     Darwin)
         Darwin
+        mkdir -p ${PREFIX}/etc/conda/activate.d
+        cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
         ;;
     Linux)
         Linux
+        mkdir -p ${PREFIX}/etc/conda/activate.d
+        cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
         ;;
     MINGW*)
         # Mingw_w64_autotools
