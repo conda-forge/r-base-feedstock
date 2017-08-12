@@ -10,7 +10,7 @@ source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
   sha256: 02b1135d15ea969a3582caeb95594a05e830a6debcdb5b85ed2d5836a6a3fc78
   patches:
-    - mac-unicode.patch # [osx]
+    - mac-unicode.patch  # [osx]
     - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch
     - 0003-Win32-Do-not-static-libgcc-link.patch              # This patch is only correct if using MSYS2's tcltk.
     - 0005-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
