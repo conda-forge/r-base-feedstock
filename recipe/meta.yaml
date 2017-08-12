@@ -67,6 +67,7 @@ requirements:
     - {{native}}libsndfile     # [win]
     - {{native}}bwidget        # [win]
     - {{native}}tktable        # [win]
+    - {{native}}libpng         # [win]
     - {{native}}pango 1.40.*   # [not win]
     - {{native}}icu 58.*       # [not win]
     - {{native}}pcre 8.39*     # [not win]
