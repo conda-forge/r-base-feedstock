@@ -9,6 +9,10 @@ environment:
     secure: ipv/06DzgA7pzz2CIAtbPxZSsphDtF+JFyoWRnXkn3O8j7oRe3rzqj3LOoq2DZp4
 
   matrix:
+    - TARGET_ARCH: x86
+      CONDA_PY: 27
+      CONDA_INSTALL_LOCN: C:\\Miniconda
+
     - TARGET_ARCH: x64
       CONDA_PY: 27
       CONDA_INSTALL_LOCN: C:\\Miniconda-x64
