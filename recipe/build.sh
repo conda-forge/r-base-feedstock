@@ -324,7 +324,7 @@ EOF
     # unknown timezone 'GMT'
     # https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
 
-    echo $PATH | grep texlive > /dev/null 2>&1
+    which tex > /dev/null 2>&1
     if [[ $? != 0 ]]; then
       echo "no texlive in PATH, refusing to build this, conda or conda-build are buggy or tex failed to install or something"
       exit 1

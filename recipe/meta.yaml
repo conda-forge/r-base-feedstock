@@ -52,6 +52,7 @@ requirements:
     - curl                     # [not win]
     - xz 5.2.*                 # [not win]
     - libpng >=1.6.28,<1.7     # [not win]
+    - texlive-core             # [osx]
     - {{posix}}pkg-config
     - {{posix}}autoconf
     - {{posix}}automake-wrapper  # [win]
