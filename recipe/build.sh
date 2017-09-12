@@ -18,8 +18,8 @@ export PKG_CPPFLAGS="-I$PREFIX/include"
 export PKG_LDFLAGS="-L$PREFIX/lib -lgfortran"
 export TCL_CONFIG=$PREFIX/lib/tclConfig.sh
 export TK_CONFIG=$PREFIX/lib/tkConfig.sh
-export TCL_LIBRARY=$PREFIX/lib/tcl8.5
-export TK_LIBRARY=$PREFIX/lib/tk8.5
+export TCL_LIBRARY=$PREFIX/lib/tcl8.6
+export TK_LIBRARY=$PREFIX/lib/tk8.6
 
 Linux() {
     # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
@@ -49,6 +49,12 @@ Linux() {
                 --with-readline                 \
                 --with-recommended-packages=no  \
                 LIBnn=lib
+
+    if cat src/include/config.h | grep "undef HAVE_PANGOCAIRO"; then
+        echo "Did not find pangocairo, refusing to continue"
+        cat config.log | grep pango
+        exit 1
+    fi
 
     make -j${CPU_COUNT}
     # echo "Running make check-all, this will take some time ..."
@@ -324,9 +330,9 @@ EOF
     # unknown timezone 'GMT'
     # https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
 
-    which tex > /dev/null 2>&1
-    if [[ $? != 0 ]]; then
+    if ! which texlive; then
       echo "no texlive in PATH, refusing to build this, conda or conda-build are buggy or tex failed to install or something"
+      echo "You may need to copy texliveonfly to texlive? Seems they decided to rename it for no good reason."
       exit 1
     fi
 
@@ -362,3 +368,9 @@ case `uname` in
         Mingw_w64_makefiles
         ;;
 esac
+
+cairo_so=$(find ${PREFIX} -name "cairo.so")
+if ldd ${cairo_so} || grep /usr/lib64/libpng; then
+  echo "Broken, ${cairo_so} links to system libpng (and probably pango and pangocairo)"
+  exit 1
+fi
