@@ -3,23 +3,29 @@
 aclocal -I m4
 autoconf
 
+# Filter out -std=.* from CXXFLAGS as it disrupts checks for C++ language levels.
+re='(.*[[:space:]])\-std\=[^[:space:]]*(.*)'
+if [[ "${CXXFLAGS}" =~ $re ]]; then
+  export CXXFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+fi
+
 # Without setting these, R goes off and tries to find things on its own, which
 # we don't want (we only want it to find stuff in the build environment).
-
-export CFLAGS="-I$PREFIX/include"
-export CPPFLAGS="-I$PREFIX/include"
-export FFLAGS="-I$PREFIX/include -L$PREFIX/lib"
-export FCFLAGS="-I$PREFIX/include -L$PREFIX/lib"
-export OBJCFLAGS="-I$PREFIX/include"
-export CXXFLAGS="-I$PREFIX/include"
-export LDFLAGS="$LDFLAGS -L$PREFIX/lib -lgfortran"
-export LAPACK_LDFLAGS="-L$PREFIX/lib -lgfortran"
-export PKG_CPPFLAGS="-I$PREFIX/include"
-export PKG_LDFLAGS="-L$PREFIX/lib -lgfortran"
-export TCL_CONFIG=$PREFIX/lib/tclConfig.sh
-export TK_CONFIG=$PREFIX/lib/tkConfig.sh
-export TCL_LIBRARY=$PREFIX/lib/tcl8.6
-export TK_LIBRARY=$PREFIX/lib/tk8.6
+export CFLAGS="${CFLAGS} -I$PREFIX/include"
+export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
+export FFLAGS="${FFLAGS} -I$PREFIX/include -L$PREFIX/lib"
+export FCFLAGS="${FCFLAGS} -I$PREFIX/include -L$PREFIX/lib"
+export OBJCFLAGS="${OBJCFLAGS} -I$PREFIX/include"
+export CXXFLAGS="${CXXFLAGS} -I$PREFIX/include"
+export LDFLAGS="${LDFLAGS} -L$PREFIX/lib -lgfortran"
+export LAPACK_LDFLAGS="${LAPACK_LDFLAGS} -L$PREFIX/lib -lgfortran"
+export PKG_CPPFLAGS="${PKG_CPPFLAGS} -I$PREFIX/include"
+export PKG_LDFLAGS="${PKG_LDFLAGS} -L$PREFIX/lib -lgfortran"
+export TCL_CONFIG=${PREFIX}/lib/tclConfig.sh
+export TK_CONFIG=${PREFIX}/lib/tkConfig.sh
+export TCL_LIBRARY=${PREFIX}/lib/tcl8.6
+export TK_LIBRARY=${PREFIX}/lib/tk8.6
+export F77=${GFORTRAN}
 
 Linux() {
     # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
@@ -28,26 +34,23 @@ Linux() {
     # and activate scripts now call 'R CMD javareconf'.
     unset JAVA_HOME
 
-    # This is needed to force pkg-config to *also* search for system libraries.
-    # We cannot use cairo without this since it depends on a good few X11 things.
-    export PKG_CONFIG_PATH=/usr/lib/pkgconfig
-
-    mkdir -p $PREFIX/lib
-
-    ./configure --prefix=${PREFIX}              \
-                --enable-shared                 \
-                --enable-R-shlib                \
-                --enable-BLAS-shlib             \
-                --disable-prebuilt-html         \
-                --enable-memory-profiling       \
-                --with-tk-config=${TK_CONFIG}   \
-                --with-tcl-config=${TCL_CONFIG} \
-                --with-x                        \
-                --with-pic                      \
-                --with-cairo                    \
-                --with-curses                   \
-                --with-readline                 \
-                --with-recommended-packages=no  \
+    mkdir -p ${PREFIX}/lib
+    ./configure --prefix=${PREFIX}               \
+                --host=${HOST}                   \
+                --build=${BUILD}                 \
+                --enable-shared                  \
+                --enable-R-shlib                 \
+                --enable-BLAS-shlib              \
+                --disable-prebuilt-html          \
+                --enable-memory-profiling        \
+                --with-tk-config=${TK_CONFIG}    \
+                --with-tcl-config=${TCL_CONFIG}  \
+                --with-x                         \
+                --with-pic                       \
+                --with-cairo                     \
+                --with-curses                    \
+                --with-readline                  \
+                --with-recommended-packages=no   \
                 LIBnn=lib
 
     if cat src/include/config.h | grep "undef HAVE_PANGOCAIRO"; then
@@ -368,9 +371,3 @@ case `uname` in
         Mingw_w64_makefiles
         ;;
 esac
-
-cairo_so=$(find ${PREFIX} -name "cairo.so")
-if ldd ${cairo_so} || grep /usr/lib64/libpng; then
-  echo "Broken, ${cairo_so} links to system libpng (and probably pango and pangocairo)"
-  exit 1
-fi
