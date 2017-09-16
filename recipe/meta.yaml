@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = '3.4.1' %}
+{% set version= '3.4.2' %}
 
 package:
   name: r-base
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: 02b1135d15ea969a3582caeb95594a05e830a6debcdb5b85ed2d5836a6a3fc78
+  sha256: 971e30c2436cf645f58552905105d75788bd9733bddbcb7c4fbff4c1a6d80c64
   patches:
     - mac-unicode.patch  # [osx]
     - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch
@@ -23,7 +23,7 @@ source:
     - 0013-javareconf-do-not-fail-on-compile-fail.patch
 
 build:
-  number: 2
+  number: 3
   rpaths:
     - lib/R/lib/
     - lib/
@@ -54,6 +54,7 @@ requirements:
     - {{ cdt('libxt-devel') }}           # [linux]
     - {{ cdt('libxcb') }}                # [linux]
     - {{ cdt('libxau') }}                # [linux]
+    - {{ cdt('java-1.7.0-openjdk') }}    # [linux]
     - {{posix}}pkg-config
     - posix                              # [win]
     - m2-texinfo-tex                     # [win]
@@ -65,7 +66,7 @@ requirements:
     - curl >=7.44.0,<8                     # [not win]
     - xz                                 # [not win]
     - libpng >=1.6.28,<1.7     # [not win]
-    # - texlive-core                     # [osx]
+    - texlive-core                       # [unix]
     - {{posix}}autoconf
     - {{posix}}automake-wrapper          # [win]
     - {{posix}}automake                  # [not win]
@@ -150,7 +151,8 @@ about:
 
 extra:
   recipe-maintainers:
+    - bgruening
     - johanneskoester
+    - mingwandroid
     - ocefpaf
     - sodre
-    - bgruening

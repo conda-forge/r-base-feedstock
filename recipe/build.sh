@@ -59,11 +59,13 @@ Linux() {
         exit 1
     fi
 
-    make -j${CPU_COUNT}
+    make -j${CPU_COUNT} ${VERBOSE_AT}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1 || make check-all -j1 V=1 > $(uname)-make-check.2.log 2>&1
 
     make install
+    # Prevent C and C++ extensions from linking to libgfortran.
+    sed -i -r 's|(^LDFLAGS = .*)-lgfortran|\1|g' ${PREFIX}/lib/R/etc/Makeconf
 }
 
 # This was an attempt to see how far we could get with using Autotools as things
@@ -319,13 +321,13 @@ Darwin() {
     # the same mechanism as Linux (and others) where configure transfers path from
     # LDFLAGS=-L<path> into DYLD_FALLBACK_LIBRARY_PATH. Note we need to use both
     # DYLD_FALLBACK_LIBRARY_PATH and LDFLAGS for different stages of configure.
-    export LDFLAGS=$LDFLAGS" -L${PREFIX}"
+    export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib -Wl,-rpath,${PREFIX}/lib"
 
     cat >> config.site <<EOF
-CC=clang
-CXX=clang++
-F77=gfortran
-OBJC=clang
+CC=${CC}
+CXX=${CXX}
+F77=${F77}
+OBJC=${CC}
 EOF
 
     # --without-internal-tzcode to avoid warnings:
@@ -333,13 +335,9 @@ EOF
     # unknown timezone 'GMT'
     # https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
 
-    if ! which texlive; then
-      echo "no texlive in PATH, refusing to build this, conda or conda-build are buggy or tex failed to install or something"
-      echo "You may need to copy texliveonfly to texlive? Seems they decided to rename it for no good reason."
-      exit 1
-    fi
-
-    ./configure --prefix=$PREFIX                    \
+    ./configure --prefix=${PREFIX}                  \
+                --host=${HOST}                      \
+                --build=${BUILD}                    \
                 --with-blas="-framework Accelerate" \
                 --with-lapack                       \
                 --enable-R-shlib                    \
@@ -349,7 +347,7 @@ EOF
                 --enable-R-framework=no             \
                 --with-recommended-packages=no
 
-    make -j${CPU_COUNT}
+    make -j${CPU_COUNT} ${VERBOSE_AT}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install
