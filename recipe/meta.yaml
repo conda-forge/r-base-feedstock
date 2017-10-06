@@ -82,7 +82,7 @@ requirements:
 
   run:
     - readline 6.2*            # [not win]
-    - ncurses 5.9*             # [not win]
+    - ncurses >=5.9            # [not win]
     - libgcc                   # [not win]
     - {{native}}gcc-libs       # [win]
     - jpeg 9*                  # [not win]
