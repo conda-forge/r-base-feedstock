@@ -330,6 +330,10 @@ F77=${F77}
 OBJC=${CC}
 EOF
 
+    # LDFLAGS gets remembered by R and used in Rpy2 which
+    # does not expect and cannot handle direct linker flags.
+    export LDFLAGS=${LDFLAGS_CC}
+
     # --without-internal-tzcode to avoid warnings:
     # unknown timezone 'Europe/London'
     # unknown timezone 'GMT'
@@ -353,19 +357,15 @@ EOF
     make install
 }
 
-case `uname` in
-    Darwin)
-        Darwin
-        mkdir -p ${PREFIX}/etc/conda/activate.d
-        cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
-        ;;
-    Linux)
-        Linux
-        mkdir -p ${PREFIX}/etc/conda/activate.d
-        cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
-        ;;
-    MINGW*)
-        # Mingw_w64_autotools
-        Mingw_w64_makefiles
-        ;;
-esac
+if [[ ${HOST} =~ .*darwin.* ]]; then
+  Darwin
+  mkdir -p ${PREFIX}/etc/conda/activate.d
+  cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
+elif [[ ${HOST} =~ .*linux.* ]]; then
+  Linux
+  mkdir -p ${PREFIX}/etc/conda/activate.d
+  cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
+elif [[ $(uname) =~ M.* ]]; then
+  # Mingw_w64_autotools
+  Mingw_w64_makefiles
+fi
