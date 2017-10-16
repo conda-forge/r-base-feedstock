@@ -156,6 +156,8 @@ Mingw_w64_makefiles() {
     echo "TEXI2ANY = texi2any"                    >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "TCL_VERSION = ${TCLTK_VER}"             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ISDIR = ${PWD}/isdir"                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "USE_ICU = YES"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ICU_PATH = \$(R_HOME)/../Library/mingw-w64"   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # This won't take and we'll force the issue at the end of the build* It's not really clear
     # if this is the best way to achieve my goal here (shared libraries, libpng, curl etc) but
     # it seems fairly reasonable all options considered. On other OSes, it's for '/usr/local'
@@ -275,11 +277,11 @@ Mingw_w64_makefiles() {
         echo "***** R-${PACKAGE_VERSION} Build started *****"
         for _stage in all cairodevices recommended vignettes manuals; do
             echo "***** R-${PACKAGE_VERSION} Stage started: ${_stage} *****"
-            make ${_stage} -j${CPU_COUNT}
+            make ${_stage} -j${CPU_COUNT} || exit 1
         done
     else
-    echo "***** R-${PACKAGE_VERSION} Stage started: distribution *****"
-        make distribution -j${CPU_COUNT}
+        echo "***** R-${PACKAGE_VERSION} Stage started: distribution *****"
+        make distribution -j${CPU_COUNT} || exit 1
     fi
     # The flakiness mentioned below can be seen if the values are hacked to:
     # supremum error =  0.022  with p-value= 1e-04
