@@ -23,7 +23,7 @@ source:
     - 0013-javareconf-do-not-fail-on-compile-fail.patch
 
 build:
-  number: 0
+  number: 1
   rpaths:
     - lib/R/lib/
     - lib/
@@ -51,7 +51,7 @@ requirements:
     - jpeg 9*                  # [not win]
     - curl                     # [not win]
     - xz 5.2.*                 # [not win]
-    - libpng >=1.6.28,<1.7     # [not win]
+    - libpng >=1.6.22,<1.6.31     # [not win]
     - texlive-core             # [osx]
     - {{posix}}pkg-config
     - {{posix}}autoconf
@@ -75,7 +75,8 @@ requirements:
     - {{native}}pcre           # [win]
     - {{native}}tk             # [win]
     - {{native}}tk 8.5.*       # [not win]
-    - {{native}}zlib 1.2.8
+    - zlib 1.2.11  # [not win]
+    - {{native}}zlib  # [win]
     - {{native}}gsl
     - {{native}}libtiff >=4.0.3,<4.0.8
     - {{native}}libxml2 2.9.*
@@ -88,7 +89,7 @@ requirements:
     - jpeg 9*                  # [not win]
     - curl                     # [not win]
     - xz 5.2.*                 # [not win]
-    - libpng >=1.6.28,<1.7     # [not win]
+    - libpng >=1.6.22,<1.6.31     # [not win]
     - {{native}}bzip2 1.0.*    # [not osx]
     - {{native}}libjpeg-turbo  # [win]
     - {{native}}libiconv       # [win]
@@ -106,7 +107,8 @@ requirements:
     - {{native}}pcre           # [win]
     - {{native}}tk             # [win]
     - {{native}}tk 8.5.*       # [not win]
-    - {{native}}zlib 1.2.8
+    - zlib 1.2.11  # [not win]
+    - {{native}}zlib  # [win]
     - {{native}}gsl
     - {{native}}libtiff >=4.0.3,<4.0.8
     - {{native}}libxml2 2.9.*
@@ -123,6 +125,8 @@ test:
     - Rfe --help  # [win]
     - Rterm --help  # [win]
     - Rterm --version  # [win]
+    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
+    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: http://www.r-project.org/
