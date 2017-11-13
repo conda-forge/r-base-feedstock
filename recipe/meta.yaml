@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix= 'm2-' if win else '' %}
-{% set version= '3.4.1' %}
+{% set version= '3.3.2' %}
 
 package:
   name: r-base
@@ -8,11 +8,12 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: 02b1135d15ea969a3582caeb95594a05e830a6debcdb5b85ed2d5836a6a3fc78
+  sha256: d294ad21e9f574fb4828ebb3a94b8cb34f4f304a41687a994be00dd41a4e514c
   patches:
     - mac-unicode.patch  # [osx]
     - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch
-    - 0003-Win32-Do-not-static-libgcc-link.patch              # This patch is only correct if using MSYS2's tcltk.
+    - 0003-Win32-Do-not-static-libgcc-link.patch  # This patch is only correct if using MSYS2's tcltk.
+    - 0004-Win32-Use-TCL_VERSION_86.patch         # This patch is only correct if using MSYS2's tcltk.
     - 0005-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
     - 0006-Win32-GCC-5.3-Fix-ISNAN-int-emits-UD2-insn.patch
     - 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch
@@ -20,10 +21,9 @@ source:
     - 0009-R-3.3.0-Use-AC_SEARCH_LIBS-to-search-for-ncurses.patch
     - 0011-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
     - 0012-macOS-include-cairo_h-not-cairo-xlib_h.patch
-    - 0013-javareconf-do-not-fail-on-compile-fail.patch
 
 build:
-  number: 1
+  number: 6
   rpaths:
     - lib/R/lib/
     - lib/
@@ -75,7 +75,7 @@ requirements:
     - {{native}}pcre           # [win]
     - {{native}}tk             # [win]
     - {{native}}tk 8.5.*       # [not win]
-    - zlib 1.2.11  # [not win]
+    - zlib 1.2.8  # [not win]
     - {{native}}zlib  # [win]
     - {{native}}gsl
     - {{native}}libtiff >=4.0.3,<4.0.8
