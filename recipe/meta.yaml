@@ -78,7 +78,8 @@ requirements:
     - zlib 1.2.11  # [not win]
     - {{native}}zlib  # [win]
     - {{native}}gsl
-    - {{native}}libtiff >=4.0.8,<4.0.10
+    - libtiff >=4.0.8,<4.0.10  # [not win]
+    - {{native}}libtiff  # [win]
     - {{native}}libxml2 2.9.*
 
   run:
@@ -110,7 +111,8 @@ requirements:
     - zlib 1.2.11  # [not win]
     - {{native}}zlib  # [win]
     - {{native}}gsl
-    - {{native}}libtiff >=4.0.8,<4.0.10
+    - libtiff >=4.0.8,<4.0.10  # [not win]
+    - {{native}}libtiff  # [win]
     - {{native}}libxml2 2.9.*
 
 test:
