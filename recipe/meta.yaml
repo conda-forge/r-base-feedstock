@@ -23,7 +23,7 @@ source:
     - 0013-javareconf-do-not-fail-on-compile-fail.patch
 
 build:
-  number: 2
+  number: 3
   rpaths:
     - lib/R/lib/
     - lib/
@@ -45,13 +45,13 @@ requirements:
     - m2-texinfo               # [win]
     - m2-curl                  # [win]
     - m2-p7zip                 # [win]
-    - readline 6.2*            # [not win]
+    - readline 7.0            # [not win]
     - ncurses 5.9             # [not win]
     - gcc                      # [not win]
     - jpeg 9*                  # [not win]
     - curl >=7.44.0,<8                     # [not win]
     - xz 5.2.*                 # [not win]
-    - libpng >=1.6.22,<1.6.31     # [not win]
+    - libpng >=1.6.32,<1.6.35     # [not win]
     - texlive-core             # [osx]
     - {{posix}}pkg-config
     - {{posix}}autoconf
@@ -74,22 +74,23 @@ requirements:
     - {{native}}pcre 8.39*     # [not win]
     - {{native}}pcre           # [win]
     - {{native}}tk             # [win]
-    - {{native}}tk 8.5.*       # [not win]
+    - {{native}}tk 8.6.*       # [not win]
     - zlib 1.2.11  # [not win]
     - {{native}}zlib  # [win]
     - {{native}}gsl
-    - {{native}}libtiff >=4.0.3,<4.0.8
+    - libtiff >=4.0.8,<4.0.10  # [not win]
+    - {{native}}libtiff  # [win]
     - {{native}}libxml2 2.9.*
 
   run:
-    - readline 6.2*            # [not win]
+    - readline 7.0            # [not win]
     - ncurses 5.9             # [not win]
     - libgcc                   # [not win]
     - {{native}}gcc-libs       # [win]
     - jpeg 9*                  # [not win]
     - curl >=7.44.0,<8                     # [not win]
     - xz 5.2.*                 # [not win]
-    - libpng >=1.6.22,<1.6.31     # [not win]
+    - libpng >=1.6.32,<1.6.35     # [not win]
     - {{native}}bzip2 1.0.*    # [not osx]
     - {{native}}libjpeg-turbo  # [win]
     - {{native}}libiconv       # [win]
@@ -106,11 +107,12 @@ requirements:
     - {{native}}pcre 8.39*     # [not win]
     - {{native}}pcre           # [win]
     - {{native}}tk             # [win]
-    - {{native}}tk 8.5.*       # [not win]
+    - {{native}}tk 8.6.*       # [not win]
     - zlib 1.2.11  # [not win]
     - {{native}}zlib  # [win]
     - {{native}}gsl
-    - {{native}}libtiff >=4.0.3,<4.0.8
+    - libtiff >=4.0.8,<4.0.10  # [not win]
+    - {{native}}libtiff  # [win]
     - {{native}}libxml2 2.9.*
 
 test:
