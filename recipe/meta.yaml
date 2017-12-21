@@ -55,7 +55,7 @@ requirements:
     - texlive-core             # [osx]
     - {{posix}}pkg-config
     - {{posix}}autoconf
-    - {{posix}}automake-wrapper # [win]
+    - {{posix}}automake-wrapper  # [win]
     - {{posix}}automake        # [not win]
     - {{native}}bzip2 1.0.*    # [not osx]
     - {{native}}libjpeg-turbo  # [win]
@@ -111,7 +111,7 @@ requirements:
     - zlib 1.2.11              # [not win]
     - {{native}}zlib           # [win]
     - {{native}}gsl
-    - libtiff >=4.0.8,<4.0.10 # [not win]
+    - libtiff >=4.0.8,<4.0.10  # [not win]
     - {{native}}libtiff        # [win]
     - {{native}}libxml2 2.9.*
 
