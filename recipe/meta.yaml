@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version= '3.4.2' %}
+{% set version= '3.4.3' %}
 
 package:
   name: r-base
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: 971e30c2436cf645f58552905105d75788bd9733bddbcb7c4fbff4c1a6d80c64
+  sha256: 7a3cb831de5b4151e1f890113ed207527b7d4b16df9ec6b35e0964170007f426
   patches:
     - mac-unicode.patch  # [osx]
     - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch
@@ -37,6 +37,11 @@ build:
     - lib/R/etc/x64/ldpaths
     - lib/R/etc/x64/javaconf
   detect_binary_files_with_prefix: true
+  # The current openblas-devel run exports
+  # are overly restrictive IMHO, should be
+  # open-ended.
+  ignore_run_exports:
+    - openblas-devel
 
 requirements:
   build:
@@ -61,15 +66,16 @@ requirements:
     - m2-texinfo                         # [win]
     - m2-curl                            # [win]
     - m2-p7zip                           # [win]
+    - texlive-core                       # [unix]
+    - {{posix}}autoconf
+    - {{posix}}automake-wrapper          # [win]
+    - {{posix}}automake                  # [not win]
+  host:
     - readline 6.2*            # [not win]
     - ncurses 5.9*             # [not win]
     - curl >=7.44.0,<8                     # [not win]
     - xz                                 # [not win]
     - libpng >=1.6.28,<1.7     # [not win]
-    - texlive-core                       # [unix]
-    - {{posix}}autoconf
-    - {{posix}}automake-wrapper          # [win]
-    - {{posix}}automake                  # [not win]
     - {{native}}bzip2 1.0.*              # [not osx]
     - {{native}}libjpeg-turbo            # [win]
     - {{native}}toolchain                # [win]
@@ -96,6 +102,7 @@ requirements:
     - {{native}}libxml2                  # [not win]
     - {{native}}libssh2 1.*              # [not win]
     - {{native}}krb5 1.14.*              # [not win]
+    - {{native}}openblas-devel >=0.2.20  # [linux]
 
   run:
     - readline 6.2*            # [not win]
@@ -126,6 +133,7 @@ requirements:
     - {{native}}libxml2 2.9.*            # [win]
     - {{native}}libssh2 1.*              # [not win]
     - {{native}}krb5 1.14.*              # [not win]
+    - {{native}}libopenblas >=0.2.20     # [linux]
 
 test:
   commands:

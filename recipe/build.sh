@@ -66,6 +66,12 @@ Linux() {
     make install
     # Prevent C and C++ extensions from linking to libgfortran.
     sed -i -r 's|(^LDFLAGS = .*)-lgfortran|\1|g' ${PREFIX}/lib/R/etc/Makeconf
+
+    # Backup the old libRblas.so and make it a symlink to OpenBLAS
+    pushd ${PREFIX}/lib/R/lib
+      mv libRblas.so libRblas.so.reference
+      ln -s ../../libblas.so libRblas.so
+    popd
 }
 
 # This was an attempt to see how far we could get with using Autotools as things
@@ -297,11 +303,12 @@ Mingw_w64_makefiles() {
     cd installer
     make imagedir
     cp -Rf R-${PKG_VERSION} R
-    cp -Rf R "${PREFIX}"/
+    # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
+    cp -Rf R "${PREFIX}"/lib
     # Remove the recommeded libraries, we package them separately as-per the other platforms now.
-    rm -Rf "${PREFIX}"/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
+    rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
     # * Here we force our MSYS2/mingw-w64 sysroot to be looked in for libraries during r-packages builds.
-    for _makeconf in $(find "${PREFIX}"/R -name Makeconf); do
+    for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
         sed -i 's|LOCAL_SOFT = |LOCAL_SOFT = \$(R_HOME)/../Library/mingw-w64|g' ${_makeconf}
         sed -i 's|^BINPREF ?= .*$|BINPREF ?= \$(R_HOME)/../Library/mingw-w64/bin/|g' ${_makeconf}
     done
