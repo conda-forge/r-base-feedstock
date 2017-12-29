@@ -115,7 +115,7 @@ int create_and_wait_for_subprocess(char* command) {
                         NULL, &s_info, &p_info))
     {
         fprintf(stderr, "failed to create process.\n");
-        return 0;
+        return 3;
     }
     child_pid = p_info.dwProcessId;
     // wait for Python to exit
@@ -123,7 +123,7 @@ int create_and_wait_for_subprocess(char* command) {
     if (!GetExitCodeProcess(p_info.hProcess, &return_value))
     {
         fprintf(stderr, "failed to get exit code from process.\n");
-        return 0;
+        return 3;
     }
     return return_value;
 }
@@ -199,7 +199,7 @@ int run(int argc, char **argv, int is_gui)
         }
     }
     strcpy(newpath, path);
-    strcat(newpath, "\\R\\bin\\" ARCH "\\");
+    strcat(newpath, "\\lib\\R\\bin\\" ARCH "\\");
     strcat(newpath, fn);
 
 #if DEBUG
