@@ -146,6 +146,8 @@ test:
   commands:
     - R -h
     - R --version
+    - $R -e "library('tcltk')"           # [not win]
+    - "\"%R%\" -e \"library('tcltk')\""  # [win]
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
     # TODO does not work on windows, because winCairo.dll is missing
