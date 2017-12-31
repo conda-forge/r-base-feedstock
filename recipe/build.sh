@@ -67,10 +67,12 @@ Linux() {
     # Prevent C and C++ extensions from linking to libgfortran.
     sed -i -r 's|(^LDFLAGS = .*)-lgfortran|\1|g' ${PREFIX}/lib/R/etc/Makeconf
 
-    # Backup the old libRblas.so and make it a symlink to OpenBLAS
+    # Backup the old libR{blas,lapack}.so files and make them symlinks to OpenBLAS
     pushd ${PREFIX}/lib/R/lib
       mv libRblas.so libRblas.so.reference
+      mv libRlapack.so libRlapack.so.reference
       ln -s ../../libblas.so libRblas.so
+      ln -s ../../liblapack.so libRlapack.so
     popd
 }
 
@@ -195,9 +197,9 @@ Mingw_w64_makefiles() {
         # The thing to is probably to make stub programs launching the right binaries in mingw-w64/bin
         # .. perhaps launcher.c can be generalized?
         mkdir -p "${SRC_DIR}/Tcl"
-        conda.bat install -c https://conda.anaconda.org/msys2 \
-                          --no-deps --yes --copy --prefix "${SRC_DIR}/Tcl" \
-                          m2w64-{tcl,tk,bwidget,tktable}
+        CONDA_SUBDIR=$target_platform conda install -c https://conda.anaconda.org/msys2 \
+                                                    --no-deps --yes --copy --prefix "${SRC_DIR}/Tcl" \
+                                                    m2w64-{tcl,tk,bwidget,tktable}
         mv "${SRC_DIR}"/Tcl/Library/mingw-w64/* "${SRC_DIR}"/Tcl/
         rm -Rf "${SRC_DIR}"/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
         if [[ "${ARCH}" == "64" ]]; then
@@ -304,7 +306,9 @@ Mingw_w64_makefiles() {
     make imagedir
     cp -Rf R-${PKG_VERSION} R
     # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
-    cp -Rf R "${PREFIX}"/lib
+    mkdir -p "${PREFIX}"/lib
+
+    cp -Rf R "${PREFIX}"/lib/
     # Remove the recommeded libraries, we package them separately as-per the other platforms now.
     rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
     # * Here we force our MSYS2/mingw-w64 sysroot to be looked in for libraries during r-packages builds.

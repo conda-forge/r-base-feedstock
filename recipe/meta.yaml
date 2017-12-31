@@ -103,6 +103,7 @@ requirements:
     - {{native}}libssh2 1.*              # [not win]
     - {{native}}krb5 1.14.*              # [not win]
     - {{native}}openblas-devel >=0.2.20  # [linux]
+    - {{native}}openblas                 # [win]
 
   run:
     - readline 6.2*            # [not win]
@@ -134,6 +135,7 @@ requirements:
     - {{native}}libssh2 1.*              # [not win]
     - {{native}}krb5 1.14.*              # [not win]
     - {{native}}libopenblas >=0.2.20     # [linux]
+    - {{native}}openblas                 # [win]
 
 test:
   commands:

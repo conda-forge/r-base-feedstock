@@ -3,7 +3,7 @@
 @rem Compile the launcher
 
 @rem XXX: Should we build Rgui with -DGUI=1 -mwindows?  The only difference is
-@rem that that it doesn't block the terminal, but we also can't get the return
+@rem that it doesn't block the terminal, but we also can't get the return
 @rem value for the conda build tests.
 
 gcc -DGUI=0 -O -s -o launcher.exe "%RECIPE_DIR%\launcher.c"
