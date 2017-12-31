@@ -144,27 +144,31 @@ Mingw_w64_makefiles() {
     # DLCACHE=/tmp
     DLCACHE=/c/Users/${USER}/Downloads
     [[ -d $DLCACHE ]] || mkdir -p $DLCACHE
-
-    echo "LEA_MALLOC = YES"                        > "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BINPREF = "                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BINPREF64 = "                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "USE_ATLAS = NO"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BUILD_HTML = YES"                       >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "WIN = ${ARCH}"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
+    echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BINPREF = "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BINPREF64 = "                                 >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "USE_ATLAS = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ATLAS_PATH = ${PREFIX}/Library/mingw-w64/lib" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    sed -i.bak 's|-lf77blas -latlas|-lopenblas|g' src/extra/blas/Makefile.win
+    rm src/extra/blas/Makefile.win.bak
+    echo "MULTI = 64"                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BUILD_HTML = YES"                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "WIN = ${ARCH}"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     if [[ "${_debug}" == "yes" ]]; then
         echo "EOPTS = -march=${CPU} -mtune=generic -O0" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
         echo "DEBUG = 1"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     else
         # -O3 is used by R by default. It might be sensible to adopt -O2 here instead?
-        echo "EOPTS = -march=${CPU} -mtune=generic" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+        echo "EOPTS = -march=${CPU} -mtune=generic"     >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     fi
-    echo "OPENMP = -fopenmp"                      >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "PTHREAD = -pthread"                     >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "COPY_RUNTIME_DLLS = 1"                  >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "TEXI2ANY = texi2any"                    >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "TCL_VERSION = ${TCLTK_VER}"             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "ISDIR = ${PWD}/isdir"                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "USE_ICU = YES"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "OPENMP = -fopenmp"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "PTHREAD = -pthread"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "COPY_RUNTIME_DLLS = 1"                        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "TEXI2ANY = texi2any"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "TCL_VERSION = ${TCLTK_VER}"                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "USE_ICU = YES"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ICU_PATH = \$(R_HOME)/../Library/mingw-w64"   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # This won't take and we'll force the issue at the end of the build* It's not really clear
     # if this is the best way to achieve my goal here (shared libraries, libpng, curl etc) but
@@ -197,10 +201,10 @@ Mingw_w64_makefiles() {
         # The thing to is probably to make stub programs launching the right binaries in mingw-w64/bin
         # .. perhaps launcher.c can be generalized?
         mkdir -p "${SRC_DIR}/Tcl"
-        CONDA_SUBDIR=$target_platform conda install -c https://conda.anaconda.org/msys2 \
-                                                    --no-deps --yes --copy --prefix "${SRC_DIR}/Tcl" \
-                                                    m2w64-{tcl,tk,bwidget,tktable}
-        mv "${SRC_DIR}"/Tcl/Library/mingw-w64/* "${SRC_DIR}"/Tcl/
+        CONDA_SUBDIR=$target_platform conda.bat install -c https://conda.anaconda.org/msys2 \
+                                                       --no-deps --yes --copy --prefix "${SRC_DIR}/Tcl" \
+                                                       m2w64-{tcl,tk,bwidget,tktable}
+        mv "${SRC_DIR}"/Tcl/Library/mingw-w64/* "${SRC_DIR}"/Tcl/ || exit 1
         rm -Rf "${SRC_DIR}"/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
         if [[ "${ARCH}" == "64" ]]; then
             mv "${SRC_DIR}/Tcl/bin" "${SRC_DIR}/Tcl/bin64"
@@ -258,13 +262,14 @@ Mingw_w64_makefiles() {
     else
       mkdir miktex || true
       pushd miktex
+      MIKTEX_VER=2.9.6521
       # Fetch e.g.:
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        curl -C - -o ${DLCACHE}/miktex-portable-2.9.6621.exe -SLO http://ctan.mirrors.hoobly.com/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6621.exe || true
-        echo "Extracting miktex-portable-2.9.6621.exe, this will take some time ..."
-        7za x -y ${DLCACHE}/miktex-portable-2.9.6621.exe > /dev/null
+        curl -C - -o ${DLCACHE}/miktex-portable-2.9.6361.exe -SLO http://ctan.mirrors.hoobly.com/systems/win32/miktex/setup/miktex-portable-2.9.6361.exe || true
+        echo "Extracting miktex-portable-2.9.6361.exe, this will take some time ..."
+        7za x -y ${DLCACHE}/miktex-portable-2.9.6361.exe > /dev/null
         # We also need the url, incolsolata and mptopdf packages and
         # do not want a GUI to prompt us about installing these.
         # sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
