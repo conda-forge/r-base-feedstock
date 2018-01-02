@@ -25,7 +25,16 @@ export TCL_CONFIG=${PREFIX}/lib/tclConfig.sh
 export TK_CONFIG=${PREFIX}/lib/tkConfig.sh
 export TCL_LIBRARY=${PREFIX}/lib/tcl8.6
 export TK_LIBRARY=${PREFIX}/lib/tk8.6
-export F77=${GFORTRAN}
+# BUILD_PREFIX does not get considered for prefix replacement.
+export AR=$(basename ${AR})
+export CC=$(basename ${CC})
+export GCC=$(basename ${GCC})
+export CXX=$(basename ${CXX})
+export F77=$(basename ${F77})
+export FC=$(basename ${FC})
+export LD=$(basename ${LD})
+export RANLIB=$(basename ${RANLIB})
+export STRIP=$(basename ${STRIP})
 
 Linux() {
     # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
