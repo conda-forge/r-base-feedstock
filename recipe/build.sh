@@ -83,6 +83,12 @@ Linux() {
       ln -s ../../libblas.so libRblas.so
       ln -s ../../liblapack.so libRlapack.so
     popd
+    # .. and make sure that the fact it is now a symlink to libblas.so in $PREFIX/lib
+    # does not trip up the linker when it tries to find DT_NEEDED for libgfortran.so.
+    # (r-rserve falls without this fix).
+    pushd ${PREFIX}/lib/R/etc
+      sed -i -r "s|-lRblas|-Wl,-rpath-link,${PREFIX}/lib -lRblas|" Makeconf
+    popd
 }
 
 # This was an attempt to see how far we could get with using Autotools as things
