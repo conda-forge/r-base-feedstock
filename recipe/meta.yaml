@@ -20,6 +20,7 @@ source:
     - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
     - 0009-macOS-include-cairo.h-not-cairo-xlib.h.patch
     - 0010-javareconf-Do-not-fail-on-compile-fail.patch
+    - 0011-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
 
 build:
   number: 3
