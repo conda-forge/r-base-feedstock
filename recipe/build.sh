@@ -26,15 +26,15 @@ export TK_CONFIG=${PREFIX}/lib/tkConfig.sh
 export TCL_LIBRARY=${PREFIX}/lib/tcl8.6
 export TK_LIBRARY=${PREFIX}/lib/tk8.6
 # BUILD_PREFIX does not get considered for prefix replacement.
-export AR=$(basename ${AR})
-export CC=$(basename ${CC})
-export GCC=$(basename ${GCC})
-export CXX=$(basename ${CXX})
-export F77=$(basename ${F77})
-export FC=$(basename ${FC})
-export LD=$(basename ${LD})
-export RANLIB=$(basename ${RANLIB})
-export STRIP=$(basename ${STRIP})
+[[ -n ${AR} ]] && export AR=$(basename ${AR})
+[[ -n ${CC} ]] && export CC=$(basename ${CC})
+[[ -n ${GCC} ]] && export GCC=$(basename ${GCC})
+[[ -n ${CXX} ]] && export CXX=$(basename ${CXX})
+[[ -n ${F77} ]] && export F77=$(basename ${F77})
+[[ -n ${FC} ]] && export FC=$(basename ${FC})
+[[ -n ${LD} ]] && export LD=$(basename ${LD})
+[[ -n ${RANLIB} ]] && export RANLIB=$(basename ${RANLIB})
+[[ -n ${STRIP} ]] && export STRIP=$(basename ${STRIP})
 
 Linux() {
     # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
@@ -100,13 +100,13 @@ Mingw_w64_autotools() {
     unset JAVA_HOME
 
     mkdir -p ${PREFIX}/lib
-    export TCL_CONFIG=$PREFIX/Library/mingw-w64/lib/tclConfig.sh
-    export TK_CONFIG=$PREFIX/Library/mingw-w64/lib/tkConfig.sh
-    export TCL_LIBRARY=$PREFIX/Library/mingw-w64/lib/tcl8.6
-    export TK_LIBRARY=$PREFIX/Library/mingw-w64/lib/tk8.6
-    export CPPFLAGS="$CPPFLAGS -I${SRC_DIR}/src/gnuwin32/fixed/h"
+    export TCL_CONFIG=${PREFIX}/Library/mingw-w64/lib/tclConfig.sh
+    export TK_CONFIG=${PREFIX}/Library/mingw-w64/lib/tkConfig.sh
+    export TCL_LIBRARY=${PREFIX}/Library/mingw-w64/lib/tcl8.6
+    export TK_LIBRARY=${PREFIX}/Library/mingw-w64/lib/tk8.6
+    export CPPFLAGS="${CPPFLAGS} -I${SRC_DIR}/src/gnuwin32/fixed/h"
     if [[ "${ARCH}" == "64" ]]; then
-        export CPPFLAGS="$CPPFLAGS -DWIN=64 -DMULTI=64"
+        export CPPFLAGS="${CPPFLAGS} -DWIN=64 -DMULTI=64"
     fi
     ./configure --prefix=${PREFIX}              \
                 --enable-shared                 \
