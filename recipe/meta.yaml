@@ -23,6 +23,7 @@ source:
     - 0011-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
 
 build:
+  merge_build_host: True  # [win]
   number: 3
   rpaths:
     - lib/R/lib/
