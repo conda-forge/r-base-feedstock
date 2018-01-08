@@ -72,6 +72,7 @@ requirements:
     - {{posix}}automake-wrapper          # [win]
     - {{posix}}automake                  # [not win]
   host:
+    # This is a hack, strong run_exports should cause this to be added
     - libgfortran                        # [osx]
     - readline 6.2*            # [not win]
     - ncurses 5.9*             # [not win]
