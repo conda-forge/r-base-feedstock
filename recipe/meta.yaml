@@ -1,6 +1,6 @@
+{% set version = '3.3.2' %}
 {% set native = 'm2w64-' if win else '' %}
 {% set posix= 'm2-' if win else '' %}
-{% set version= '3.3.2' %}
 
 package:
   name: r-base
@@ -24,20 +24,13 @@ source:
     - 0014-Linux-macOS-zlib-version-check.patch  # [not win]
 
 build:
-  number: 7
+  number: 8
   rpaths:
     - lib/R/lib/
     - lib/
-  no_link:
-    # These files are modified by R CMD javareconf and can
-    # point to different Java implementations in each env.
-    - lib/R/etc/Makeconf
-    - lib/R/etc/ldpaths
-    - lib/R/etc/javaconf
-    - lib/R/etc/x64/Makeconf
-    - lib/R/etc/x64/ldpaths
-    - lib/R/etc/x64/javaconf
   detect_binary_files_with_prefix: true
+  # No openjdk on win32.
+  skip: true  # [win32]
 
 requirements:
   build:
@@ -69,8 +62,7 @@ requirements:
     - {{native}}libsndfile     # [win]
     - {{native}}bwidget        # [win]
     - {{native}}tktable        # [win]
-    - {{native}}libpng         # [win]
-    - {{native}}pango 1.40.*   # [not win]
+    - {{native}}pcre
     - {{native}}icu 58.*       # [not win]
     - {{native}}pcre 8.39*     # [not win]
     - {{native}}pcre           # [win]
@@ -82,18 +74,19 @@ requirements:
     - libtiff >=4.0.8,<4.0.10  # [not win]
     - {{native}}libtiff        # [win]
     - {{native}}libxml2 2.9.*
-
+    - miktex  # [win]
   run:
     - readline 7.0             # [not win]
     - ncurses 5.9              # [not win]
     - libgcc                   # [not win]
-    - {{native}}gcc-libs       # [win]
     - jpeg 9*                  # [not win]
     - curl >=7.44.0,<8         # [not win]
     - xz 5.2.*                 # [not win]
     - libpng >=1.6.32,<1.6.35  # [not win]
     - {{native}}bzip2 1.0.*    # [not osx]
+    - {{native}}gcc-libs       # [win]
     - {{native}}libjpeg-turbo  # [win]
+    - {{native}}toolchain      # [win]
     - {{native}}libiconv       # [win]
     - {{native}}gmp 6.1.*      # [win]
     - {{native}}fftw           # [win]
@@ -102,8 +95,6 @@ requirements:
     - {{native}}libsndfile     # [win]
     - {{native}}bwidget        # [win]
     - {{native}}tktable        # [win]
-    - {{native}}libpng         # [win]
-    - {{native}}pango 1.40.*   # [not win]
     - {{native}}icu 58.*       # [not win]
     - {{native}}pcre 8.39*     # [not win]
     - {{native}}pcre           # [win]
@@ -117,24 +108,28 @@ requirements:
     - {{native}}libxml2 2.9.*
 
 test:
+  requires:
+    - openjdk
   commands:
     - R -h
     - R --version
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
+    - R CMD javareconf  # [unix]
     - open  # [win]
     # There doesn't seem to be a way to test this one
-    # - RSetReg  # [win]
-    - Rfe --help  # [win]
-    - Rterm --help  # [win]
+    # - RSetReg        # [win]
+    - Rfe --help       # [win]
+    - Rterm --help     # [win]
     - Rterm --version  # [win]
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
+    # check include files
+    - if not exist %PREFIX%\\R\\include\\R.h exit 1    # [win]
+    - conda inspect linkages -p $PREFIX r-base  # [not win]
+    - conda inspect objects -p $PREFIX r-base  # [osx]
 
 about:
   home: http://www.r-project.org/
   license: GPL-3.0
-  license_family: GPL
   license_file: COPYING
   summary: 'R is a free software environment for statistical computing and graphics.'
 
@@ -144,3 +139,4 @@ extra:
     - ocefpaf
     - sodre
     - bgruening
+    - jdblischak
