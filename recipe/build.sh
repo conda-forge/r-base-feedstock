@@ -9,8 +9,9 @@ if [[ "${CXXFLAGS}" =~ $re ]]; then
   export CXXFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
 fi
 
-# Without setting these, R goes off and tries to find things on its own, which
-# we don't want (we only want it to find stuff in the build environment).
+# Without this, dependency scanning fails.
+export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
+
 export TCL_CONFIG=${PREFIX}/lib/tclConfig.sh
 export TK_CONFIG=${PREFIX}/lib/tkConfig.sh
 export TCL_LIBRARY=${PREFIX}/lib/tcl8.6
@@ -344,31 +345,6 @@ Mingw_w64_makefiles() {
 
 Darwin() {
     unset JAVA_HOME
-    # Without this, it will not find libgfortran. We do not use
-    # DYLD_LIBRARY_PATH because that screws up some of the system libraries
-    # that have older versions of libjpeg than the one we are using
-    # here. DYLD_FALLBACK_LIBRARY_PATH will only come into play if it cannot
-    # find the library via normal means. The default comes from 'man dyld'.
-    export DYLD_FALLBACK_LIBRARY_PATH=$PREFIX/lib:/usr/local/lib:/lib:/usr/lib
-    # Prevent configure from finding Fink or Homebrew.
-    # [*] Since R 3.0, the configure script prevents using any DYLD_* on Darwin,
-    # after a certain point, claiming each dylib had an absolute ID path.
-    # Patch 008-Darwin-set-DYLD_FALLBACK_LIBRARY_PATH.patch corrects this and uses
-    # the same mechanism as Linux (and others) where configure transfers path from
-    # LDFLAGS=-L<path> into DYLD_FALLBACK_LIBRARY_PATH. Note we need to use both
-    # DYLD_FALLBACK_LIBRARY_PATH and LDFLAGS for different stages of configure.
-    export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib -Wl,-rpath,${PREFIX}/lib"
-
-    cat >> config.site <<EOF
-CC=${CC}
-CXX=${CXX}
-F77=${F77}
-OBJC=${CC}
-EOF
-
-    # LDFLAGS gets remembered by R and used in Rpy2 which
-    # does not expect and cannot handle direct linker flags.
-    export LDFLAGS=${LDFLAGS_CC}
 
     # --without-internal-tzcode to avoid warnings:
     # unknown timezone 'Europe/London'
@@ -385,7 +361,7 @@ EOF
                 --without-x                         \
                 --without-internal-tzcode           \
                 --enable-R-framework=no             \
-                --without-libintl-prefix            \
+                --with-included-gettext=yes         \
                 --with-recommended-packages=no
 
     make -j${CPU_COUNT} ${VERBOSE_AT}
