@@ -76,19 +76,30 @@ Linux() {
     # Prevent C and C++ extensions from linking to libgfortran.
     sed -i -r 's|(^LDFLAGS = .*)-lgfortran|\1|g' ${PREFIX}/lib/R/etc/Makeconf
 
-    # Backup the old libR{blas,lapack}.so files and make them symlinks to OpenBLAS
+    # Backup the old libR{blas,lapack}.so files and replace them with OpenBLAS
     pushd ${PREFIX}/lib/R/lib
       mv libRblas.so libRblas.so.reference
       mv libRlapack.so libRlapack.so.reference
-      ln -s ../../libblas.so libRblas.so
-      ln -s ../../liblapack.so libRlapack.so
+      cp ../../libblas.so libRblas.so
+      cp ../../liblapack.so libRlapack.so
+      # .. and modify the SONAME.
+      patchelf --set-soname libRblas.so libRblas.so
+      patchelf --set-soname libRlapack.so libRlapack.so
     popd
+
+    # # Backup the old libR{blas,lapack}.so files and make them symlinks to OpenBLAS
+    # pushd ${PREFIX}/lib/R/lib
+    #   mv libRblas.so libRblas.so.reference
+    #   mv libRlapack.so libRlapack.so.reference
+    #   ln -s ../../libblas.so libRblas.so
+    #   ln -s ../../liblapack.so libRlapack.so
+    # popd
     # .. and make sure that the fact it is now a symlink to libblas.so in $PREFIX/lib
     # does not trip up the linker when it tries to find DT_NEEDED for libgfortran.so.
     # (r-rserve falls without this fix).
-    pushd ${PREFIX}/lib/R/etc
-      sed -i -r "s|-lRblas|-Wl,-rpath-link,${PREFIX}/lib -lRblas|" Makeconf
-    popd
+    # pushd ${PREFIX}/lib/R/etc
+    #   sed -i -r "s|-lRblas|-Wl,-rpath-link,${PREFIX}/lib -lRblas|" Makeconf
+    # popd
 }
 
 # This was an attempt to see how far we could get with using Autotools as things

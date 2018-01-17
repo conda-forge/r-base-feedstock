@@ -40,7 +40,13 @@ build:
   detect_binary_files_with_prefix: true
   # The current openblas-devel run exports
   # are overly restrictive IMHO, should be
-  # open-ended.
+  # open-ended, but actually because we
+  # need to copy the shared library into this
+  # package and change its SONAME to libRblas.so
+  # we do not want a run dependency on openblas
+  # at all (otherwise Matrix.so ends up with a
+  # DT_NEEDED of libopenblas.so and cannot be used
+  # against any old libRblas.so)
   ignore_run_exports:
     - openblas-devel
 
@@ -81,9 +87,12 @@ requirements:
     - xz                                 # [not win]
     - libpng >=1.6.28,<1.7     # [not win]
     - {{native}}bzip2 1.0.*              # [not osx]
+    - {{native}}cairo                    # [not win]
     - {{native}}libjpeg-turbo            # [win]
+    - {{native}}jpeg                     # [not win]
     - {{native}}libiconv                 # [win]
     - {{native}}gmp 6.1.*            # [win]
+    - {{native}}glib                     # [linux]
     - {{native}}fftw                     # [win]
     - {{native}}xz                       # [win]
     - {{native}}mpfr 3.1.*           # [win]
@@ -137,7 +146,6 @@ requirements:
     - {{native}}libxml2 2.9.*            # [win]
     - {{native}}libssh2 1.*              # [not win]
     - {{native}}krb5 1.14.*              # [not win]
-    - {{native}}libopenblas >=0.2.20     # [linux]
     - {{native}}openblas                 # [win]
 
 test:
