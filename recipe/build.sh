@@ -11,16 +11,6 @@ fi
 
 # Without setting these, R goes off and tries to find things on its own, which
 # we don't want (we only want it to find stuff in the build environment).
-export CFLAGS="${CFLAGS} -I$PREFIX/include"
-export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
-export FFLAGS="${FFLAGS} -I$PREFIX/include -L$PREFIX/lib"
-export FCFLAGS="${FCFLAGS} -I$PREFIX/include -L$PREFIX/lib"
-export OBJCFLAGS="${OBJCFLAGS} -I$PREFIX/include"
-export CXXFLAGS="${CXXFLAGS} -I$PREFIX/include"
-export LDFLAGS="${LDFLAGS} -L$PREFIX/lib -lgfortran"
-export LAPACK_LDFLAGS="${LAPACK_LDFLAGS} -L$PREFIX/lib -lgfortran"
-export PKG_CPPFLAGS="${PKG_CPPFLAGS} -I$PREFIX/include"
-export PKG_LDFLAGS="${PKG_LDFLAGS} -L$PREFIX/lib -lgfortran"
 export TCL_CONFIG=${PREFIX}/lib/tclConfig.sh
 export TK_CONFIG=${PREFIX}/lib/tkConfig.sh
 export TCL_LIBRARY=${PREFIX}/lib/tcl8.6
@@ -60,6 +50,7 @@ Linux() {
                 --with-curses                    \
                 --with-readline                  \
                 --with-recommended-packages=no   \
+                --without-libintl-prefix         \
                 LIBnn=lib
 
     if cat src/include/config.h | grep "undef HAVE_PANGOCAIRO"; then
@@ -132,7 +123,7 @@ Mingw_w64_autotools() {
                 --with-recommended-packages=no  \
                 LIBnn=lib
 
-    make -j${CPU_COUNT}
+    make -j${CPU_COUNT} ${VERBOSE_AT}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install
@@ -394,6 +385,7 @@ EOF
                 --without-x                         \
                 --without-internal-tzcode           \
                 --enable-R-framework=no             \
+                --without-libintl-prefix            \
                 --with-recommended-packages=no
 
     make -j${CPU_COUNT} ${VERBOSE_AT}

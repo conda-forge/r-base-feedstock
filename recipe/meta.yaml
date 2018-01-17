@@ -69,6 +69,7 @@ requirements:
     - {{ cdt('libxau') }}                # [linux]
     - {{ cdt('java-1.7.0-openjdk') }}    # [linux]
     - {{posix}}pkg-config
+    - llvm-openmp >=4.0.1                # [osx]
     - posix                              # [win]
     - m2-texinfo-tex                     # [win]
     - m2-texinfo                         # [win]
@@ -80,6 +81,7 @@ requirements:
     - {{posix}}automake                  # [not win]
   host:
     # This is a hack, strong run_exports should cause this to be added
+    - llvm-openmp >=4.0.1                # [osx]
     - libgfortran                        # [osx]
     - readline 6.2*            # [not win]
     - ncurses 5.9*             # [not win]
@@ -118,6 +120,7 @@ requirements:
     - {{native}}openblas                 # [win]
 
   run:
+    - llvm-openmp >=4.0.1                # [osx]
     - readline 6.2*            # [not win]
     - ncurses 5.9*             # [not win]
     - {{native}}gcc-libs                 # [win]
