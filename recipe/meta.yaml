@@ -88,11 +88,11 @@ requirements:
     - curl >=7.44.0,<8                     # [not win]
     - xz                                 # [not win]
     - libpng >=1.6.28,<1.7     # [not win]
-    - {{native}}bzip2 1.0.*              # [not osx]
+    - {{native}}bzip2 1.0.*
     - {{native}}cairo                    # [not win]
     - {{native}}libjpeg-turbo            # [win]
     - {{native}}jpeg                     # [not win]
-    - {{native}}libiconv                 # [win]
+    - {{native}}libiconv                 # [not linux]
     - {{native}}gmp 6.1.*            # [win]
     - {{native}}glib                     # [linux]
     - {{native}}fftw                     # [win]
