@@ -85,7 +85,7 @@ requirements:
     - libgfortran                        # [osx]
     - readline 6.2*            # [not win]
     - ncurses 5.9*             # [not win]
-    - curl >=7.44.0,<8                     # [not win]
+    - curl                               # [not win]
     - xz                                 # [not win]
     - libpng >=1.6.28,<1.7     # [not win]
     - {{native}}bzip2 1.0.*
@@ -125,7 +125,7 @@ requirements:
     - readline 6.2*            # [not win]
     - ncurses 5.9*             # [not win]
     - {{native}}gcc-libs                 # [win]
-    - curl >=7.44.0,<8                     # [not win]
+    - curl                               # [not win]
     - libpng >=1.6.28,<1.7     # [not win]
     - {{native}}bzip2 1.0.*              # [win]
     - {{native}}libjpeg-turbo            # [win]
