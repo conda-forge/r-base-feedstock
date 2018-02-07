@@ -359,6 +359,8 @@ Darwin() {
                 --host=${HOST}                      \
                 --build=${BUILD}                    \
                 --with-blas="-framework Accelerate" \
+                --with-tk-config=${TK_CONFIG}       \
+                --with-tcl-config=${TCL_CONFIG}     \
                 --with-lapack                       \
                 --enable-R-shlib                    \
                 --enable-memory-profiling           \
