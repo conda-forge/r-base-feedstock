@@ -122,6 +122,9 @@ requirements:
 
   run:
     - _r-mutex 1.* anacondar_1
+    - {{ compiler('fortran') }}          # [not win]
+    - {{ compiler('cxx') }}              # [not win]
+    - {{ compiler('c') }}                # [not win]
     - llvm-openmp >=4.0.1                # [osx]
     - readline 6.2*            # [not win]
     - ncurses 5.9*             # [not win]
