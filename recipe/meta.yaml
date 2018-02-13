@@ -130,7 +130,6 @@ requirements:
     - ncurses 5.9*             # [not win]
     - {{native}}gcc-libs                 # [win]
     - curl                               # [not win]
-    - libpng >=1.6.28,<1.7     # [not win]
     - {{native}}bzip2 1.0.*              # [win]
     - {{native}}libjpeg-turbo            # [win]
     - {{native}}libiconv                 # [win]
