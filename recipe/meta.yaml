@@ -23,7 +23,7 @@ source:
     - 0013-javareconf-do-not-fail-on-compile-fail.patch
 
 build:
-  number: 3
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
