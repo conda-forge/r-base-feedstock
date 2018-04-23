@@ -14,14 +14,16 @@ Summary: R is a free software environment for statistical computing and graphics
 Current build status
 ====================
 
-Linux: [![Circle CI](https://circleci.com/gh/conda-forge/r-base-feedstock.svg?style=shield)](https://circleci.com/gh/conda-forge/r-base-feedstock)
-OSX: [![TravisCI](https://travis-ci.org/conda-forge/r-base-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/r-base-feedstock)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/conda-forge/r-base-feedstock?svg=True)](https://ci.appveyor.com/project/conda-forge/r-base-feedstock/branch/master)
+[![Linux](https://img.shields.io/circleci/project/github/conda-forge/r-base-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/r-base-feedstock)
+[![OSX](https://img.shields.io/travis/conda-forge/r-base-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/r-base-feedstock)
+[![Windows](https://img.shields.io/appveyor/ci/conda-forge/r-base-feedstock/master.svg?label=Windows)](https://ci.appveyor.com/project/conda-forge/r-base-feedstock/branch/master)
 
 Current release info
 ====================
-Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/r-base/badges/version.svg)](https://anaconda.org/conda-forge/r-base)
-Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/r-base/badges/downloads.svg)](https://anaconda.org/conda-forge/r-base)
+
+| Name | Downloads | Version | Platforms |
+| --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-r--base-green.svg)](https://anaconda.org/conda-forge/r-base) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/r-base.svg)](https://anaconda.org/conda-forge/r-base) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/r-base.svg)](https://anaconda.org/conda-forge/r-base) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/r-base.svg)](https://anaconda.org/conda-forge/r-base) |
 
 Installing r-base
 =================
