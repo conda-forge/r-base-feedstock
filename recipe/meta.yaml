@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix= 'm2-' if win else '' %}
-{% set version= '3.4.1' %}
+{% set version = '3.4.1' %}
 
 package:
   name: r-base
@@ -119,6 +119,8 @@ test:
   commands:
     - R -h
     - R --version
+    - $R -e "library('tcltk')"           # [not win]
+    - "\"%R%\" -e \"library('tcltk')\""  # [win]
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
     - open  # [win]
