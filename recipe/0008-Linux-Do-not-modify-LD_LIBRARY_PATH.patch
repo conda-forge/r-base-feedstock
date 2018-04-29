@@ -1,7 +1,7 @@
-From 0831273c14309a8b9ad6aaa8f9d5124dfae1d7bd Mon Sep 17 00:00:00 2001
+From 243d5e67d8204489315701f871fc3febd7b8b26e Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 15:51:41 +0000
-Subject: [PATCH 08/10] Linux: Do not modify LD_LIBRARY_PATH
+Subject: [PATCH 08/13] Linux: Do not modify LD_LIBRARY_PATH
 
 ---
  Makeconf.in     |  3 ++-
@@ -25,10 +25,10 @@ index 0e1b82437b..a3e93bdda7 100644
  MKINSTALLDIRS = @R_SHELL@ $(top_srcdir)/src/scripts/mkinstalldirs.in
  NOTANGLE = @NOTANGLE@
 diff --git a/configure.ac b/configure.ac
-index 56da766d56..1d116f89c5 100644
+index 1e70ea2dfb..5e31a157b2 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -681,7 +681,7 @@ AM_CONDITIONAL(CROSS_COMPILING, [test "${cross_compiling}" = yes])
+@@ -692,7 +692,7 @@ AM_CONDITIONAL(CROSS_COMPILING, [test "${cross_compiling}" = yes])
  
  ### * Checks for libraries.
  
@@ -37,7 +37,7 @@ index 56da766d56..1d116f89c5 100644
  ## <FIXME>
  ## What is this doing *HERE*?
  ## Should be needed for tests using AC_RUN_IFELSE()?
-@@ -708,6 +708,7 @@ case "${host_os}" in
+@@ -719,6 +719,7 @@ case "${host_os}" in
          -L*)
  	  lib=`echo ${arg} | sed "s/^-L//"`
  	  R_SH_VAR_ADD(R_LD_LIBRARY_PATH, [${lib}], [${PATH_SEPARATOR}])
@@ -45,7 +45,7 @@ index 56da766d56..1d116f89c5 100644
  	  ;;
        esac
      done
-@@ -727,13 +728,20 @@ case "${host_os}" in
+@@ -738,13 +739,20 @@ case "${host_os}" in
      Rshlibpath_var=${shlibpath_var}
  esac
  AC_SUBST(shlibpath_var)
@@ -68,7 +68,7 @@ index 56da766d56..1d116f89c5 100644
  AC_SUBST(Rshlibpath_var)
  
  ## record how to strip shared/dynamic libraries.
-@@ -1663,6 +1671,7 @@ AM_CONDITIONAL(DYLIB_UNDEFINED_ALLOWED, [test "x${dylib_undefined_allowed}" = xy
+@@ -1692,6 +1700,7 @@ AM_CONDITIONAL(DYLIB_UNDEFINED_ALLOWED, [test "x${dylib_undefined_allowed}" = xy
  
  AC_SUBST(MAIN_LD)
  AC_SUBST(MAIN_LDFLAGS)
@@ -77,7 +77,7 @@ index 56da766d56..1d116f89c5 100644
  AC_SUBST(CXXPICFLAGS)
  AC_SUBST(DYLIB_LD)
 diff --git a/etc/Makeconf.in b/etc/Makeconf.in
-index e7d9fbd272..9215117f85 100644
+index cb1b259ba5..1e19bd2448 100644
 --- a/etc/Makeconf.in
 +++ b/etc/Makeconf.in
 @@ -83,7 +83,8 @@ LTO = @LTOALL@
@@ -87,7 +87,7 @@ index e7d9fbd272..9215117f85 100644
 -MAIN_LINK = $(MAIN_LD) $(MAIN_LDFLAGS) $(LDFLAGS)
 +RPATH_LDFLAGS = -Wl,-rpath,$(abs_top_builddir)/lib @RPATH_LDFLAGS@
 +MAIN_LINK = $(MAIN_LD) $(MAIN_LDFLAGS) $(LDFLAGS) $(RPATH_LDFLAGS)
- MKINSTALLDIRS = $(R_HOME)/bin/mkinstalldirs
+ MKINSTALLDIRS = "$(R_HOME)/bin/mkinstalldirs"
  OBJC = @OBJC@
  OBJCFLAGS = @OBJCFLAGS@ $(LTO)
 diff --git a/etc/ldpaths.in b/etc/ldpaths.in
@@ -113,5 +113,5 @@ index 314d364f5c..3fb5331f9c 100644
  : ${R_JAVA_LD_LIBRARY_PATH=@R_JAVA_LD_LIBRARY_PATH@}
  if test -n "@R_LD_LIBRARY_PATH@"; then
 -- 
-2.14.3 (Apple Git-98)
+2.17.0
 

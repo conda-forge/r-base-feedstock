@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version= '3.4.3' %}
+{% set version= '3.5.0' %}
 
 package:
   name: r-base
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: 7a3cb831de5b4151e1f890113ed207527b7d4b16df9ec6b35e0964170007f426
+  sha256: fd1725535e21797d3d9fea8963d99be0ba4c3aecadcf081b43e261458b416870
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -20,8 +20,9 @@ source:
     - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
     - 0009-macOS-include-cairo.h-not-cairo-xlib.h.patch
     - 0010-javareconf-Do-not-fail-on-compile-fail.patch
-    - 0011-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
-    - 0012-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB.patch
+    - 0011-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
+    - 0012-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
+    - 0013-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
 
 build:
   merge_build_host: True  # [win]

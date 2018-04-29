@@ -1,7 +1,7 @@
-From a0b793ab2ae727cae6fa4ad18f2a45bdd289fccd Mon Sep 17 00:00:00 2001
+From e04a0697d46bfe452e6e0250f6161c357c36b8c6 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 15:53:10 +0000
-Subject: [PATCH 09/10] macOS: include <cairo.h> not <cairo/xlib.h>
+Subject: [PATCH 09/13] macOS: include <cairo.h> not <cairo/xlib.h>
 
 ---
  configure   | 11 +++++------
@@ -9,10 +9,10 @@ Subject: [PATCH 09/10] macOS: include <cairo.h> not <cairo/xlib.h>
  2 files changed, 10 insertions(+), 12 deletions(-)
 
 diff --git a/configure b/configure
-index 2975be56ec..3352e8df53 100755
+index 93350e072d..f174f6928a 100755
 --- a/configure
 +++ b/configure
-@@ -39204,8 +39204,8 @@ $as_echo "$r_cv_has_pangocairo" >&6; }
+@@ -37870,8 +37870,8 @@ $as_echo "$r_cv_has_pangocairo" >&6; }
         modlist="${modlist} cairo-svg"
         r_cairo_svg=yes
      fi
@@ -23,7 +23,7 @@ index 2975be56ec..3352e8df53 100755
        else
           xmodlist="${modlist}"
        fi
-@@ -39227,7 +39227,7 @@ else
+@@ -37893,7 +37893,7 @@ else
  
  #include <pango/pango.h>
  #include <pango/pangocairo.h>
@@ -32,7 +32,7 @@ index 2975be56ec..3352e8df53 100755
  #if CAIRO_VERSION  < 10200
  #error cairo version >= 1.2 required
  #endif
-@@ -39291,8 +39291,8 @@ $as_echo "$r_cv_has_cairo" >&6; }
+@@ -37957,8 +37957,8 @@ $as_echo "$r_cv_has_cairo" >&6; }
           modlist="${modlist} cairo-svg"
           r_cairo_svg=yes
        fi
@@ -43,7 +43,7 @@ index 2975be56ec..3352e8df53 100755
        else
           xmodlist="${modlist}"
        fi
-@@ -39323,7 +39323,6 @@ else
+@@ -37989,7 +37989,6 @@ else
  /* end confdefs.h.  */
  
  #include <cairo.h>
@@ -95,5 +95,5 @@ index 4e7df87365..893321dd6c 100644
  #error cairo version >= 1.2 required
  #endif
 -- 
-2.14.3 (Apple Git-98)
+2.17.0
 
