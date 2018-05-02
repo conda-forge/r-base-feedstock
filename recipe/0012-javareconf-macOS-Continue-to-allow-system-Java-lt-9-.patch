@@ -33,7 +33,7 @@ index ca72145269..b6dfc3e63e 100644
       ## This changed for Java 9.
       ## pref=`echo "${JAVA_HOME}" | grep "/Home$"`
 -     pref=`echo "${JAVA_HOME}" | grep "^/System/Library"`
-+     pref=`echo "${JAVA_HOME}" | grep "^/System/Library\|/Home$"
++     pref=`echo "${JAVA_HOME}" | grep "^/System/Library\|/Home$"`
       if test "${pref}" = "${JAVA_HOME}"; then
         echo "System Java on macOS"
         JAVA_CPPFLAGS="-I/System/Library/Frameworks/JavaVM.framework/Headers"
