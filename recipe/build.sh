@@ -281,12 +281,12 @@ Mingw_w64_makefiles() {
     else
       mkdir miktex || true
       pushd miktex
-      MIKTEX_VER=2.9.6521
+      MIKTEX_VER=2.9.6621
       # Fetch e.g.:
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        curl -C - -o ${DLCACHE}/miktex-portable-2.9.6361.exe -SLO http://ctan.mirrors.hoobly.com/systems/win32/miktex/setup/miktex-portable-2.9.6361.exe || true
+        curl -C - -o ${DLCACHE}/miktex-portable-${MIKTEX_VER}.exe -SLO http://ctan.mirrors.hoobly.com/systems/win32/miktex/setup/miktex-portable-${MIKTEX_VER}.exe || true
         echo "Extracting miktex-portable-2.9.6361.exe, this will take some time ..."
         7za x -y ${DLCACHE}/miktex-portable-2.9.6361.exe > /dev/null
         # We also need the url, incolsolata and mptopdf packages and
