@@ -28,8 +28,9 @@ fi
 #   export LDFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
 # fi
 
-# Without this, dependency scanning fails (but with it CDT libuuid / Xt fails to link)
-# export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
+# Without this, dependency scanning fails (but with it CDT libuuid / Xt fails to link
+# which we hack around with config.site)
+export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
 
 export TCL_CONFIG=${PREFIX}/lib/tclConfig.sh
 export TK_CONFIG=${PREFIX}/lib/tkConfig.sh
@@ -54,11 +55,21 @@ Linux() {
     unset JAVA_HOME
 
     mkdir -p ${PREFIX}/lib
-    # Works:
+    # Tricky libuuid resolution issues against CentOS6's libSM. I may need to add some symbols to our libuuid library.
+    # Works for configure:
     # . /opt/conda/bin/activate /home/rdonnelly/r-base-bld/_build_env
-    # x86_64-conda_cos6-linux-gnu-cc -o conftest -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe \
-    # -luuid -fpic  -DNDEBUG -D_FORTIFY_SOURCE=2 -O2  -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now conftest.c -lXt  -lX11 -lrt -ldl -lm \
-    # -L/home/rdonnelly/r-base-bld/_build_env/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib64 -luuid -L$PREFIX/lib -licuuc -licui18n
+    # x86_64-conda_cos6-linux-gnu-cc -o conftest -L/home/rdonnelly/r-base-bld/_build_env/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib64 conftest.c -lXt -lX11 -lrt -ldl -lm -luuid -L$PREFIX/lib -licuuc -licui18n
+    # if [[ ${ARCH} == 32 ]]; then
+    #   export CPPFLAGS="-L${BUILD_PREFIX}/${HOST}/sysroot/usr/lib ${CPPFLAGS}"
+    #   export CFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib ${CFLAGS}"
+    #   export CXXFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib ${CXXFLAGS}"
+    # else
+    #   export CPPFLAGS="-L${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64 ${CPPFLAGS}"
+    #   export CFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64 ${CFLAGS}"
+    #   export CXXFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64 ${CXXFLAGS}"
+    # fi
+    echo "ac_cv_lib_Xt_XtToolkitInitialize=yes" > config.site
+    export CONFIG_SITE=${PWD}/config.site
     ./configure --prefix=${PREFIX}               \
                 --host=${HOST}                   \
                 --build=${BUILD}                 \
@@ -72,11 +83,9 @@ Linux() {
                 --with-x                         \
                 --with-pic                       \
                 --with-cairo                     \
-                --with-curses                    \
                 --with-readline                  \
                 --with-recommended-packages=no   \
                 --without-libintl-prefix         \
-                --disable-dependency-tracking    \
                 LIBnn=lib
 
     if cat src/include/config.h | grep "undef HAVE_PANGOCAIRO"; then
@@ -147,7 +156,6 @@ Mingw_w64_autotools() {
                 --with-x=no                     \
                 --with-readline=no              \
                 --with-recommended-packages=no  \
-                --disable-dependency-tracking   \
                 LIBnn=lib
 
     make -j${CPU_COUNT} ${VERBOSE_AT}
