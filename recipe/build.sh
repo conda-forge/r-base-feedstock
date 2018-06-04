@@ -54,6 +54,11 @@ Linux() {
     unset JAVA_HOME
 
     mkdir -p ${PREFIX}/lib
+    # Works:
+    # . /opt/conda/bin/activate /home/rdonnelly/r-base-bld/_build_env
+    # x86_64-conda_cos6-linux-gnu-cc -o conftest -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe \
+    # -luuid -fpic  -DNDEBUG -D_FORTIFY_SOURCE=2 -O2  -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now conftest.c -lXt  -lX11 -lrt -ldl -lm \
+    # -L/home/rdonnelly/r-base-bld/_build_env/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib64 -luuid -L$PREFIX/lib -licuuc -licui18n
     ./configure --prefix=${PREFIX}               \
                 --host=${HOST}                   \
                 --build=${BUILD}                 \
@@ -71,6 +76,7 @@ Linux() {
                 --with-readline                  \
                 --with-recommended-packages=no   \
                 --without-libintl-prefix         \
+                --disable-dependency-tracking    \
                 LIBnn=lib
 
     if cat src/include/config.h | grep "undef HAVE_PANGOCAIRO"; then
@@ -141,6 +147,7 @@ Mingw_w64_autotools() {
                 --with-x=no                     \
                 --with-readline=no              \
                 --with-recommended-packages=no  \
+                --disable-dependency-tracking   \
                 LIBnn=lib
 
     make -j${CPU_COUNT} ${VERBOSE_AT}
