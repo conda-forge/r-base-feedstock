@@ -87,8 +87,8 @@ requirements:
     - llvm-openmp >=4.0.1                # [osx]
     - freetype >=2.9.1
     - libgfortran                        # [osx]
-    - readline 6.2*            # [not win]
-    - ncurses 5.9*             # [not win]
+    - readline 7.*                       # [not win]
+    - ncurses 6.0.*                      # [not win]
     - curl                               # [not win]
     - xz                                 # [not win]
     - libpng >=1.6.28,<1.7     # [not win]
