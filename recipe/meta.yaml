@@ -121,7 +121,7 @@ requirements:
     - {{native}}libxml2                  # [not win]
     - {{native}}libssh2                  # [not win]
     - {{native}}krb5                     # [not win]
-    - {{native}}openblas-devel >=0.2.20  # [linux]
+    - {{native}}openblas-devel >=0.2.20  # [linux or osx]
     - {{native}}openblas                 # [win]
 
   run:

@@ -46,6 +46,7 @@ export TK_LIBRARY=${PREFIX}/lib/tk8.6
 [[ -n ${LD} ]] && export LD=$(basename ${LD})
 [[ -n ${RANLIB} ]] && export RANLIB=$(basename ${RANLIB})
 [[ -n ${STRIP} ]] && export STRIP=$(basename ${STRIP})
+export OBJC=${CC}
 
 Linux() {
     # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
@@ -389,10 +390,36 @@ Darwin() {
     # unknown timezone 'GMT'
     # https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
 
+#                --with-blas="-framework Accelerate" \
+
+
+    # May want to strip these from Makeconf at the end.
+    CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CFLAGS}
+    LDFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${LDFLAGS}
+    CPPFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CPPFLAGS}
+
+    # Our libuuid causes problems:
+    # In file included from qdPDF.c:29:
+    # In file included from ./qdPDF.h:3:
+    # In file included from ../../../../include/R_ext/QuartzDevice.h:103:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.h:23:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework/Headers/CoreServices.h:23:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/AE.framework/Headers/AE.h:20:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/CarbonCore.h:208:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/HFSVolumes.h:25:
+    # .. apart from this issue there seems to be a segfault:
+    # https://rt.cpan.org/Public/Bug/Display.html?id=104394
+    # http://openradar.appspot.com/radar?id=6069753579831296
+    # .. anyway, uuid is part of libc on Darwin, so let's just try to use that.
+    rm -f "${PREFIX}"/include/uuid/uuid.h
+
     ./configure --prefix=${PREFIX}                  \
                 --host=${HOST}                      \
                 --build=${BUILD}                    \
-                --with-blas="-framework Accelerate" \
+                --with-sysroot=${CONDA_BUILD_SYSROOT}  \
+                --enable-shared                     \
+                --enable-R-shlib                    \
+                --enable-BLAS-shlib                 \
                 --with-tk-config=${TK_CONFIG}       \
                 --with-tcl-config=${TCL_CONFIG}     \
                 --with-lapack                       \
@@ -412,7 +439,20 @@ Darwin() {
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install
+
+    # Backup the old libR{blas,lapack}.dylib files and replace them with OpenBLAS
+    pushd ${PREFIX}/lib/R/lib
+      mv libRblas.dylib libRblas.dylib.reference
+      mv libRlapack.dylib libRlapack.dylib.reference
+      cp ../../libblas.dylib libRblas.dylib
+      cp ../../liblapack.dylib libRlapack.dylib
+    popd
+
+    pushd ${PREFIX}/lib/R/etc
+      sed -i -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
+    popd
 }
+
 
 if [[ ${HOST} =~ .*darwin.* ]]; then
   Darwin
