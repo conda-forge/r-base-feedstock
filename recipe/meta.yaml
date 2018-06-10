@@ -24,6 +24,7 @@ source:
     - 0012-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
     - 0013-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
     - 0014-Add-luuid-to-X_PRE_LIBS.patch
+    - 0015-Mimic-OpenBLAS-when-making-reference-Rblas-and-Rlapa.patch
 
 build:
   merge_build_host: True  # [win]
