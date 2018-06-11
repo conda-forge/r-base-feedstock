@@ -440,6 +440,9 @@ Darwin() {
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install
 
+    # Useful references for macOS R with OpenBLAS:
+    # http://luisspuerto.net/2018/01/install-r-100-homebrew-edition-with-openblas-openmp-my-version/
+    # https://github.com/luisspuerto/homebrew-core/blob/r-3.4.4/Formula/r.rb
     # Backup the old libR{blas,lapack}.dylib files and replace them with OpenBLAS
     pushd ${PREFIX}/lib/R/lib
       mv libRblas.dylib libRblas.dylib.reference
