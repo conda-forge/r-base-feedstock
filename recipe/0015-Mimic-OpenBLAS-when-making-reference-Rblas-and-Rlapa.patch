@@ -20,7 +20,7 @@ index e68d0dea0a..5c91305040 100755
 -    RLAPACK_LDFLAGS="-install_name libRlapack.dylib -compatibility_version ${MAJR_VERSION} -current_version ${PACKAGE_VERSION}  -headerpad_max_install_names"
 -    ## don't use version in libRblas so we can replace it with any BLAS implementation
 -    RBLAS_LDFLAGS="-install_name libRblas.dylib -headerpad_max_install_names"
-+    if test "${r_blas}" = OpenBLAS; then
++    if true; then
 +      # Be very explicit to mimic OpenBLAS dylibs
 +      RLAPACK_LDFLAGS="-install_name @rpath/libopenblas.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
 +      RBLAS_LDFLAGS="-install_name @rpath/libopenblas.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
@@ -43,7 +43,7 @@ index 5e31a157b2..a763f676bc 100644
 -    RLAPACK_LDFLAGS="-install_name libRlapack.dylib -compatibility_version ${MAJR_VERSION} -current_version ${PACKAGE_VERSION}  -headerpad_max_install_names"
 -    ## don't use version in libRblas so we can replace it with any BLAS implementation
 -    RBLAS_LDFLAGS="-install_name libRblas.dylib -headerpad_max_install_names"
-+    if test "${r_blas}" = OpenBLAS; then
++    if true; then
 +      # Be very explicit to mimic OpenBLAS dylibs
 +      RLAPACK_LDFLAGS="-install_name @rpath/libopenblas.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
 +      RBLAS_LDFLAGS="-install_name @rpath/libopenblas.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
