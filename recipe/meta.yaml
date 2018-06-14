@@ -161,7 +161,7 @@ test:
   commands:
     - R -h
     - R --version
-    - R -e "library('tcltk')"           # [not win]
+    - R -e "library('tcltk')"           # [linux]
     - R -e \"library('tcltk')\""        # [win]
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
