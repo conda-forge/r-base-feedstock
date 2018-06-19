@@ -241,9 +241,9 @@ Mingw_w64_makefiles() {
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        curl -C - -o ${DLCACHE}/miktex-portable-2.9.6361.exe -SLO http://ctan.mirrors.hoobly.com/systems/win32/miktex/setup/miktex-portable-2.9.6361.exe || true
-        echo "Extracting miktex-portable-2.9.6361.exe, this will take some time ..."
-        7za x -y ${DLCACHE}/miktex-portable-2.9.6361.exe > /dev/null
+        curl -C - -o ${DLCACHE}/miktex-portable-2.9.6621.exe -SLO http://ctan.mirrors.hoobly.com/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6621.exe || true
+        echo "Extracting miktex-portable-2.9.6621.exe, this will take some time ..."
+        7za x -y ${DLCACHE}/miktex-portable-2.9.6621.exe > /dev/null
         # We also need the url, incolsolata and mptopdf packages and
         # do not want a GUI to prompt us about installing these.
         # sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
