@@ -1,0 +1,20 @@
+--- work/m4/R.m4.orig	2018-06-01 18:48:57.482979127 +0000
++++ work/m4/R.m4	2018-06-01 18:50:39.511482674 +0000
+@@ -1719,7 +1719,7 @@
+   CPPFLAGS="${r_save_CPPFLAGS}"
+   if test "${ac_cv_header_X11_Intrinsic_h}" = yes ; then
+     AC_CHECK_LIB(Xt, XtToolkitInitialize, [have_Xt=yes], [have_Xt=no],
+-                 [${X_LIBS} -lX11])
++                 [${X_LIBS} -lX11 -luuid])
+     if test "${have_Xt}" = yes; then
+       use_X11="yes"
+     fi
+@@ -1729,7 +1729,7 @@
+   AC_DEFINE(HAVE_X11, 1,
+             [Define if you have the X11 headers and libraries, and want
+              the X11 GUI to be built.])
+-  X_LIBS="${X_LIBS} -lX11 -lXt"
++  X_LIBS="${X_LIBS} -lX11 -lXt -luuid"
+ else
+   if test "x${with_x}" != "xno"; then
+     AC_MSG_ERROR(
