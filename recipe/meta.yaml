@@ -28,7 +28,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 3
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
@@ -88,11 +88,11 @@ requirements:
     - llvm-openmp >=4.0.1                # [osx]
     - freetype >=2.9.1
     - libgfortran                        # [osx]
-    - readline 7.*                       # [not win]
-    - ncurses 6.0.*                      # [not win]
+    - readline 7                         # [not win]
+    - ncurses 6                          # [not win]
     - curl                               # [not win]
     - xz                                 # [not win]
-    - libpng >=1.6.28,<1.7     # [not win]
+    - libpng >=1.6.28,<1.7               # [not win]
     - {{native}}bzip2                    # [not win]
     - {{native}}bzip2 1.0.*              # [win]
     - {{native}}cairo                    # [not win]
@@ -100,11 +100,11 @@ requirements:
     - {{native}}jpeg                     # [not win]
     - {{native}}libiconv                 # [not linux]
     - {{native}}libuuid                  # [linux]
-    - {{native}}gmp 6.1.*            # [win]
+    - {{native}}gmp 6.1.*                # [win]
     - {{native}}glib                     # [linux]
     - {{native}}fftw                     # [win]
     - {{native}}xz                       # [win]
-    - {{native}}mpfr 3.1.*           # [win]
+    - {{native}}mpfr 3.1.*               # [win]
     - {{native}}libsndfile               # [win]
     - {{native}}bwidget
     - {{native}}tktable
@@ -171,8 +171,6 @@ test:
     - Rfe --help  # [win]
     - Rterm --help  # [win]
     - Rterm --version  # [win]
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: http://www.r-project.org/
