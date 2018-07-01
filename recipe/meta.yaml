@@ -23,7 +23,7 @@ source:
     - 0013-javareconf-do-not-fail-on-compile-fail.patch
 
 build:
-  number: 4
+  number: 5
   rpaths:
     - lib/R/lib/
     - lib/
@@ -45,21 +45,24 @@ requirements:
     - m2-texinfo               # [win]
     - m2-curl                  # [win]
     - m2-p7zip                 # [win]
-    - readline 7.0            # [not win]
-    - ncurses 5.9             # [not win]
-    - gcc                      # [not win]
-    - jpeg 9*                  # [not win]
-    - curl >=7.44.0,<8                     # [not win]
-    - xz 5.2.*                 # [not win]
-    - libpng >=1.6.32,<1.6.35     # [not win]
     - texlive-core             # [osx]
     - {{posix}}pkg-config
     - {{posix}}autoconf
     - {{posix}}automake-wrapper  # [win]
     - {{posix}}automake          # [not win]
+    - {{ compiler('fortran') }}        # [unix]
+    - {{ compiler('m2w64_fortran') }}  # [win]
+    - {{ compiler('c') }}        # [unix]
+    - {{ compiler('m2w64_c') }}  # [win]
+  host:
+    - readline                # [not win]
+    - ncurses                 # [not win]
+    - jpeg                     # [not win]
+    - curl                                 # [not win]
+    - xz                       # [not win]
+    - libpng                      # [not win]
     - {{native}}bzip2 1.0.*    # [not osx]
     - {{native}}libjpeg-turbo  # [win]
-    - {{native}}toolchain      # [win]
     - {{native}}libiconv       # [win]
     - {{native}}gmp 6.1.*            # [win]
     - {{native}}fftw           # [win]
@@ -69,28 +72,26 @@ requirements:
     - {{native}}bwidget        # [win]
     - {{native}}tktable        # [win]
     - {{native}}libpng         # [win]
-    - {{native}}pango 1.40.*   # [not win]
-    - {{native}}icu 58.*       # [not win]
+    - {{native}}pango          # [not win]
+    - {{native}}icu            # [not win]
     - {{native}}pcre 8.39*     # [not win]
     - {{native}}pcre           # [win]
     - {{native}}tk             # [win]
-    - {{native}}tk 8.6.*       # [not win]
-    - zlib 1.2.11  # [not win]
+    - {{native}}tk             # [not win]
+    - zlib         # [not win]
     - {{native}}zlib  # [win]
     - {{native}}gsl
-    - libtiff >=4.0.8,<4.0.10  # [not win]
+    - libtiff                  # [not win]
     - {{native}}libtiff  # [win]
     - {{native}}libxml2 2.9.*
 
   run:
-    - readline 7.0            # [not win]
-    - ncurses 5.9             # [not win]
-    - libgcc                   # [not win]
-    - {{native}}gcc-libs       # [win]
-    - jpeg 9*                  # [not win]
-    - curl >=7.44.0,<8                     # [not win]
-    - xz 5.2.*                 # [not win]
-    - libpng >=1.6.32,<1.6.35     # [not win]
+    - readline                # [not win]
+    - ncurses                 # [not win]
+    - jpeg                     # [not win]
+    - curl                                 # [not win]
+    - xz                       # [not win]
+    - libpng                      # [not win]
     - {{native}}bzip2 1.0.*    # [not osx]
     - {{native}}libjpeg-turbo  # [win]
     - {{native}}libiconv       # [win]
@@ -102,16 +103,16 @@ requirements:
     - {{native}}bwidget        # [win]
     - {{native}}tktable        # [win]
     - {{native}}libpng         # [win]
-    - {{native}}pango 1.40.*   # [not win]
-    - {{native}}icu 58.*       # [not win]
+    - {{native}}pango          # [not win]
+    - {{native}}icu            # [not win]
     - {{native}}pcre 8.39*     # [not win]
     - {{native}}pcre           # [win]
     - {{native}}tk             # [win]
-    - {{native}}tk 8.6.*       # [not win]
-    - zlib 1.2.11  # [not win]
+    - {{native}}tk             # [not win]
+    - zlib         # [not win]
     - {{native}}zlib  # [win]
     - {{native}}gsl
-    - libtiff >=4.0.8,<4.0.10  # [not win]
+    - libtiff                  # [not win]
     - {{native}}libtiff  # [win]
     - {{native}}libxml2 2.9.*
 
