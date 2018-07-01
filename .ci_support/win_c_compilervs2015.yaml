@@ -1,0 +1,41 @@
+c_compiler:
+- vs2015
+curl:
+- '7.59'
+fortran_compiler:
+- flang
+jpeg:
+- '9'
+libpng:
+- 1.6.34
+libtiff:
+- 4.0.9
+m2w64_c_compiler:
+- m2w64-toolchain
+m2w64_fortran_compiler:
+- m2w64-toolchain
+ncurses:
+- '6.1'
+pin_run_as_build:
+  curl:
+    max_pin: x
+  jpeg:
+    max_pin: x
+  libpng:
+    max_pin: x.x
+  libtiff:
+    max_pin: x
+  ncurses:
+    max_pin: x.x
+  readline:
+    max_pin: x
+  xz:
+    max_pin: x.x
+  zlib:
+    max_pin: x.x
+readline:
+- '7.0'
+xz:
+- '5.2'
+zlib:
+- '1.2'
