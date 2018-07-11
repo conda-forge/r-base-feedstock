@@ -24,6 +24,7 @@ source:
 
 build:
   number: 6
+  merge_build_host: True   # [win]
   rpaths:
     - lib/R/lib/
     - lib/
