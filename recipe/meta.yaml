@@ -141,8 +141,6 @@ test:
     - Rfe --help  # [win]
     - Rterm --help  # [win]
     - Rterm --version  # [win]
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: http://www.r-project.org/
