@@ -241,7 +241,7 @@ Mingw_w64_makefiles() {
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        curl -C - -o ${DLCACHE}/miktex-portable.exe -SLO http://ctan.mirrors.hoobly.com/systems/win32/miktex/setup/windows-x86/miktex-portable.exe || true
+        curl -C - -o ${DLCACHE}/miktex-portable.exe -SLO https://ctan.org/tex-archive/systems/win32/miktex/setup/windows-x86/miktex-portable.exe || true
         echo "Extracting miktex-portable.exe, this will take some time ..."
         7za x -y ${DLCACHE}/miktex-portable.exe > /dev/null
         # We also need the url, incolsolata and mptopdf packages and
