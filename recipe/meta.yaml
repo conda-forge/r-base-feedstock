@@ -23,7 +23,7 @@ source:
     - 0013-javareconf-do-not-fail-on-compile-fail.patch
 
 build:
-  number: 6
+  number: 7
   merge_build_host: True   # [win]
   rpaths:
     - lib/R/lib/
