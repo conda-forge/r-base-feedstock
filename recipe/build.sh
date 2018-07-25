@@ -28,10 +28,6 @@ Linux() {
     # and activate scripts now call 'R CMD javareconf'.
     unset JAVA_HOME
 
-    # This is needed to force pkg-config to *also* search for system libraries.
-    # We cannot use cairo without this since it depends on a good few X11 things.
-    export PKG_CONFIG_PATH=/usr/lib/pkgconfig
-
     mkdir -p $PREFIX/lib
 
     ./configure --prefix=${PREFIX}              \
