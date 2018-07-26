@@ -91,11 +91,11 @@ requirements:
     - {{native}}libtiff        # [win]
     - {{native}}libxml2 2.9.*  # [win]
     - libxml2                  # [not win]
-    - xorg-libx11              # [not win]
-    - xorg-libxt               # [not win]
-    - xorg-libxrender          # [not win]
-    - xorg-libxext             # [not win]
-    - xorg-libxdmcp            # [not win]
+    - xorg-libx11              # [linux]
+    - xorg-libxt               # [linux]
+    - xorg-libxrender          # [linux]
+    - xorg-libxext             # [linux]
+    - xorg-libxdmcp            # [linux]
 
 
   run:
@@ -134,11 +134,11 @@ requirements:
     - {{native}}libtiff        # [win]
     - {{native}}libxml2 2.9.*  # [win]
     - libxml2                  # [not win]
-    - xorg-libx11              # [not win]
-    - xorg-libxt               # [not win]
-    - xorg-libxrender          # [not win]
-    - xorg-libxext             # [not win]
-    - xorg-libxdmcp            # [not win]
+    - xorg-libx11              # [linux]
+    - xorg-libxt               # [linux]
+    - xorg-libxrender          # [linux]
+    - xorg-libxext             # [linux]
+    - xorg-libxdmcp            # [linux]
 
 test:
   commands:
