@@ -23,7 +23,7 @@ source:
     - 0013-javareconf-do-not-fail-on-compile-fail.patch
 
 build:
-  number: 7
+  number: 8
   merge_build_host: True   # [win]
   rpaths:
     - lib/R/lib/
@@ -91,6 +91,12 @@ requirements:
     - {{native}}libtiff        # [win]
     - {{native}}libxml2 2.9.*  # [win]
     - libxml2                  # [not win]
+    - xorg-libx11              # [linux]
+    - xorg-libxt               # [linux]
+    - xorg-libxrender          # [linux]
+    - xorg-libxext             # [linux]
+    - xorg-libxdmcp            # [linux]
+
 
   run:
     - readline                 # [not win]
@@ -128,6 +134,11 @@ requirements:
     - {{native}}libtiff        # [win]
     - {{native}}libxml2 2.9.*  # [win]
     - libxml2                  # [not win]
+    - xorg-libx11              # [linux]
+    - xorg-libxt               # [linux]
+    - xorg-libxrender          # [linux]
+    - xorg-libxext             # [linux]
+    - xorg-libxdmcp            # [linux]
 
 test:
   commands:
@@ -135,12 +146,16 @@ test:
     - R --version
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
-    - open  # [win]
+    # TODO does not work on windows, because winCairo.dll is missing
+    - Rscript test-svg.R       # [not win]
+    - open                     # [win]
     # There doesn't seem to be a way to test this one
     # - RSetReg  # [win]
-    - Rfe --help  # [win]
-    - Rterm --help  # [win]
-    - Rterm --version  # [win]
+    - Rfe --help               # [win]
+    - Rterm --help             # [win]
+    - Rterm --version          # [win]
+  files:
+    - test-svg.R
 
 about:
   home: http://www.r-project.org/
