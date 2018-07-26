@@ -146,13 +146,14 @@ test:
     - R --version
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
-    - Rscript test-svg.R
-    - open  # [win]
+    # TODO does not work on windows, because winCairo.dll is missing
+    - Rscript test-svg.R       # [not win]
+    - open                     # [win]
     # There doesn't seem to be a way to test this one
     # - RSetReg  # [win]
-    - Rfe --help  # [win]
-    - Rterm --help  # [win]
-    - Rterm --version  # [win]
+    - Rfe --help               # [win]
+    - Rterm --help             # [win]
+    - Rterm --version          # [win]
   files:
     - test-svg.R
 
