@@ -146,7 +146,6 @@ test:
     - R --version
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
-    - Rscript capabilities.R
     # TODO does not work on windows, because winCairo.dll is missing
     - Rscript test-svg.R       # [not win]
     - open                     # [win]
@@ -155,10 +154,12 @@ test:
     - Rfe --help               # [win]
     - Rterm --help             # [win]
     - Rterm --version          # [win]
+    # Prevent regression mentioned in https://github.com/conda-forge/r-base-feedstock/issues/50
+    - Rscript -e "stopifnot(capabilities('jpeg'), TRUE)"
+    - Rscript -e "stopifnot(capabilities('png'), TRUE)"
+
   files:
     - test-svg.R
-    # Prevent regression mentioned in https://github.com/conda-forge/r-base-feedstock/issues/50
-    - capabilities.R           # [linux]
 
 about:
   home: http://www.r-project.org/
