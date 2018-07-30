@@ -1,18 +1,8 @@
-From 75d6348349fd9b3756dca27068b95dfbea31730e Mon Sep 17 00:00:00 2001
-From: Ray Donnelly <mingw.android@gmail.com>
-Date: Tue, 21 Jun 2016 14:22:30 +0100
-Subject: [PATCH 9/9] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
-
----
- configure    | 62 ++++++++++++++++++++++++++++++++++++++----------------------
- configure.ac |  2 +-
- 2 files changed, 40 insertions(+), 24 deletions(-)
-
 diff --git a/configure b/configure
 index e1abd4b..cfb18c9 100755
---- a/configure
-+++ b/configure
-@@ -22745,42 +22745,59 @@
+--- configure
++++ configure
+@@ -22932,42 +22932,59 @@
    if test "${use_readline}" = no; then
      ## only need ncurses if libreadline is not statically linked against it
      unset ac_cv_lib_readline_rl_callback_read_char
@@ -92,19 +82,11 @@ index e1abd4b..cfb18c9 100755
  
  else
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -ltermcap" >&5
-@@ -41674,7 +41691,6 @@
- { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MKDIR_P" >&5
- $as_echo "$MKDIR_P" >&6; }
- 
--
- mkdir_p="$MKDIR_P"
- case $mkdir_p in
-   [\\/$]* | ?:[\\/]*) ;;
 diff --git a/configure.ac b/configure.ac
 index 4a28294..52900b7 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -769,7 +769,7 @@ if test "${use_readline}" = yes; then
+--- configure.ac
++++ configure.ac
+@@ -793,7 +793,7 @@ if test "${use_readline}" = yes; then
    if test "${use_readline}" = no; then
      ## only need ncurses if libreadline is not statically linked against it
      unset ac_cv_lib_readline_rl_callback_read_char
