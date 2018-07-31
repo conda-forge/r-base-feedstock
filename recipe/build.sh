@@ -20,7 +20,7 @@ export TCL_CONFIG=$PREFIX/lib/tclConfig.sh
 export TK_CONFIG=$PREFIX/lib/tkConfig.sh
 export TCL_LIBRARY=$PREFIX/lib/tcl8.5
 export TK_LIBRARY=$PREFIX/lib/tk8.5
-export LIBRARY_PATH=$PREFIX/lib
+export LIBRARY_PATH=$PREFIX/lib:../../src/main
 
 Linux() {
     # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
