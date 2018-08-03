@@ -154,8 +154,11 @@ test:
     - Rfe --help               # [win]
     - Rterm --help             # [win]
     - Rterm --version          # [win]
+    - R -e 'quit(status=!capabilities("png"))'
+    - R -e 'quit(status=!capabilities("jpeg"))'
   files:
     - test-svg.R
+
 
 about:
   home: http://www.r-project.org/
