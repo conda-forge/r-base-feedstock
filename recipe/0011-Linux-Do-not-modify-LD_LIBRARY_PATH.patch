@@ -31,26 +31,6 @@
  AC_SUBST(CPICFLAGS)
  AC_SUBST(CXXPICFLAGS)
  AC_SUBST(DYLIB_LD)
---- etc/ldpaths.in
-+++ etc/ldpaths.in
-@@ -1,3 +1,17 @@
-+# https://github.com/conda/conda/issues/1679:
-+#  Internally R_system() calls system() which
-+# uses /bin/sh to launch various programs. If
-+# /bin/sh is called with LD_LIBRARY_PATH that
-+# loads condas shared libraries things break.
-+#  It may be that not setting LD_LIBRARY_PATH
-+# causes other things to break, in which case
-+# R_system() will need to be modified so that
-+# it calls execve() with an environment which
-+# has these modifications to LD_LIBRARY_PATH
-+# removed which may be tricky to orchestrate
-+if [ "$(uname -s)" = "Linux" ]; then
-+  return 0
-+fi
- : ${JAVA_HOME=@JAVA_HOME@}
- : ${R_JAVA_LD_LIBRARY_PATH=@R_JAVA_LD_LIBRARY_PATH@}
- if test -n "@R_LD_LIBRARY_PATH@"; then
 --- etc/Makeconf.in
 +++ etc/Makeconf.in
 @@ -83,7 +83,8 @@
