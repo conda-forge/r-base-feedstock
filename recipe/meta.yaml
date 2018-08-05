@@ -157,9 +157,9 @@ test:
     # Prevent regression mentioned in https://github.com/conda-forge/r-base-feedstock/issues/50
     - Rscript -e "stopifnot(capabilities('jpeg'), TRUE)"
     - Rscript -e "stopifnot(capabilities('png'), TRUE)"
-
   files:
     - test-svg.R
+
 
 about:
   home: http://www.r-project.org/
