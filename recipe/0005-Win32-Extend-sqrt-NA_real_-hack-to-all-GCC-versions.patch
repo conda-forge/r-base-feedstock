@@ -1,6 +1,6 @@
---- src/main/eval.c	2016-01-12 23:15:08.000000000 +0000
-+++ src/main/eval.c.new	2016-04-02 19:37:03.814139700 +0100
-@@ -3754,8 +3754,7 @@
+--- src/main/eval.c
++++ src/main/eval.c
+@@ -4436,8 +4436,7 @@
     called with NA_real_. Not sure this is a bug in the Windows
     toolchain or in our expectations, but these defines attempt to work
     around this. */

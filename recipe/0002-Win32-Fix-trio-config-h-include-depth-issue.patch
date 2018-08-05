@@ -1,6 +1,5 @@
-diff -urN src/extra/trio/Makefile.win src.new/extra/trio/Makefile.win
---- src/extra/trio/Makefile.win	2011-10-31 23:05:05.000000000 +0000
-+++ src.new/extra/trio/Makefile.win	2016-03-30 13:13:06.013926400 +0100
+--- src/extra/trio/Makefile.win
++++ src/extra/trio/Makefile.win
 @@ -2,7 +2,7 @@
  include ../../gnuwin32/MkRules
  

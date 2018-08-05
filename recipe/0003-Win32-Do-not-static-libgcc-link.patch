@@ -1,6 +1,6 @@
 diff -urN src/gnuwin32/fixed/etc/Makeconf src.new/gnuwin32/fixed/etc/Makeconf
---- src/gnuwin32/fixed/etc/Makeconf	2015-03-18 23:04:05.000000000 +0000
-+++ src.new/gnuwin32/fixed/etc/Makeconf	2016-03-30 18:40:26.505175600 +0100
+--- src/gnuwin32/fixed/etc/Makeconf
++++ src/gnuwin32/fixed/etc/Makeconf
 @@ -11,8 +11,8 @@
    DEBUGFLAG=
  endif
