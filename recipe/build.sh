@@ -3,24 +3,49 @@
 aclocal -I m4
 autoconf
 
-# Without setting these, R goes off and tries to find things on its own, which
-# we don't want (we only want it to find stuff in the build environment).
+# Filter out -std=.* from CXXFLAGS as it disrupts checks for C++ language levels.
+re='(.*[[:space:]])\-std\=[^[:space:]]*(.*)'
+if [[ "${CXXFLAGS}" =~ $re ]]; then
+  export CXXFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+fi
 
-export CFLAGS="-I$PREFIX/include"
-export CPPFLAGS="-I$PREFIX/include"
-export FFLAGS="-I$PREFIX/include -L$PREFIX/lib"
-export FCFLAGS="-I$PREFIX/include -L$PREFIX/lib"
-export OBJCFLAGS="-I$PREFIX/include"
-export CXXFLAGS="-I$PREFIX/include"
-export LDFLAGS="$LDFLAGS -L$PREFIX/lib -lgfortran"
-export LAPACK_LDFLAGS="-L$PREFIX/lib -lgfortran"
-export PKG_CPPFLAGS="-I$PREFIX/include"
-export PKG_LDFLAGS="-L$PREFIX/lib -lgfortran"
-export TCL_CONFIG=$PREFIX/lib/tclConfig.sh
-export TK_CONFIG=$PREFIX/lib/tkConfig.sh
-export TCL_LIBRARY=$PREFIX/lib/tcl8.5
-export TK_LIBRARY=$PREFIX/lib/tk8.5
-export LIBRARY_PATH=$PREFIX/lib:../../src/main
+re2='(.*[[:space:]])\-I.*[^[:space:]]*(.*)'
+if [[ "${CPPFLAGS}" =~ $re2 ]]; then
+  export CPPFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+fi
+# if [[ "${CFLAGS}" =~ $re2 ]]; then
+#   export CFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+# fi
+re3='(.*[[:space:]])\-L.*[^[:space:]]*(.*)'
+if [[ "${CPPFLAGS}" =~ $re3 ]]; then
+  export CPPFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+fi
+# if [[ "${CFLAGS}" =~ $re3 ]]; then
+#   export CFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+# fi
+# if [[ "${LDFLAGS}" =~ $re3 ]]; then
+#   export LDFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+# fi
+
+# Without this, dependency scanning fails (but with it CDT libuuid / Xt fails to link
+# which we hack around with config.site)
+export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
+
+export TCL_CONFIG=${PREFIX}/lib/tclConfig.sh
+export TK_CONFIG=${PREFIX}/lib/tkConfig.sh
+export TCL_LIBRARY=${PREFIX}/lib/tcl8.6
+export TK_LIBRARY=${PREFIX}/lib/tk8.6
+# BUILD_PREFIX does not get considered for prefix replacement.
+[[ -n ${AR} ]] && export AR=$(basename ${AR})
+[[ -n ${CC} ]] && export CC=$(basename ${CC})
+[[ -n ${GCC} ]] && export GCC=$(basename ${GCC})
+[[ -n ${CXX} ]] && export CXX=$(basename ${CXX})
+[[ -n ${F77} ]] && export F77=$(basename ${F77})
+[[ -n ${FC} ]] && export FC=$(basename ${FC})
+[[ -n ${LD} ]] && export LD=$(basename ${LD})
+[[ -n ${RANLIB} ]] && export RANLIB=$(basename ${RANLIB})
+[[ -n ${STRIP} ]] && export STRIP=$(basename ${STRIP})
+export OBJC=${CC}
 
 Linux() {
     # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
@@ -29,29 +54,78 @@ Linux() {
     # and activate scripts now call 'R CMD javareconf'.
     unset JAVA_HOME
 
-    mkdir -p $PREFIX/lib
-
-    ./configure --prefix=${PREFIX}              \
-                --enable-shared                 \
-                --enable-R-shlib                \
-                --enable-BLAS-shlib             \
-                --disable-prebuilt-html         \
-                --enable-memory-profiling       \
-                --with-tk-config=${TK_CONFIG}   \
-                --with-tcl-config=${TCL_CONFIG} \
-                --with-x                        \
-                --with-pic                      \
-                --with-cairo                    \
-                --with-curses                   \
-                --with-readline                 \
-                --with-recommended-packages=no  \
+    mkdir -p ${PREFIX}/lib
+    # Tricky libuuid resolution issues against CentOS6's libSM. I may need to add some symbols to our libuuid library.
+    # Works for configure:
+    # . /opt/conda/bin/activate /home/rdonnelly/r-base-bld/_build_env
+    # x86_64-conda_cos6-linux-gnu-cc -o conftest -L/home/rdonnelly/r-base-bld/_build_env/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib64 conftest.c -lXt -lX11 -lrt -ldl -lm -luuid -L$PREFIX/lib -licuuc -licui18n
+    # if [[ ${ARCH} == 32 ]]; then
+    #   export CPPFLAGS="-L${BUILD_PREFIX}/${HOST}/sysroot/usr/lib ${CPPFLAGS}"
+    #   export CFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib ${CFLAGS}"
+    #   export CXXFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib ${CXXFLAGS}"
+    # else
+    #   export CPPFLAGS="-L${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64 ${CPPFLAGS}"
+    #   export CFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64 ${CFLAGS}"
+    #   export CXXFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64 ${CXXFLAGS}"
+    # fi
+    echo "ac_cv_lib_Xt_XtToolkitInitialize=yes" > config.site
+    export CONFIG_SITE=${PWD}/config.site
+    ./configure --prefix=${PREFIX}               \
+                --host=${HOST}                   \
+                --build=${BUILD}                 \
+                --enable-shared                  \
+                --enable-R-shlib                 \
+                --enable-BLAS-shlib              \
+                --disable-prebuilt-html          \
+                --enable-memory-profiling        \
+                --with-tk-config=${TK_CONFIG}    \
+                --with-tcl-config=${TCL_CONFIG}  \
+                --with-x                         \
+                --with-pic                       \
+                --with-cairo                     \
+                --with-readline                  \
+                --with-recommended-packages=no   \
+                --without-libintl-prefix         \
                 LIBnn=lib
 
-    make -j${CPU_COUNT}
+    if cat src/include/config.h | grep "undef HAVE_PANGOCAIRO"; then
+        echo "Did not find pangocairo, refusing to continue"
+        cat config.log | grep pango
+        exit 1
+    fi
+
+    make -j${CPU_COUNT} ${VERBOSE_AT}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1 || make check-all -j1 V=1 > $(uname)-make-check.2.log 2>&1
 
     make install
+    # Prevent C and C++ extensions from linking to libgfortran.
+    sed -i -r 's|(^LDFLAGS = .*)-lgfortran|\1|g' ${PREFIX}/lib/R/etc/Makeconf
+
+    # Backup the old libR{blas,lapack}.so files and replace them with OpenBLAS
+    pushd ${PREFIX}/lib/R/lib
+      mv libRblas.so libRblas.so.reference
+      mv libRlapack.so libRlapack.so.reference
+      cp ../../libblas.so libRblas.so
+      cp ../../liblapack.so libRlapack.so
+      # .. and modify the SONAME.
+      patchelf --set-soname libRblas.so libRblas.so
+      patchelf --set-soname libRlapack.so libRlapack.so
+    popd
+
+    # # Backup the old libR{blas,lapack}.so files and make them symlinks to OpenBLAS
+    # pushd ${PREFIX}/lib/R/lib
+    #   mv libRblas.so libRblas.so.reference
+    #   mv libRlapack.so libRlapack.so.reference
+    #   ln -s ../../libblas.so libRblas.so
+    #   ln -s ../../liblapack.so libRlapack.so
+    # popd
+    # .. and make sure that the fact it is now a symlink to libblas.so in $PREFIX/lib
+    # does not trip up the linker when it tries to find DT_NEEDED for libgfortran.so.
+    # (r-rserve falls without this fix).
+    # pushd ${PREFIX}/lib/R/etc
+    #   sed -i -r "s|-lRblas|-Wl,-rpath-link,${PREFIX}/lib -lRblas|" Makeconf
+    # popd
 }
 
 # This was an attempt to see how far we could get with using Autotools as things
@@ -63,13 +137,13 @@ Mingw_w64_autotools() {
     unset JAVA_HOME
 
     mkdir -p ${PREFIX}/lib
-    export TCL_CONFIG=$PREFIX/Library/mingw-w64/lib/tclConfig.sh
-    export TK_CONFIG=$PREFIX/Library/mingw-w64/lib/tkConfig.sh
-    export TCL_LIBRARY=$PREFIX/Library/mingw-w64/lib/tcl8.6
-    export TK_LIBRARY=$PREFIX/Library/mingw-w64/lib/tk8.6
-    export CPPFLAGS="$CPPFLAGS -I${SRC_DIR}/src/gnuwin32/fixed/h"
+    export TCL_CONFIG=${PREFIX}/Library/mingw-w64/lib/tclConfig.sh
+    export TK_CONFIG=${PREFIX}/Library/mingw-w64/lib/tkConfig.sh
+    export TCL_LIBRARY=${PREFIX}/Library/mingw-w64/lib/tcl8.6
+    export TK_LIBRARY=${PREFIX}/Library/mingw-w64/lib/tk8.6
+    export CPPFLAGS="${CPPFLAGS} -I${SRC_DIR}/src/gnuwin32/fixed/h"
     if [[ "${ARCH}" == "64" ]]; then
-        export CPPFLAGS="$CPPFLAGS -DWIN=64 -DMULTI=64"
+        export CPPFLAGS="${CPPFLAGS} -DWIN=64 -DMULTI=64"
     fi
     ./configure --prefix=${PREFIX}              \
                 --enable-shared                 \
@@ -84,7 +158,7 @@ Mingw_w64_autotools() {
                 --with-recommended-packages=no  \
                 LIBnn=lib
 
-    make -j${CPU_COUNT}
+    make -j${CPU_COUNT} ${VERBOSE_AT}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install
@@ -111,9 +185,9 @@ Mingw_w64_makefiles() {
         TCLTK_VER=85
         # Linking directly to DLLs, yuck.
         if [[ "${ARCH}" == "64" ]]; then
-            export LDFLAGS="${LDFLAGS} -L${PREFIX}/Tcl/bin64"
+            export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib/R/Tcl/bin64"
         else
-            export LDFLAGS="${LDFLAGS} -L${PREFIX}/Tcl/bin"
+            export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib/R/Tcl/bin"
         fi
     fi
 
@@ -122,26 +196,32 @@ Mingw_w64_makefiles() {
     # DLCACHE=/tmp
     DLCACHE=/c/Users/${USER}/Downloads
     [[ -d $DLCACHE ]] || mkdir -p $DLCACHE
-
-    echo "LEA_MALLOC = YES"                        > "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BINPREF = "                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BINPREF64 = "                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "USE_ATLAS = NO"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BUILD_HTML = YES"                       >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "WIN = ${ARCH}"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
+    echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BINPREF = "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BINPREF64 = "                                 >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "USE_ATLAS = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ATLAS_PATH = ${PREFIX}/Library/mingw-w64/lib" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    sed -i.bak 's|-lf77blas -latlas|-lopenblas|g' src/extra/blas/Makefile.win
+    rm src/extra/blas/Makefile.win.bak
+    echo "MULTI =   "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BUILD_HTML = YES"                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "WIN = ${ARCH}"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     if [[ "${_debug}" == "yes" ]]; then
         echo "EOPTS = -march=${CPU} -mtune=generic -O0" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
         echo "DEBUG = 1"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     else
         # -O3 is used by R by default. It might be sensible to adopt -O2 here instead?
-        echo "EOPTS = -march=${CPU} -mtune=generic" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+        echo "EOPTS = -march=${CPU} -mtune=generic"     >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     fi
-    echo "OPENMP = -fopenmp"                      >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "PTHREAD = -pthread"                     >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "COPY_RUNTIME_DLLS = 1"                  >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "TEXI2ANY = texi2any"                    >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "TCL_VERSION = ${TCLTK_VER}"             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "ISDIR = ${PWD}/isdir"                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "OPENMP = -fopenmp"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "PTHREAD = -pthread"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "COPY_RUNTIME_DLLS = 1"                        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "TEXI2ANY = texi2any"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "TCL_VERSION = ${TCLTK_VER}"                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "USE_ICU = YES"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ICU_PATH = \$(R_HOME)/../Library/mingw-w64"   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # This won't take and we'll force the issue at the end of the build* It's not really clear
     # if this is the best way to achieve my goal here (shared libraries, libpng, curl etc) but
     # it seems fairly reasonable all options considered. On other OSes, it's for '/usr/local'
@@ -172,14 +252,14 @@ Mingw_w64_makefiles() {
         #
         # The thing to is probably to make stub programs launching the right binaries in mingw-w64/bin
         # .. perhaps launcher.c can be generalized?
-        mkdir -p "${SRC_DIR}/Tcl"
-        conda.bat install -c https://conda.anaconda.org/msys2 \
-                          --no-deps --yes --copy --prefix "${SRC_DIR}/Tcl" \
-                          m2w64-{tcl,tk,bwidget,tktable}
-        mv "${SRC_DIR}"/Tcl/Library/mingw-w64/* "${SRC_DIR}"/Tcl/
-        rm -Rf "${SRC_DIR}"/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
+        mkdir -p "${SRC_DIR}/lib/R/Tcl"
+        CONDA_SUBDIR=$target_platform conda.bat install -c https://conda.anaconda.org/msys2 \
+                                                       --no-deps --yes --copy --prefix "${SRC_DIR}/lib/R/Tcl" \
+                                                       m2w64-{tcl,tk,bwidget,tktable}
+        mv "${SRC_DIR}"/lib/R/Tcl/Library/mingw-w64/* "${SRC_DIR}"/lib/R/Tcl/ || exit 1
+        rm -Rf "${SRC_DIR}"/lib/R/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
         if [[ "${ARCH}" == "64" ]]; then
-            mv "${SRC_DIR}/Tcl/bin" "${SRC_DIR}/Tcl/bin64"
+            mv "${SRC_DIR}/lib/R/Tcl/bin" "${SRC_DIR}/lib/R/Tcl/bin64"
         fi
     else
         #
@@ -189,13 +269,14 @@ Mingw_w64_makefiles() {
         # as noted on http://www.stats.ox.ac.uk/pub/Rtools/R215x.html.
         #
         # curl claims most servers do not support byte ranges, hence the || true
-        curl -C - -o ${DLCACHE}/Rtools33.exe -SLO http://cran.r-project.org/bin/windows/Rtools/Rtools33.exe || true
+        mkdir -p "${SRC_DIR}/lib/R"
+        curl -C - -o ${DLCACHE}/Rtools34.exe -SLO http://cran.r-project.org/bin/windows/Rtools/Rtools34.exe || true
         if [[ "${ARCH}" == "64" ]]; then
-            ./innoextract.exe -I "code\$rhome64" ${DLCACHE}/Rtools33.exe
-            mv "code\$rhome64/Tcl" "${SRC_DIR}"
+            ./innoextract.exe -I "code\$rhome64" ${DLCACHE}/Rtools34.exe
+            mv "code\$rhome64/Tcl" "${SRC_DIR}/lib/R"
         else
-            ./innoextract.exe -I "code\$rhome" ${DLCACHE}/Rtools33.exe
-            mv "code\$rhome/Tcl" "${SRC_DIR}"
+            ./innoextract.exe -I "code\$rhome" ${DLCACHE}/Rtools34.exe
+            mv "code\$rhome/Tcl" "${SRC_DIR}/lib/R"
         fi
     fi
 
@@ -234,13 +315,14 @@ Mingw_w64_makefiles() {
     else
       mkdir miktex || true
       pushd miktex
+      MIKTEX_VER=2.9.6621
       # Fetch e.g.:
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        curl -C - -o ${DLCACHE}/miktex-portable.exe -SLO https://ctan.org/tex-archive/systems/win32/miktex/setup/windows-x86/miktex-portable.exe || true
-        echo "Extracting miktex-portable.exe, this will take some time ..."
-        7za x -y ${DLCACHE}/miktex-portable.exe > /dev/null
+        curl -C - -o ${DLCACHE}/miktex-portable-${MIKTEX_VER}.exe -SLO https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/miktex-portable-${MIKTEX_VER}.exe || true
+        echo "Extracting miktex-portable-${MIKTEX_VER}.exe, this will take some time ..."
+        7za x -y ${DLCACHE}/miktex-portable-${MIKTEX_VER}.exe > /dev/null || exit 1
         # We also need the url, incolsolata and mptopdf packages and
         # do not want a GUI to prompt us about installing these.
         # sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
@@ -261,11 +343,11 @@ Mingw_w64_makefiles() {
         echo "***** R-${PACKAGE_VERSION} Build started *****"
         for _stage in all cairodevices recommended vignettes manuals; do
             echo "***** R-${PACKAGE_VERSION} Stage started: ${_stage} *****"
-            make ${_stage} -j${CPU_COUNT}
+            make ${_stage} -j${CPU_COUNT} || exit 1
         done
     else
-    echo "***** R-${PACKAGE_VERSION} Stage started: distribution *****"
-        make distribution -j${CPU_COUNT}
+        echo "***** R-${PACKAGE_VERSION} Stage started: distribution *****"
+        make distribution -j${CPU_COUNT} || exit 1
     fi
     # The flakiness mentioned below can be seen if the values are hacked to:
     # supremum error =  0.022  with p-value= 1e-04
@@ -281,81 +363,109 @@ Mingw_w64_makefiles() {
     cd installer
     make imagedir
     cp -Rf R-${PKG_VERSION} R
-    cp -Rf R "${PREFIX}"/
+    # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
+    mkdir -p "${PREFIX}"/lib
+
+    cp -Rf R "${PREFIX}"/lib/
+    # Copy Tcl/Tk support files
+    cp -rf ${SRC_DIR}/lib/R/Tcl ${PREFIX}/lib/R
+
     # Remove the recommeded libraries, we package them separately as-per the other platforms now.
-    rm -Rf "${PREFIX}"/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
-    # * Here we force our MSYS2/mingw-w64 sysroot to be looked in for libraries during r-packages builds.
-    for _makeconf in $(find "${PREFIX}"/R -name Makeconf); do
-        sed -i 's|LOCAL_SOFT = |LOCAL_SOFT = \$(R_HOME)/../Library/mingw-w64|g' ${_makeconf}
-        sed -i 's|^BINPREF ?= .*$|BINPREF ?= \$(R_HOME)/../Library/mingw-w64/bin/|g' ${_makeconf}
+    rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
+    # * Here we force our MSYS2/mingw-w64 sysroot to be looked in for LOCAL_SOFT during r-packages builds (but actually this will not work since
+    # R will append lib/$(R_ARCH) to this in various Makefiles. So long as we set build/merge_build_host then they will get found automatically)
+    for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
+        sed -i 's|LOCAL_SOFT = |LOCAL_SOFT = \$(R_HOME)/../../Library/mingw-w64|g' ${_makeconf}
+        sed -i 's|^BINPREF ?= .*$|BINPREF ?= \$(R_HOME)/../../Library/mingw-w64/bin/|g' ${_makeconf}
     done
     return 0
 }
 
 Darwin() {
     unset JAVA_HOME
-    # Without this, it will not find libgfortran. We do not use
-    # DYLD_LIBRARY_PATH because that screws up some of the system libraries
-    # that have older versions of libjpeg than the one we are using
-    # here. DYLD_FALLBACK_LIBRARY_PATH will only come into play if it cannot
-    # find the library via normal means. The default comes from 'man dyld'.
-    export DYLD_FALLBACK_LIBRARY_PATH=$PREFIX/lib:/usr/local/lib:/lib:/usr/lib
-    # Prevent configure from finding Fink or Homebrew.
-    # [*] Since R 3.0, the configure script prevents using any DYLD_* on Darwin,
-    # after a certain point, claiming each dylib had an absolute ID path.
-    # Patch 008-Darwin-set-DYLD_FALLBACK_LIBRARY_PATH.patch corrects this and uses
-    # the same mechanism as Linux (and others) where configure transfers path from
-    # LDFLAGS=-L<path> into DYLD_FALLBACK_LIBRARY_PATH. Note we need to use both
-    # DYLD_FALLBACK_LIBRARY_PATH and LDFLAGS for different stages of configure.
-    export LDFLAGS=$LDFLAGS" -L${PREFIX}"
-
-    cat >> config.site <<EOF
-CC=clang
-CXX=clang++
-F77=gfortran
-OBJC=clang
-EOF
 
     # --without-internal-tzcode to avoid warnings:
     # unknown timezone 'Europe/London'
     # unknown timezone 'GMT'
     # https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
 
-    which tex > /dev/null 2>&1
-    if [[ $? != 0 ]]; then
-      echo "no texlive in PATH, refusing to build this, conda or conda-build are buggy or tex failed to install or something"
-      exit 1
-    fi
+#                --with-blas="-framework Accelerate" \
 
-    ./configure --prefix=$PREFIX                    \
-                --with-blas="-framework Accelerate" \
+
+    # May want to strip these from Makeconf at the end.
+    CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CFLAGS}
+    LDFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${LDFLAGS}
+    CPPFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CPPFLAGS}
+
+    # Our libuuid causes problems:
+    # In file included from qdPDF.c:29:
+    # In file included from ./qdPDF.h:3:
+    # In file included from ../../../../include/R_ext/QuartzDevice.h:103:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.h:23:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework/Headers/CoreServices.h:23:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/AE.framework/Headers/AE.h:20:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/CarbonCore.h:208:
+    # In file included from /opt/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/HFSVolumes.h:25:
+    # .. apart from this issue there seems to be a segfault:
+    # https://rt.cpan.org/Public/Bug/Display.html?id=104394
+    # http://openradar.appspot.com/radar?id=6069753579831296
+    # .. anyway, uuid is part of libc on Darwin, so let's just try to use that.
+    rm -f "${PREFIX}"/include/uuid/uuid.h
+
+    ./configure --prefix=${PREFIX}                  \
+                --host=${HOST}                      \
+                --build=${BUILD}                    \
+                --with-sysroot=${CONDA_BUILD_SYSROOT}  \
+                --enable-shared                     \
+                --enable-R-shlib                    \
+                --enable-BLAS-shlib                 \
+                --with-tk-config=${TK_CONFIG}       \
+                --with-tcl-config=${TCL_CONFIG}     \
                 --with-lapack                       \
                 --enable-R-shlib                    \
                 --enable-memory-profiling           \
                 --without-x                         \
                 --without-internal-tzcode           \
                 --enable-R-framework=no             \
+                --with-included-gettext=yes         \
                 --with-recommended-packages=no
 
-    make -j${CPU_COUNT}
+    # Horrendous hack to make up for what seems to be bugs (or over-cautiousness?) in ld64's -dead_strip_dylibs (and/or -no_implicit_dylibs)
+    sed -i'.bak' 's|-lgobject-2.0 -lglib-2.0 -lintl||g' src/library/grDevices/src/cairo/Makefile
+    rm src/library/grDevices/src/cairo/Makefile.bak
+
+    make -j${CPU_COUNT} ${VERBOSE_AT}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install
+
+    # Useful references for macOS R with OpenBLAS:
+    # http://luisspuerto.net/2018/01/install-r-100-homebrew-edition-with-openblas-openmp-my-version/
+    # https://github.com/luisspuerto/homebrew-core/blob/r-3.4.4/Formula/r.rb
+    # Backup the old libR{blas,lapack}.dylib files and replace them with OpenBLAS
+    pushd ${PREFIX}/lib/R/lib
+      mv libRblas.dylib libRblas.dylib.reference
+      mv libRlapack.dylib libRlapack.dylib.reference
+      cp ../../libblas.dylib libRblas.dylib
+      ln -s ../../libopenblasp-r0.2.20.dylib libopenblas.dylib
+      cp ../../liblapack.dylib libRlapack.dylib
+    popd
+
+    pushd ${PREFIX}/lib/R/etc
+      sed -i -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
+    popd
 }
 
-case `uname` in
-    Darwin)
-        Darwin
-        mkdir -p ${PREFIX}/etc/conda/activate.d
-        cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
-        ;;
-    Linux)
-        Linux
-        mkdir -p ${PREFIX}/etc/conda/activate.d
-        cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
-        ;;
-    MINGW*)
-        # Mingw_w64_autotools
-        Mingw_w64_makefiles
-        ;;
-esac
+
+if [[ ${HOST} =~ .*darwin.* ]]; then
+  Darwin
+  mkdir -p ${PREFIX}/etc/conda/activate.d
+  cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
+elif [[ ${HOST} =~ .*linux.* ]]; then
+  Linux
+  mkdir -p ${PREFIX}/etc/conda/activate.d
+  cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
+elif [[ $(uname) =~ M.* ]]; then
+  # Mingw_w64_autotools
+  Mingw_w64_makefiles
+fi
