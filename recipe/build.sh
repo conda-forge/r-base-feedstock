@@ -52,6 +52,10 @@ Linux() {
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1 || make check-all -j1 V=1 > $(uname)-make-check.2.log 2>&1
 
     make install
+
+    # install standalone libraries in include and lib
+    cd src/nmath/standalone
+    make install
 }
 
 # This was an attempt to see how far we could get with using Autotools as things
@@ -340,6 +344,10 @@ EOF
     make -j${CPU_COUNT}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
+    make install
+
+    # install standalone libraries in include and lib
+    cd src/nmath/standalone
     make install
 }
 
