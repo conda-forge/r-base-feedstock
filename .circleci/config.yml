@@ -1,11 +1,11 @@
 version: 2
 
 jobs:
-  build_linux_:
+  build_linux_target_platformlinux-64:
     working_directory: ~/test
     machine: true
     environment:
-      - CONFIG: "linux_"
+      - CONFIG: "linux_target_platformlinux-64"
     steps:
       - checkout
       - run:
@@ -23,4 +23,4 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build_linux_
+      - build_linux_target_platformlinux-64

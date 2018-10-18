@@ -1,0 +1,31 @@
+c_compiler:
+- toolchain_c
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- toolchain_cxx
+docker_image:
+- condaforge/linux-anvil
+fortran_compiler:
+- toolchain_fort
+libpng:
+- 1.6.34
+ncurses:
+- '6.1'
+pin_run_as_build:
+  libpng:
+    max_pin: x.x
+  ncurses:
+    max_pin: x.x
+  readline:
+    max_pin: x
+  xz:
+    max_pin: x.x
+readline:
+- '7.0'
+target_platform:
+- linux-64
+xz:
+- '5.2'
