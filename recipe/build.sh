@@ -456,7 +456,6 @@ Darwin() {
     popd
 }
 
-
 if [[ ${HOST} =~ .*darwin.* ]]; then
   Darwin
   mkdir -p ${PREFIX}/etc/conda/activate.d
@@ -469,3 +468,4 @@ elif [[ $(uname) =~ M.* ]]; then
   # Mingw_w64_autotools
   Mingw_w64_makefiles
 fi
+
