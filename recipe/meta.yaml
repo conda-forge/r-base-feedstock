@@ -55,6 +55,8 @@ requirements:
     - {{ compiler('m2w64_fortran') }}  # [win]
     - {{ compiler('c') }}        # [unix]
     - {{ compiler('m2w64_c') }}  # [win]
+    - {{ compiler('cxx') }}        # [unix]
+    - {{ compiler('m2w64_cxx') }}  # [win]
   host:
     - readline                 # [not win]
     - ncurses                  # [not win]
