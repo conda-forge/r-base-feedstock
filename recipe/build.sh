@@ -7,12 +7,12 @@ autoconf
 # we don't want (we only want it to find stuff in the build environment).
 
 export CFLAGS="${CFLAGS} -I$PREFIX/include"
-export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
+export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include -Wl,-rpath-link,${PREFIX}/lib"
 export FFLAGS="${FFLAGS} -I$PREFIX/include -L$PREFIX/lib"
 export FCFLAGS="${FCFLAGS} -I$PREFIX/include -L$PREFIX/lib"
 export OBJCFLAGS="${OBJCFLAGS} -I$PREFIX/include"
 export CXXFLAGS="${CXXFLAGS} -I$PREFIX/include"
-export LDFLAGS="${LDFLAGS} -L$PREFIX/lib -lgfortran"
+export LDFLAGS="${LDFLAGS} -L$PREFIX/lib -lgfortran -Wl,-rpath-link,${PREFIX}/lib"
 export LAPACK_LDFLAGS="${LAPACK_LDFLAGS} -L$PREFIX/lib -lgfortran"
 export PKG_CPPFLAGS="${PKG_CPPFLAGS} -I$PREFIX/include"
 export PKG_LDFLAGS="${PKG_LDFLAGS} -L$PREFIX/lib -lgfortran"
