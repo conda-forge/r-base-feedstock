@@ -1,11 +1,11 @@
 version: 2
 
 jobs:
-  build_linux_c_compilergccfortran_compilergfortran:
+  build_linux_c_compilergcccxx_compilergxxfortran_compilergfortran:
     working_directory: ~/test
     machine: true
     environment:
-      - CONFIG: "linux_c_compilergccfortran_compilergfortran"
+      - CONFIG: "linux_c_compilergcccxx_compilergxxfortran_compilergfortran"
     steps:
       - checkout
       - run:
@@ -18,11 +18,11 @@ jobs:
       - run:
           # Run, test and (if we have a BINSTAR_TOKEN) upload the distributions.
           command: ./.circleci/run_docker_build.sh
-  build_linux_c_compilertoolchain_cfortran_compilertoolchain_fort:
+  build_linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fort:
     working_directory: ~/test
     machine: true
     environment:
-      - CONFIG: "linux_c_compilertoolchain_cfortran_compilertoolchain_fort"
+      - CONFIG: "linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fort"
     steps:
       - checkout
       - run:
@@ -40,5 +40,5 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build_linux_c_compilergccfortran_compilergfortran
-      - build_linux_c_compilertoolchain_cfortran_compilertoolchain_fort
+      - build_linux_c_compilergcccxx_compilergxxfortran_compilergfortran
+      - build_linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fort
