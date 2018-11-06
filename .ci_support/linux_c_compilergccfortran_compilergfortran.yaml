@@ -11,7 +11,7 @@ channel_targets:
 curl:
 - '7.59'
 docker_image:
-- conda/c3i-linux-64
+- condaforge/linux-anvil-comp7
 fortran_compiler:
 - gfortran
 gsl:
@@ -23,7 +23,7 @@ jpeg:
 krb5:
 - '1.16'
 libpng:
-- 1.6.34
+- 1.6.35
 libssh2:
 - '1.8'
 libtiff:
