@@ -7,12 +7,12 @@ autoconf
 # we don't want (we only want it to find stuff in the build environment).
 
 export CFLAGS="${CFLAGS} -I$PREFIX/include"
-export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include -Wl,-rpath-link,${PREFIX}/lib"
+export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
 export FFLAGS="${FFLAGS} -I$PREFIX/include -L$PREFIX/lib"
 export FCFLAGS="${FCFLAGS} -I$PREFIX/include -L$PREFIX/lib"
 export OBJCFLAGS="${OBJCFLAGS} -I$PREFIX/include"
 export CXXFLAGS="${CXXFLAGS} -I$PREFIX/include"
-export LDFLAGS="${LDFLAGS} -L$PREFIX/lib -lgfortran -Wl,-rpath-link,${PREFIX}/lib"
+export LDFLAGS="${LDFLAGS} -L$PREFIX/lib -lgfortran"
 export LAPACK_LDFLAGS="${LAPACK_LDFLAGS} -L$PREFIX/lib -lgfortran"
 export PKG_CPPFLAGS="${PKG_CPPFLAGS} -I$PREFIX/include"
 export PKG_LDFLAGS="${PKG_LDFLAGS} -L$PREFIX/lib -lgfortran"
@@ -21,6 +21,15 @@ export TK_CONFIG="${PREFIX}/lib/tkConfig.sh"
 export TCL_LIBRARY="${PREFIX}/lib/tcl8.5"
 export TK_LIBRARY="${PREFIX}/lib/tk8.5"
 export LIBRARY_PATH="${PREFIX}/lib:../../src/main:${LIBRARY_PATH}"
+
+if [ "$(uname)" == "Darwin" ]; then
+    export CPPFLAGS="${CPPFLAGS} -Wl,-rpath,${PREFIX}/lib"
+    export LDFLAGS="${LDFLAGS} -Wl,-rpath,${PREFIX}/lib"
+elif [ "$(uname)" == "Linux" ]; then
+    export CPPFLAGS="${CPPFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+    export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+fi
+
 
 Linux() {
     # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
