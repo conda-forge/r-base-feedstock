@@ -335,7 +335,8 @@ EOF
                 --without-x                         \
                 --without-internal-tzcode           \
                 --enable-R-framework=no             \
-                --with-recommended-packages=no
+                --with-recommended-packages=no \
+                || { cat "${SRC_DIR}/config.log"; exit 1; }
 
     make -j${CPU_COUNT}
     # echo "Running make check-all, this will take some time ..."
