@@ -120,9 +120,9 @@ Mingw_w64_makefiles() {
         TCLTK_VER=85
         # Linking directly to DLLs, yuck.
         if [[ "${ARCH}" == "64" ]]; then
-            export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib/R/Tcl/bin64"
+            export LDFLAGS="${LDFLAGS} -L${PREFIX}/Tcl/bin64"
         else
-            export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib/R/Tcl/bin"
+            export LDFLAGS="${LDFLAGS} -L${PREFIX}/Tcl/bin"
         fi
     fi
 
@@ -136,7 +136,6 @@ Mingw_w64_makefiles() {
     echo "BINPREF = "                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF64 = "                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ATLAS = NO"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "MULTI =   "                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BUILD_HTML = YES"                       >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "WIN = ${ARCH}"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     if [[ "${_debug}" == "yes" ]]; then
@@ -182,15 +181,14 @@ Mingw_w64_makefiles() {
         #
         # The thing to is probably to make stub programs launching the right binaries in mingw-w64/bin
         # .. perhaps launcher.c can be generalized?
-        mkdir -p "${SRC_DIR}/lib/R/Tcl"
-        # CONDA_SUBDIR=$target_platform conda.bat install -c https://conda.anaconda.org/msys2 \
-                                      conda.bat install -c https://conda.anaconda.org/msys2 \
-                                                       --no-deps --yes --copy --prefix "${SRC_DIR}/lib/R/Tcl" \
-                                                       m2w64-{tcl,tk,bwidget,tktable}
-        mv "${SRC_DIR}"/lib/R/Tcl/Library/mingw-w64/* "${SRC_DIR}"/lib/R/Tcl/ || exit 1
-        rm -Rf "${SRC_DIR}"/lib/R/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
+        mkdir -p "${SRC_DIR}/Tcl"
+        conda.bat install -c https://conda.anaconda.org/msys2 \
+                          --no-deps --yes --copy --prefix "${SRC_DIR}/Tcl" \
+                          m2w64-{tcl,tk,bwidget,tktable}
+        mv "${SRC_DIR}"/Tcl/Library/mingw-w64/* "${SRC_DIR}"/Tcl/
+        rm -Rf "${SRC_DIR}"/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
         if [[ "${ARCH}" == "64" ]]; then
-            mv "${SRC_DIR}/lib/R/Tcl/bin" "${SRC_DIR}/lib/R/Tcl/bin64"
+            mv "${SRC_DIR}/Tcl/bin" "${SRC_DIR}/Tcl/bin64"
         fi
     else
         #
@@ -200,14 +198,13 @@ Mingw_w64_makefiles() {
         # as noted on http://www.stats.ox.ac.uk/pub/Rtools/R215x.html.
         #
         # curl claims most servers do not support byte ranges, hence the || true
-        mkdir -p "${SRC_DIR}/lib/R"
         curl -C - -o ${DLCACHE}/Rtools33.exe -SLO http://cran.r-project.org/bin/windows/Rtools/Rtools33.exe || true
         if [[ "${ARCH}" == "64" ]]; then
             ./innoextract.exe -I "code\$rhome64" ${DLCACHE}/Rtools33.exe
-            mv "code\$rhome64/Tcl" "${SRC_DIR}/lib/R"
+            mv "code\$rhome64/Tcl" "${SRC_DIR}"
         else
             ./innoextract.exe -I "code\$rhome" ${DLCACHE}/Rtools33.exe
-            mv "code\$rhome/Tcl" "${SRC_DIR}/lib/R"
+            mv "code\$rhome/Tcl" "${SRC_DIR}"
         fi
     fi
 
@@ -293,14 +290,11 @@ Mingw_w64_makefiles() {
     cd installer
     make imagedir
     cp -Rf R-${PKG_VERSION} R
-    # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
-    cp -Rf R "${PREFIX}"/lib
-    # Copy Tcl/Tk support files
-    cp -rf ${SRC_DIR}/lib/R/Tcl ${PREFIX}/lib/R
+    cp -Rf R "${PREFIX}"/
     # Remove the recommeded libraries, we package them separately as-per the other platforms now.
-    rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
+    rm -Rf "${PREFIX}"/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
     # * Here we force our MSYS2/mingw-w64 sysroot to be looked in for libraries during r-packages builds.
-    for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
+    for _makeconf in $(find "${PREFIX}"/R -name Makeconf); do
         sed -i 's|LOCAL_SOFT = |LOCAL_SOFT = \$(R_HOME)/../Library/mingw-w64|g' ${_makeconf}
         sed -i 's|^BINPREF ?= .*$|BINPREF ?= \$(R_HOME)/../Library/mingw-w64/bin/|g' ${_makeconf}
     done
