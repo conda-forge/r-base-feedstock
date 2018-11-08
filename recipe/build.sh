@@ -25,6 +25,9 @@ export LIBRARY_PATH="${PREFIX}/lib:../../src/main:${LIBRARY_PATH}"
 if [ "$(uname)" == "Darwin" ]; then
     export CPPFLAGS="${CPPFLAGS} -Wl,-rpath,${PREFIX}/lib"
     export LDFLAGS="${LDFLAGS} -Wl,-rpath,${PREFIX}/lib"
+    if [ -z "${INSTALL_NAME_TOOL}" ]; then
+        export INSTALL_NAME_TOOL="install_name_tool"
+    fi
 elif [ "$(uname)" == "Linux" ]; then
     export CPPFLAGS="${CPPFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
     export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
@@ -348,8 +351,9 @@ Darwin() {
       # Need to ignore libopenblas run-exports if we keep these around:
       # mv libRblas.dylib libRblas.dylib.reference
       # mv libRlapack.dylib libRlapack.dylib.reference
-      cp ../../libblas.dylib libRblas.dylib
-      cp ../../liblapack.dylib libRlapack.dylib
+      ls -lh ${PREFIX}/lib/*blas*
+      cp ${PREFIX}/lib/libblas.dylib libRblas.dylib
+      cp ${PREFIX}/lib/liblapack.dylib libRlapack.dylib
       ${INSTALL_NAME_TOOL} -id libRblas.dylib libRblas.dylib
       ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib libR.dylib
       ${INSTALL_NAME_TOOL} -id libRlapack.dylib libRlapack.dylib
