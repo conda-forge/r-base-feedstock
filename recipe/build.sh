@@ -302,55 +302,69 @@ Mingw_w64_makefiles() {
 }
 
 Darwin() {
-    unset JAVA_HOME
-    # Without this, it will not find libgfortran. We do not use
-    # DYLD_LIBRARY_PATH because that screws up some of the system libraries
-    # that have older versions of libjpeg than the one we are using
-    # here. DYLD_FALLBACK_LIBRARY_PATH will only come into play if it cannot
-    # find the library via normal means. The default comes from 'man dyld'.
-    export DYLD_FALLBACK_LIBRARY_PATH=$PREFIX/lib:/usr/local/lib:/lib:/usr/lib
-    # Prevent configure from finding Fink or Homebrew.
-    # [*] Since R 3.0, the configure script prevents using any DYLD_* on Darwin,
-    # after a certain point, claiming each dylib had an absolute ID path.
-    # Patch 008-Darwin-set-DYLD_FALLBACK_LIBRARY_PATH.patch corrects this and uses
-    # the same mechanism as Linux (and others) where configure transfers path from
-    # LDFLAGS=-L<path> into DYLD_FALLBACK_LIBRARY_PATH. Note we need to use both
-    # DYLD_FALLBACK_LIBRARY_PATH and LDFLAGS for different stages of configure.
-    export LDFLAGS=$LDFLAGS" -L${PREFIX}"
-
-    cat >> config.site <<EOF
-CC=clang
-CXX=clang++
-F77=gfortran
-OBJC=clang
-EOF
-
     # --without-internal-tzcode to avoid warnings:
     # unknown timezone 'Europe/London'
     # unknown timezone 'GMT'
     # https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
 
-    which tex > /dev/null 2>&1
-    if [[ $? != 0 ]]; then
-      echo "no texlive in PATH, refusing to build this, conda or conda-build are buggy or tex failed to install or something"
-      exit 1
-    fi
+    # May want to strip these from Makeconf at the end.
+    CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} ${CFLAGS}"
+    LDFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} ${LDFLAGS}"
+    CPPFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} ${CPPFLAGS}"
 
-    ./configure --prefix=$PREFIX                    \
-                --with-blas="-framework Accelerate" \
+    ./configure --prefix=${PREFIX}                  \
+                --host=${HOST}                      \
+                --build=${BUILD}                    \
+                --with-sysroot=${CONDA_BUILD_SYSROOT} \
+                --enable-shared                     \
+                --enable-R-shlib                    \
+                --enable-BLAS-shlib                 \
+                --with-tk-config=${TK_CONFIG}       \
+                --with-tcl-config=${TCL_CONFIG}     \
                 --with-lapack                       \
                 --enable-R-shlib                    \
                 --enable-memory-profiling           \
                 --without-x                         \
                 --without-internal-tzcode           \
                 --enable-R-framework=no             \
-                --with-recommended-packages=no \
+                --with-included-gettext=yes         \
+                --with-recommended-packages=no      \
                 || { cat "${SRC_DIR}/config.log"; exit 1; }
 
-    make -j${CPU_COUNT}
+    # Horrendous hack to make up for what seems to be bugs (or over-cautiousness?) in ld64's -dead_strip_dylibs (and/or -no_implicit_dylibs)
+    sed -i'.bak' 's|-lgobject-2.0 -lglib-2.0 -lintl||g' src/library/grDevices/src/cairo/Makefile
+    rm src/library/grDevices/src/cairo/Makefile.bak
+
+    make -j${CPU_COUNT} ${VERBOSE_AT}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install
+
+    # Useful references for macOS R with OpenBLAS:
+    # http://luisspuerto.net/2018/01/install-r-100-homebrew-edition-with-openblas-openmp-my-version/
+    # https://github.com/luisspuerto/homebrew-core/blob/r-3.4.4/Formula/r.rb
+    # Backup the old libR{blas,lapack}.dylib files and replace them with OpenBLAS
+    pushd ${PREFIX}/lib/R/lib
+      # Need to ignore libopenblas run-exports if we keep these around:
+      # mv libRblas.dylib libRblas.dylib.reference
+      # mv libRlapack.dylib libRlapack.dylib.reference
+      cp ../../libblas.dylib libRblas.dylib
+      cp ../../liblapack.dylib libRlapack.dylib
+      ${INSTALL_NAME_TOOL} -id libRblas.dylib libRblas.dylib
+      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib libR.dylib
+      ${INSTALL_NAME_TOOL} -id libRlapack.dylib libRlapack.dylib
+    popd
+    pushd ${PREFIX}/lib/R/modules
+      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib lapack.so
+    popd
+    pushd ${PREFIX}/lib/R/library/stats/libs
+      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib stats.so
+    popd
+    pushd ${PREFIX}/lib/R/etc
+      sed -i -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
+      # See: https://github.com/conda/conda/issues/6701
+      chmod g+w Makeconf ldpaths
+    popd
 }
 
 case `uname` in
