@@ -316,12 +316,12 @@ Darwin() {
     CPPFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} ${CPPFLAGS}"
 
     ./configure --prefix=${PREFIX}                  \
+                --with-blas="-framework Accelerate" \
                 --host=${HOST}                      \
                 --build=${BUILD}                    \
                 --with-sysroot=${CONDA_BUILD_SYSROOT} \
                 --enable-shared                     \
                 --enable-R-shlib                    \
-                --enable-BLAS-shlib                 \
                 --with-tk-config=${TK_CONFIG}       \
                 --with-tcl-config=${TCL_CONFIG}     \
                 --with-lapack                       \
@@ -342,33 +342,6 @@ Darwin() {
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install
-
-    # Useful references for macOS R with OpenBLAS:
-    # http://luisspuerto.net/2018/01/install-r-100-homebrew-edition-with-openblas-openmp-my-version/
-    # https://github.com/luisspuerto/homebrew-core/blob/r-3.4.4/Formula/r.rb
-    # Backup the old libR{blas,lapack}.dylib files and replace them with OpenBLAS
-    pushd ${PREFIX}/lib/R/lib
-      # Need to ignore libopenblas run-exports if we keep these around:
-      # mv libRblas.dylib libRblas.dylib.reference
-      # mv libRlapack.dylib libRlapack.dylib.reference
-      ls -lh ${PREFIX}/lib/*blas*
-      cp ${PREFIX}/lib/libblas.dylib libRblas.dylib
-      cp ${PREFIX}/lib/liblapack.dylib libRlapack.dylib
-      ${INSTALL_NAME_TOOL} -id libRblas.dylib libRblas.dylib
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib libR.dylib
-      ${INSTALL_NAME_TOOL} -id libRlapack.dylib libRlapack.dylib
-    popd
-    pushd ${PREFIX}/lib/R/modules
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib lapack.so
-    popd
-    pushd ${PREFIX}/lib/R/library/stats/libs
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib stats.so
-    popd
-    pushd ${PREFIX}/lib/R/etc
-      sed -i -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
-      # See: https://github.com/conda/conda/issues/6701
-      chmod g+w Makeconf ldpaths
-    popd
 }
 
 case `uname` in
