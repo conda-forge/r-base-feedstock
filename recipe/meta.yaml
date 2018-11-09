@@ -10,21 +10,27 @@ source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
   sha256: 0463bff5eea0f3d93fa071f79c18d0993878fd4f2e18ae6cf22c1639d11457ed
   patches:
-    - mac-unicode.patch  # [osx]
-    - 0002-Win32-Fix-trio-config-h-include-depth-issue.patch
-    - 0003-Win32-Do-not-static-libgcc-link.patch              # This patch is only correct if using MSYS2's tcltk.
-    - 0005-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
-    - 0006-Win32-GCC-5.3-Fix-ISNAN-int-emits-UD2-insn.patch
-    - 0007-Win32-MSYS2-ENV_CONV_EXCL_R_ARCH.patch
-    - 0008-Darwin-set-DYLD_FALLBACK_LIBRARY_PATH.patch
-    - 0009-R-3.3.0-Use-AC_SEARCH_LIBS-to-search-for-ncurses.patch
-    - 0011-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0012-macOS-include-cairo_h-not-cairo-xlib_h.patch
-    - 0013-javareconf-do-not-fail-on-compile-fail.patch
+    - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
+    - 0002-Fix-trio-config.h-include-depth-issue.patch
+    - 0003-Win32-Do-not-link-static-libgcc.patch
+    - 0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
+    - 0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
+    - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
+    - 0007-Use-AC_SEARCH_LIBS-to-search-for-ncursesw-then-ncurs.patch
+    - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
+    - 0009-macOS-include-cairo.h-not-cairo-xlib.h.patch
+    - 0010-javareconf-Do-not-fail-on-compile-fail.patch
+    - 0011-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
+    - 0012-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
+    - 0013-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
+    - 0014-Add-luuid-to-X_PRE_LIBS.patch
+    - 0015-link-Xt-to-uuid.patch
+    - 0016-Mimic-OpenBLAS-when-making-reference-Rblas-and-Rlapa.patch
+    - 0017-Foribly-remove-then-forcibly-mv-in-javareconf.in.patch
 
 build:
-  number: 1001
-  merge_build_host: True   # [win]
+  merge_build_host: True  # [win]
+  number: 3
   rpaths:
     - lib/R/lib/
     - lib/
@@ -38,136 +44,146 @@ build:
     - lib/R/etc/x64/ldpaths
     - lib/R/etc/x64/javaconf
   detect_binary_files_with_prefix: true
+  # The current openblas-devel run exports
+  # are overly restrictive IMHO, should be
+  # open-ended, but actually because we
+  # need to copy the shared library into this
+  # package and change its SONAME to libRblas.so
+  # we do not want a run dependency on openblas
+  # at all (otherwise Matrix.so ends up with a
+  # DT_NEEDED of libopenblas.so and cannot be used
+  # against any old libRblas.so)
+  ignore_run_exports:
+    - libopenblas
 
 requirements:
   build:
-    - posix                    # [win]
-    - m2-texinfo-tex           # [win]
-    - m2-texinfo               # [win]
-    - m2-curl                  # [win]
-    - m2-p7zip                 # [win]
-    - texlive-core             # [osx]
+    - {{ compiler('c') }}                # [not win]
+    - {{ compiler('cxx') }}              # [not win]
+    - {{ compiler('fortran') }}          # [not win]
+    - {{native}}toolchain                # [win]
+    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
+    - {{ cdt('libxrender') }}            # [linux]
+    - {{ cdt('libxext') }}               # [linux]
+    # - {{ cdt('libuuid-devel') }}         # [linux]
+    - {{ cdt('libsm-devel') }}           # [linux]
+    - {{ cdt('libice-devel') }}          # [linux]
+    - {{ cdt('libx11-devel') }}          # [linux]
+    - {{ cdt('libxt') }}                 # [linux]
+    - {{ cdt('libxt-devel') }}           # [linux]
+    - {{ cdt('libxcb') }}                # [linux]
+    - {{ cdt('libxau') }}                # [linux]
+    - {{ cdt('java-1.7.0-openjdk') }}    # [linux]
     - {{posix}}pkg-config
+    - llvm-openmp >=4.0.1                # [osx]
+    - posix                              # [win]
+    - m2-texinfo-tex                     # [win]
+    - m2-texinfo                         # [win]
+    - m2-curl                            # [win]
+    - m2-p7zip                           # [win]
+    - texlive-core                       # [unix]
     - {{posix}}autoconf
-    - {{posix}}automake-wrapper  # [win]
-    - {{posix}}automake          # [not win]
-    - {{ compiler('fortran') }}        # [unix]
-    - {{ compiler('m2w64_fortran') }}  # [win]
-    - {{ compiler('c') }}        # [unix]
-    - {{ compiler('m2w64_c') }}  # [win]
-    - {{ compiler('cxx') }}        # [unix]
-    - {{ compiler('m2w64_cxx') }}  # [win]
+    - {{posix}}automake-wrapper          # [win]
+    - {{posix}}automake                  # [not win]
+    - make                               # [not win]
   host:
-    - readline                 # [not win]
-    - ncurses                  # [not win]
-    - jpeg                     # [not win]
-    - curl                     # [not win]
-    - libcurl                  # [not win]
-    - xz                       # [not win]
-    - bzip2                    # [not win]
-    - libpng                   # [not win]
-    - cairo                    # [not win]
-    - libssh2                  # [not win]
-    - openssl                  # [not win]
-    - krb5                     # [not win]
-    - {{native}}bzip2 1.0.*    # [not osx]
-    - {{native}}libjpeg-turbo  # [win]
-    - {{native}}libiconv       # [win]
-    - {{native}}gmp 6.1.*      # [win]
-    - {{native}}fftw           # [win]
-    - {{native}}xz             # [win]
-    - {{native}}mpfr 3.1.*     # [win]
-    - {{native}}libsndfile     # [win]
-    - {{native}}bwidget        # [win]
-    - {{native}}tktable        # [win]
-    - {{native}}libpng         # [win]
-    - pango                    # [not win]
-    - icu                      # [not win]
-    - libiconv                 # [not win]
-    - pcre                     # [not win]
-    - {{native}}pcre           # [win]
-    - {{native}}tk             # [win]
-    - tk                       # [not win]
-    - zlib                     # [not win]
-    - {{native}}zlib           # [win]
-    - {{native}}gsl            # [win]
-    - gsl                      # [not win]
-    - libtiff                  # [not win]
-    - {{native}}libtiff        # [win]
-    - {{native}}libxml2 2.9.*  # [win]
-    - libxml2                  # [not win]
-    - xorg-libx11              # [linux]
-    - xorg-libxt               # [linux]
-    - xorg-libxrender          # [linux]
-    - xorg-libxext             # [linux]
-    - xorg-libxdmcp            # [linux]
-
+    # This is a hack, strong run_exports should cause this to be added
+    - llvm-openmp >=4.0.1                # [osx]
+    - freetype >=2.9.1                   # [not win]
+    - libgfortran                        # [osx]
+    - readline                           # [not win]
+    - ncurses                            # [not win]
+    - libcurl                            # [not win]
+    - xz                                 # [not win]
+    - libpng                             # [not win]
+    - {{native}}bzip2                    # [not win]
+    - {{native}}bzip2 1.0.*              # [win]
+    - {{native}}cairo                    # [not win]
+    - {{native}}libjpeg-turbo            # [win]
+    - {{native}}jpeg                     # [not win]
+    - {{native}}libiconv                 # [not linux]
+    - {{native}}libuuid                  # [linux]
+    - {{native}}gmp                      # [win]
+    - {{native}}glib                     # [linux]
+    - {{native}}fftw                     # [win]
+    - {{native}}xz                       # [win]
+    - {{native}}mpfr                     # [win]
+    - {{native}}libsndfile               # [win]
+    - {{native}}bwidget
+    - {{native}}tktable
+    - {{native}}libpng                   # [win]
+    - {{native}}pango                    # [not win]
+    - {{native}}icu
+    - {{native}}pcre
+    - {{native}}tk
+    - {{native}}zlib 1.2.8               # [win]
+    - {{native}}zlib                     # [not win]
+    - {{native}}gsl
+    - {{native}}libtiff >=4.0.3,<4.0.8   # [win]
+    - {{native}}libtiff                  # [not win]
+    - {{native}}libxml2                  # [win]
+    - {{native}}libxml2                  # [not win]
+    - {{native}}libssh2                  # [not win]
+    - {{native}}krb5                     # [not win]
+    - {{native}}libopenblas              # [linux or osx]
+    - {{native}}openblas                 # [win]
 
   run:
-    - readline                 # [not win]
-    - ncurses                  # [not win]
-    - jpeg                     # [not win]
-    - curl                     # [not win]
-    - libcurl                  # [not win]
-    - xz                       # [not win]
-    - bzip2                    # [not win]
-    - libpng                   # [not win]
-    - cairo                    # [not win]
-    - libssh2                  # [not win]
-    - openssl                  # [not win]
-    - krb5                     # [not win]
-    - {{native}}bzip2 1.0.*    # [not osx]
-    - {{native}}libjpeg-turbo  # [win]
-    - {{native}}libiconv       # [win]
-    - {{native}}gmp 6.1.*      # [win]
-    - {{native}}fftw           # [win]
-    - {{native}}xz             # [win]
-    - {{native}}mpfr 3.1.*     # [win]
-    - {{native}}libsndfile     # [win]
-    - {{native}}bwidget        # [win]
-    - {{native}}tktable        # [win]
-    - {{native}}libpng         # [win]
-    - pango                    # [not win]
-    - icu                      # [not win]
-    - libiconv                 # [not win]
-    - pcre                     # [not win]
-    - {{native}}pcre           # [win]
-    - {{native}}tk             # [win]
-    - tk                       # [not win]
-    - zlib                     # [not win]
-    - {{native}}zlib           # [win]
-    - {{native}}gsl            # [win]
-    - gsl                      # [not win]
-    - libtiff                  # [not win]
-    - {{native}}libtiff        # [win]
-    - {{native}}libxml2 2.9.*  # [win]
-    - libxml2                  # [not win]
-    - xorg-libx11              # [linux]
-    - xorg-libxt               # [linux]
-    - xorg-libxrender          # [linux]
-    - xorg-libxext             # [linux]
-    - xorg-libxdmcp            # [linux]
+    - _r-mutex 1.* anacondar_1
+    # Needed by R CMD javareconf
+    - make                               # [not win]
+    - {{ compiler('fortran') }}          # [not win]
+    - {{ compiler('cxx') }}              # [not win]
+    - {{ compiler('c') }}                # [not win]
+    - llvm-openmp >=4.0.1                # [osx]
+    - {{native}}gcc-libs                 # [win]
+    - curl                               # [not win]
+    - {{native}}bzip2 1.0.*              # [win]
+    - {{native}}libjpeg-turbo            # [win]
+    - {{native}}libiconv                 # [win]
+    - {{native}}libuuid                  # [linux]
+    - {{native}}gmp                      # [win]
+    - {{native}}fftw                     # [win]
+    - {{native}}xz                       # [win]
+    - {{native}}mpfr                     # [win]
+    - {{native}}libsndfile               # [win]
+    - {{native}}bwidget
+    - {{native}}tktable
+    - {{native}}libpng                   # [win]
+    - {{native}}pcre                     # [win]
+    - {{native}}tk                       # [win]
+    - {{native}}zlib 1.2.8               # [win]
+    - {{native}}gsl                      # [win]
+    - {{native}}libtiff >=4.0.3,<4.0.8   # [win]
+    - {{native}}libxml2 2.9.*            # [win]
+    - {{native}}openblas                 # [win]
+    # Once run_exports are in place these will not be necessary:
+    - {{ pin_compatible('pango') }}      # [not win]
+    - {{ pin_compatible('bzip2') }}      # [not win]
+    - {{ pin_compatible('icu') }}        # [not win]
+
 
 test:
   commands:
     - R -h
     - R --version
+    - R -e "library('tcltk')"            # [linux]
+    - R -e \"library('tcltk')\""         # [win]
     - Rscript --version
     - Rscript -e  'cat("ok\\n")'
     # TODO does not work on windows, because winCairo.dll is missing
-    - Rscript test-svg.R       # [not win]
-    - open                     # [win]
-    # There doesn't seem to be a way to test this one
-    # - RSetReg  # [win]
-    - Rfe --help               # [win]
-    - Rterm --help             # [win]
-    - Rterm --version          # [win]
+    - Rscript test-svg.R                 # [not win]
+    - open                               # [win]
+     # There doesn't seem to be a way to test this one
+     # - RSetReg                         # [win]
+    - Rfe --help                         # [win]
+    - Rterm --help                       # [win]
+    - Rterm --version                    # [win]
     # Prevent regression mentioned in https://github.com/conda-forge/r-base-feedstock/issues/50
     - Rscript -e "stopifnot(capabilities('jpeg'), TRUE)"
     - Rscript -e "stopifnot(capabilities('png'), TRUE)"
   files:
     - test-svg.R
-
 
 about:
   home: http://www.r-project.org/
@@ -178,8 +194,9 @@ about:
 
 extra:
   recipe-maintainers:
+    - bgruening
     - johanneskoester
+    - isuruf
+    - mingwandroid
     - ocefpaf
     - sodre
-    - bgruening
-    - isuruf

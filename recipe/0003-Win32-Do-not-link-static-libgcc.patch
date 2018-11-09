@@ -1,0 +1,27 @@
+From 30acf9acd2bc0da0395a299f33470fe0cd11a05f Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Tue, 2 Jan 2018 15:40:19 +0000
+Subject: [PATCH 03/17] Win32: Do not link -static-libgcc
+
+---
+ src/gnuwin32/fixed/etc/Makeconf | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/gnuwin32/fixed/etc/Makeconf b/src/gnuwin32/fixed/etc/Makeconf
+index 4a38972952..cc173416d5 100644
+--- a/src/gnuwin32/fixed/etc/Makeconf
++++ b/src/gnuwin32/fixed/etc/Makeconf
+@@ -11,8 +11,8 @@ else
+   DEBUGFLAG=
+ endif
+ 
+-DLLFLAGS+= -static-libgcc
+-LINKFLAGS+= -static-libgcc
++DLLFLAGS+=
++LINKFLAGS+=
+ 
+ ## Things which are substituted by fixed/Makefile (and also -O3 -> -O2)
+ WIN = 32
+-- 
+2.18.0
+
