@@ -16,6 +16,8 @@ docker_image:
 - condaforge/linux-anvil-comp7
 fortran_compiler:
 - gfortran
+freetype:
+- 2.9.1
 glib:
 - '2.56'
 gsl:
@@ -47,6 +49,8 @@ pin_run_as_build:
     max_pin: x
   cairo:
     max_pin: x.x
+  freetype:
+    max_pin: x
   glib:
     max_pin: x.x
   gsl:
