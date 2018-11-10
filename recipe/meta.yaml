@@ -90,7 +90,6 @@ requirements:
     # This is a hack, strong run_exports should cause this to be added
     - llvm-openmp >=4.0.1                # [osx]
     - freetype >=2.9.1                   # [not win]
-    - libgfortran                        # [osx and c_compiler == 'toolchain_c']
     - readline                           # [not win]
     - ncurses                            # [not win]
     - libcurl                            # [not win]

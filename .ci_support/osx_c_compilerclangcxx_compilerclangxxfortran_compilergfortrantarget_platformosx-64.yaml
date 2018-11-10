@@ -2,8 +2,12 @@ MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 build_number_decrement:
 - '0'
+bzip2:
+- '1'
 c_compiler:
 - clang
+cairo:
+- '1.14'
 channel_sources:
 - conda-forge/label/gcc7,defaults
 channel_targets:
@@ -12,27 +16,77 @@ cxx_compiler:
 - clangxx
 fortran_compiler:
 - gfortran
+gsl:
+- '2.2'
+icu:
+- '58'
+jpeg:
+- '9'
+krb5:
+- '1.16'
+libiconv:
+- '1.15'
 libpng:
 - 1.6.35
+libssh2:
+- '1.8'
+libtiff:
+- 4.0.9
+libxml2:
+- '2.9'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 macos_min_version:
 - '10.9'
 ncurses:
 - '6.1'
+openblas:
+- 0.3.3
+pango:
+- '1.40'
 pin_run_as_build:
+  bzip2:
+    max_pin: x
+  cairo:
+    max_pin: x.x
+  gsl:
+    max_pin: x.x
+  icu:
+    max_pin: x
+  jpeg:
+    max_pin: x
+  krb5:
+    max_pin: x.x
+  libiconv:
+    max_pin: x.x
   libpng:
+    max_pin: x.x
+  libssh2:
+    max_pin: x.x
+  libtiff:
+    max_pin: x
+  libxml2:
     max_pin: x.x
   ncurses:
     max_pin: x.x
+  openblas:
+    max_pin: x.x.x
+  pango:
+    max_pin: x.x
   readline:
     max_pin: x
+  tk:
+    max_pin: x.x
   xz:
+    max_pin: x.x
+  zlib:
     max_pin: x.x
 readline:
 - '7.0'
 target_platform:
 - osx-64
+tk:
+- '8.6'
 xz:
 - '5.2'
 zip_keys:
@@ -42,3 +96,5 @@ zip_keys:
   - channel_sources
   - channel_targets
   - build_number_decrement
+zlib:
+- '1.2'

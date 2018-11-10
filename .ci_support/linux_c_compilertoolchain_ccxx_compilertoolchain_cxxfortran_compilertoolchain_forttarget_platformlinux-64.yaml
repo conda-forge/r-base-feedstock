@@ -1,7 +1,11 @@
 build_number_decrement:
 - '1000'
+bzip2:
+- '1'
 c_compiler:
 - toolchain_c
+cairo:
+- '1.14'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
@@ -12,23 +16,77 @@ docker_image:
 - condaforge/linux-anvil
 fortran_compiler:
 - toolchain_fort
+glib:
+- '2.56'
+gsl:
+- '2.2'
+icu:
+- '58'
+jpeg:
+- '9'
+krb5:
+- '1.16'
 libpng:
 - 1.6.35
+libssh2:
+- '1.8'
+libtiff:
+- 4.0.9
+libuuid:
+- 2.32.1
+libxml2:
+- '2.9'
 ncurses:
 - '6.1'
+openblas:
+- 0.3.3
+pango:
+- '1.40'
 pin_run_as_build:
+  bzip2:
+    max_pin: x
+  cairo:
+    max_pin: x.x
+  glib:
+    max_pin: x.x
+  gsl:
+    max_pin: x.x
+  icu:
+    max_pin: x
+  jpeg:
+    max_pin: x
+  krb5:
+    max_pin: x.x
   libpng:
+    max_pin: x.x
+  libssh2:
+    max_pin: x.x
+  libtiff:
+    max_pin: x
+  libuuid:
+    max_pin: x
+  libxml2:
     max_pin: x.x
   ncurses:
     max_pin: x.x
+  openblas:
+    max_pin: x.x.x
+  pango:
+    max_pin: x.x
   readline:
     max_pin: x
+  tk:
+    max_pin: x.x
   xz:
+    max_pin: x.x
+  zlib:
     max_pin: x.x
 readline:
 - '7.0'
 target_platform:
 - linux-64
+tk:
+- '8.6'
 xz:
 - '5.2'
 zip_keys:
@@ -39,3 +97,5 @@ zip_keys:
   - channel_targets
   - docker_image
   - build_number_decrement
+zlib:
+- '1.2'

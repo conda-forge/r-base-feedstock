@@ -9,7 +9,10 @@ environment:
     secure: tumuXLL8PU75WMnRDemRy02ruEq2RpNxeK3dz0MjFssnosPm2v4EFjfNB4PTotA1
 
   matrix:
-    - CONFIG: win_target_platformwin-64
+    - CONFIG: win_c_compilervs2008target_platformwin-64
+      CONDA_INSTALL_LOCN: C:\Miniconda36-x64
+
+    - CONFIG: win_c_compilervs2015target_platformwin-64
       CONDA_INSTALL_LOCN: C:\Miniconda36-x64
 
 
