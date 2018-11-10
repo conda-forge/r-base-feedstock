@@ -135,7 +135,7 @@ requirements:
 
   run:
     - _r-mutex 1.* anacondar_1
-    - {{ pin_compatible("msys2-conda-epoch", exact=True)  # [win]
+    - {{ pin_compatible("msys2-conda-epoch", exact=True) }}  # [win]
     # Needed by R CMD javareconf
     - make                               # [not win]
     - {{ compiler('fortran') }}          # [not win and c_compiler!='toolchain_c']
