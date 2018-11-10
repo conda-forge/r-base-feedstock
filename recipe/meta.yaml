@@ -61,7 +61,7 @@ requirements:
     - {{ compiler('c') }}                # [not win]
     - {{ compiler('cxx') }}              # [not win]
     - {{ compiler('fortran') }}          # [not win]
-    - {{native}}toolchain                # [win]
+    - m2w64-toolchain                    # [win]
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
     - {{ cdt('libxrender') }}            # [linux]
     - {{ cdt('libxext') }}               # [linux]
