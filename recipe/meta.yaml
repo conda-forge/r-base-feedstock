@@ -125,8 +125,7 @@ requirements:
     - {{native}}libxml2                  # [not win]
     - {{native}}libssh2                  # [not win]
     - {{native}}krb5                     # [not win]
-    - {{native}}libopenblas              # [linux or osx]
-    - {{native}}openblas                 # [win]
+    - {{native}}openblas
 
   run:
     - _r-mutex 1.* anacondar_1
