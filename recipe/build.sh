@@ -46,6 +46,7 @@ export TK_LIBRARY=${PREFIX}/lib/tk8.6
 [[ -n ${RANLIB} ]] && export RANLIB=$(basename ${RANLIB})
 [[ -n ${STRIP} ]] && export STRIP=$(basename ${STRIP})
 export OBJC=${CC}
+INSTALL_NAME_TOOL=${INSTALL_NAME_TOOL:-install_name_tool}
 
 Linux() {
     # If lib/R/etc/javaconf ends up with anything other than ~autodetect~
