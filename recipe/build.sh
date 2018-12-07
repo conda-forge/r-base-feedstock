@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sed -i.bak 's/${GSL_CBLAS_LIB}//g' "$PREFIX/lib/pkgconfig/gsl.pc"
+
 aclocal -I m4
 autoconf
 
