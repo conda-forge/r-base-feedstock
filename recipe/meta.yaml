@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 1004
+  number: 1005
   rpaths:
     - lib/R/lib/
     - lib/
@@ -162,7 +162,7 @@ requirements:
     - {{native}}gsl                      # [win]
     - {{native}}libtiff                  # [win]
     - {{native}}libxml2                  # [win]
-    - {{native}}openblas                 # [win]
+    - {{native}}openblas
     # Once run_exports are in place these will not be necessary:
     - {{ pin_compatible('pango') }}      # [not win]
     - {{ pin_compatible('bzip2') }}      # [not win]
