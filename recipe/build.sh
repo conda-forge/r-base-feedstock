@@ -407,7 +407,7 @@ Darwin() {
 
     # May want to strip these from Makeconf at the end.
     CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CFLAGS}
-    LDFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${LDFLAGS}
+    LDFLAGS="-Wl,-dead_strip_dylibs -isysroot ${CONDA_BUILD_SYSROOT} "${LDFLAGS}
     CPPFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CPPFLAGS}
 
     # Our libuuid causes problems:
