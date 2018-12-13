@@ -1,0 +1,27 @@
+From 8c85f70505694dd181ef47a47896007b150f94c3 Mon Sep 17 00:00:00 2001
+From: John Blischak <jdblischak@gmail.com>
+Date: Thu, 13 Dec 2018 14:12:32 -0500
+Subject: [PATCH] Disable default user libraries.
+
+---
+ etc/Renviron.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/etc/Renviron.in b/etc/Renviron.in
+index 49604e54c2..38efb63bb9 100644
+--- a/etc/Renviron.in
++++ b/etc/Renviron.in
+@@ -39,8 +39,8 @@ TAR=${TAR-'@TAR@'}
+ ## System and compiler types.
+ R_SYSTEM_ABI='@R_SYSTEM_ABI@'
+ 
+-@BUILD_AQUA_FALSE@R_LIBS_USER=${R_LIBS_USER-'~/R/@R_PLATFORM@-library/@MAJ_MIN_VERSION@'}
+-@BUILD_AQUA_TRUE@R_LIBS_USER=${R_LIBS_USER-'~/Library/R/@MAJ_MIN_VERSION@/library'}
++#@BUILD_AQUA_FALSE@R_LIBS_USER=${R_LIBS_USER-'~/R/@R_PLATFORM@-library/@MAJ_MIN_VERSION@'}
++#@BUILD_AQUA_TRUE@R_LIBS_USER=${R_LIBS_USER-'~/Library/R/@MAJ_MIN_VERSION@/library'}
+ 
+ ### Local Variables: ***
+ ### mode: sh ***
+-- 
+2.17.1
+

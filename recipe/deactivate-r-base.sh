@@ -7,3 +7,9 @@ if [[ ! -z ${RSTUDIO_WHICH_R_PREV+x} ]]; then
 else
   unset RSTUDIO_WHICH_R
 fi
+
+# restore pre-existing R_LIBS_USER
+if [[ ! -z ${R_LIBS_USER_PREV+x} ]]; then
+  export R_LIBS_USER="$R_LIBS_USER_PREV"
+  unset R_LIBS_USER_PREV
+fi

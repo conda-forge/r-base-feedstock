@@ -27,6 +27,7 @@ source:
     - 0015-link-Xt-to-uuid.patch
     - 0017-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+    - 0019-Disable-default-user-libraries.patch
 
 build:
   merge_build_host: True  # [win]
@@ -179,6 +180,9 @@ test:
     - if not exist %PREFIX%\\Lib\\R\\bin\\x64\\R.lib exit 1  # [win]
   files:
     - test-svg.R
+    - test-isolation-setup.R
+    - test-isolation.R
+    - test-isolation-teardown.R
 
 about:
   home: http://www.r-project.org/
