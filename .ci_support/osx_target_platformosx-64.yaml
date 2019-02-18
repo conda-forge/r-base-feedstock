@@ -1,43 +1,45 @@
-build_number_decrement:
-- '1000'
+MACOSX_DEPLOYMENT_TARGET:
+- '10.9'
 bzip2:
 - '1'
 c_compiler:
-- toolchain_c
+- clang
 cairo:
-- '1.14'
+- '1.16'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- toolchain_cxx
-docker_image:
-- condaforge/linux-anvil
+- clangxx
 fortran_compiler:
-- toolchain_fort
+- gfortran
+fortran_compiler_version:
+- '4'
 freetype:
 - 2.9.1
-glib:
-- '2.56'
 gsl:
-- '2.2'
+- '2.4'
 icu:
 - '58'
 jpeg:
 - '9'
 krb5:
 - '1.16'
+libiconv:
+- '1.15'
 libpng:
 - 1.6.35
 libssh2:
 - '1.8'
 libtiff:
 - 4.0.9
-libuuid:
-- 2.32.1
 libxml2:
 - '2.9'
+macos_machine:
+- x86_64-apple-darwin13.4.0
+macos_min_version:
+- '10.9'
 ncurses:
 - '6.1'
 openblas:
@@ -51,8 +53,6 @@ pin_run_as_build:
     max_pin: x.x
   freetype:
     max_pin: x
-  glib:
-    max_pin: x.x
   gsl:
     max_pin: x.x
   icu:
@@ -61,13 +61,13 @@ pin_run_as_build:
     max_pin: x
   krb5:
     max_pin: x.x
+  libiconv:
+    max_pin: x.x
   libpng:
     max_pin: x.x
   libssh2:
     max_pin: x.x
   libtiff:
-    max_pin: x
-  libuuid:
     max_pin: x
   libxml2:
     max_pin: x.x
@@ -88,18 +88,10 @@ pin_run_as_build:
 readline:
 - '7.0'
 target_platform:
-- linux-64
+- osx-64
 tk:
 - '8.6'
 xz:
 - '5.2'
-zip_keys:
-- - c_compiler
-  - cxx_compiler
-  - fortran_compiler
-  - channel_sources
-  - channel_targets
-  - docker_image
-  - build_number_decrement
 zlib:
 - '1.2'
