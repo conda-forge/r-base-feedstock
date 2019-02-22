@@ -98,7 +98,7 @@ requirements:
     - libpng                             # [not win]
     - bzip2                              # [not win]
     - {{native}}bzip2                    # [win]
-    - cairo                              # [not win]
+    - cairo 1.16.*                             # [not win]
     - {{native}}libjpeg-turbo            # [win]
     - jpeg                               # [not win]
     - libiconv                           # [osx]
