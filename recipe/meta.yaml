@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 1005
+  number: 1006
   rpaths:
     - lib/R/lib/
     - lib/
@@ -87,6 +87,8 @@ requirements:
     - {{posix}}automake                  # [not win]
     - make                               # [not win]
   host:
+    - libblas
+    - libcblas
     - msys2-conda-epoch                  # [win]
     # This is a hack, strong run_exports should cause this to be added
     - llvm-openmp >=4.0.1                # [osx]
@@ -130,7 +132,6 @@ requirements:
     - libssh2                            # [not win]
     - krb5                               # [not win]
     - {{native}}openblas                 # [win]
-    - openblas                           # [not win]
 
 
   run:
