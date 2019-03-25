@@ -1,0 +1,8 @@
+c_compiler:
+- vs2008
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- conda-forge main
+target_platform:
+- win-64
