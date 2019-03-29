@@ -324,7 +324,7 @@ Mingw_w64_makefiles() {
     else
       mkdir miktex || true
       pushd miktex
-      MIKTEX_VER=2.9.6753
+      MIKTEX_VER=2.9.6942
       # Fetch e.g.:
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
@@ -484,10 +484,14 @@ if [[ $target_platform == osx-64 ]]; then
   Darwin
   mkdir -p ${PREFIX}/etc/conda/activate.d
   cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
+  mkdir -p ${PREFIX}/etc/conda/deactivate.d
+  cp "${RECIPE_DIR}"/deactivate-${PKG_NAME}.sh ${PREFIX}/etc/conda/deactivate.d/deactivate-${PKG_NAME}.sh
 elif [[ $target_platform =~ .*linux.* ]]; then
   Linux
   mkdir -p ${PREFIX}/etc/conda/activate.d
   cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
+  mkdir -p ${PREFIX}/etc/conda/deactivate.d
+  cp "${RECIPE_DIR}"/deactivate-${PKG_NAME}.sh ${PREFIX}/etc/conda/deactivate.d/deactivate-${PKG_NAME}.sh
 elif [[ $(uname) =~ M.* ]]; then
   # Mingw_w64_autotools
   Mingw_w64_makefiles
