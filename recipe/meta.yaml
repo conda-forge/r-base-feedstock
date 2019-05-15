@@ -10,23 +10,23 @@ source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
   sha256: 36fcac3e452666158e62459c6fc810adc247c7109ed71c5b6c3ad5fc2bf57509
   patches:
-    - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
-    - 0002-Fix-trio-config.h-include-depth-issue.patch
-    - 0003-Win32-Do-not-link-static-libgcc.patch
-    - 0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
-    - 0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
-    - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
-    - 0007-Use-AC_SEARCH_LIBS-to-search-for-ncursesw-then-ncurs.patch
-    - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0009-macOS-include-cairo.h-not-cairo-xlib.h.patch
-    - 0010-javareconf-Do-not-fail-on-compile-fail.patch
-    - 0011-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
-    - 0012-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
-    - 0013-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
-    - 0014-Add-luuid-to-X_PRE_LIBS.patch
-    - 0015-link-Xt-to-uuid.patch
-    - 0016-Mimic-OpenBLAS-when-making-reference-Rblas-and-Rlapa.patch
-    - 0017-Foribly-remove-then-forcibly-mv-in-javareconf.in.patch
+    - patches/0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
+    - patches/0002-Fix-trio-config.h-include-depth-issue.patch
+    - patches/0003-Win32-Do-not-link-static-libgcc.patch
+    - patches/0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
+    - patches/0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
+    - patches/0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
+    - patches/0007-Use-AC_SEARCH_LIBS-to-search-for-ncursesw-then-ncurs.patch
+    - patches/0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
+    - patches/0009-macOS-include-cairo.h-not-cairo-xlib.h.patch
+    - patches/0010-javareconf-Do-not-fail-on-compile-fail.patch
+    - patches/0011-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
+    - patches/0012-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
+    - patches/0013-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
+    - patches/0014-Add-luuid-to-X_PRE_LIBS.patch
+    - patches/0015-link-Xt-to-uuid.patch
+    - patches/0016-Mimic-OpenBLAS-when-making-reference-Rblas-and-Rlapa.patch
+    - patches/0017-Foribly-remove-then-forcibly-mv-in-javareconf.in.patch
 
 build:
   merge_build_host: True  # [win]
