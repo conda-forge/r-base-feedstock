@@ -26,7 +26,7 @@ source:
     - 0014-Add-luuid-to-X_PRE_LIBS.patch
     - 0015-link-Xt-to-uuid.patch
     - 0016-Mimic-OpenBLAS-when-making-reference-Rblas-and-Rlapa.patch
-    - 0017-Foribly-remove-then-forcibly-mv-in-javareconf.in.patch
+    - 0017-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
 
 build:
   merge_build_host: True  # [win]
