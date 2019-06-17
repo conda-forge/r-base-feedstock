@@ -331,7 +331,13 @@ Mingw_w64_makefiles() {
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
         curl --insecure -C - -o ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe -SL https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/basic-miktex-${MIKTEX_VER}.exe || true
         echo "Extracting basic-miktex-${MIKTEX_VER}.exe, this will take some time ..."
-        ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe --portable=${PWD} --unattended > /dev/null || exit 1
+        ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe --portable=${PWD} --unattended &
+        local miktex_setup_pid=$!
+        while kill -0 "${miktex_setup_pid}" >/dev/null 2>&1 ; do
+          du -sc ./*
+          echo ========================
+          sleep 5
+        done
         # We also need the url, incolsolata and mptopdf packages and
         # do not want a GUI to prompt us about installing these.
         # sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
