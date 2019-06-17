@@ -324,12 +324,14 @@ Mingw_w64_makefiles() {
     else
       mkdir miktex || true
       pushd miktex
-      MIKTEX_VER=2.9.6942
+      MIKTEX_VER=2.9.7100
       # Fetch e.g.:
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        curl --insecure -C - -o ${DLCACHE}/miktex-portable-${MIKTEX_VER}.exe -SLO https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/miktex-portable-${MIKTEX_VER}.exe || true
+        # From https://miktex.org/download#portable :
+        #   Please note that there is no seperate installer. Just download the standard installer and rename it to miktex-portable.exe.
+        curl --insecure -C - -o ${DLCACHE}/miktex-portable-${MIKTEX_VER}.exe -SL https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/basic-miktex-${MIKTEX_VER}.exe || true
         echo "Extracting miktex-portable-${MIKTEX_VER}.exe, this will take some time ..."
         7za x -y ${DLCACHE}/miktex-portable-${MIKTEX_VER}.exe > /dev/null || exit 1
         # We also need the url, incolsolata and mptopdf packages and
