@@ -262,9 +262,9 @@ Mingw_w64_makefiles() {
         # The thing to is probably to make stub programs launching the right binaries in mingw-w64/bin
         # .. perhaps launcher.c can be generalized?
         mkdir -p "${SRC_DIR}/lib/R/Tcl"
-        CONDA_SUBDIR=$target_platform conda.bat install -c https://conda.anaconda.org/msys2 \
-                                                       --no-deps --yes --copy --prefix "${SRC_DIR}/lib/R/Tcl" \
-                                                       m2w64-{tcl,tk,bwidget,tktable}
+        CONDA_SUBDIR=$target_platform "${SYS_PYTHON}" -m conda install -c https://conda.anaconda.org/msys2 \
+                                                      --no-deps --yes --copy --prefix "${SRC_DIR}/lib/R/Tcl" \
+                                                      m2w64-{tcl,tk,bwidget,tktable}
         mv "${SRC_DIR}"/lib/R/Tcl/Library/mingw-w64/* "${SRC_DIR}"/lib/R/Tcl/ || exit 1
         rm -Rf "${SRC_DIR}"/lib/R/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
         if [[ "${ARCH}" == "64" ]]; then
@@ -324,14 +324,20 @@ Mingw_w64_makefiles() {
     else
       mkdir miktex || true
       pushd miktex
-      MIKTEX_VER=2.9.6942
       # Fetch e.g.:
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        curl --insecure -C - -o ${DLCACHE}/miktex-portable-${MIKTEX_VER}.exe -SLO https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/miktex-portable-${MIKTEX_VER}.exe || true
-        echo "Extracting miktex-portable-${MIKTEX_VER}.exe, this will take some time ..."
-        7za x -y ${DLCACHE}/miktex-portable-${MIKTEX_VER}.exe > /dev/null || exit 1
+        # FIXME: Newer MiKTeX installer does not finish on AppVeyor and Azure, somehow.
+        #   MIKTEX_VER=2.9.7100
+        #   curl --insecure -C - -o ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe -SL https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/basic-miktex-${MIKTEX_VER}.exe || true
+        #   echo "Extracting basic-miktex-${MIKTEX_VER}.exe, this will take some time ..."
+        #   ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe --portable=${PWD} --unattended --no-registry || exit 1
+        # FIXME: Temporary workaround! Fix the above as soon as possible, please.
+        #        Downloading this archived version may not comply with the ToS of archive.org!
+        curl --insecure -C - -o ${DLCACHE}/miktex-portable-2.9.6942.exe -SL https://web.archive.org/web/20190325114245/https://mirrors.rit.edu/CTAN/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6942.exe || true
+        echo "Extracting miktex-portable-2.9.6942.exe, this will take some time ..."
+        7za x -y ${DLCACHE}/miktex-portable-2.9.6942.exe > /dev/null || exit 1
         # We also need the url, incolsolata and mptopdf packages and
         # do not want a GUI to prompt us about installing these.
         # sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
