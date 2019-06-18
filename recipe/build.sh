@@ -324,20 +324,20 @@ Mingw_w64_makefiles() {
     else
       mkdir miktex || true
       pushd miktex
-      MIKTEX_VER=2.9.7100
       # Fetch e.g.:
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        curl --insecure -C - -o ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe -SL https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/basic-miktex-${MIKTEX_VER}.exe || true
-        echo "Extracting basic-miktex-${MIKTEX_VER}.exe, this will take some time ..."
-        ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe --portable=${PWD} --unattended --no-registry &
-        local miktex_setup_pid=$!
-        while kill -0 "${miktex_setup_pid}" >/dev/null 2>&1 ; do
-          du -sc ./*
-          echo ========================
-          sleep 5
-        done
+        # FIXME: Newer MiKTeX installer does not finish on AppVeyor and Azure, somehow.
+        #   MIKTEX_VER=2.9.7100
+        #   curl --insecure -C - -o ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe -SL https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/basic-miktex-${MIKTEX_VER}.exe || true
+        #   echo "Extracting basic-miktex-${MIKTEX_VER}.exe, this will take some time ..."
+        #   ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe --portable=${PWD} --unattended --no-registry || exit 1
+        # FIXME: Temporary workaround! Fix the above as soon as possible, please.
+        #        Downloading this archived version may not comply with the ToS of archive.org!
+        curl --insecure -C - -o ${DLCACHE}/miktex-portable-2.9.6942.exe -SL https://web.archive.org/web/20190325114245/https://mirrors.rit.edu/CTAN/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6942.exe || true
+        echo "Extracting miktex-portable-2.9.6942.exe, this will take some time ..."
+        7za x -y ${DLCACHE}/miktex-portable-2.9.6942.exe > /dev/null || exit 1
         # We also need the url, incolsolata and mptopdf packages and
         # do not want a GUI to prompt us about installing these.
         # sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
