@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 1007
+  number: 1008
   rpaths:
     - lib/R/lib/
     - lib/
