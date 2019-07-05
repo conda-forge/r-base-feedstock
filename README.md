@@ -165,6 +165,7 @@ Feedstock Maintainers
 =====================
 
 * [@bgruening](https://github.com/bgruening/)
+* [@dpryan79](https://github.com/dpryan79/)
 * [@isuruf](https://github.com/isuruf/)
 * [@jdblischak](https://github.com/jdblischak/)
 * [@johanneskoester](https://github.com/johanneskoester/)
