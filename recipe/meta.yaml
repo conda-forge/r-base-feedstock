@@ -27,6 +27,7 @@ source:
     - 0015-link-Xt-to-uuid.patch
     - 0016-Mimic-OpenBLAS-when-making-reference-Rblas-and-Rlapa.patch
     - 0017-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
+    - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
   merge_build_host: True  # [win]
