@@ -79,7 +79,8 @@ Linux() {
                 --build=${BUILD}                 \
                 --enable-shared                  \
                 --enable-R-shlib                 \
-                --enable-BLAS-shlib              \
+                --with-blas=-lblas               \
+                --with-lapack=-llapack           \
                 --disable-prebuilt-html          \
                 --enable-memory-profiling        \
                 --with-tk-config=${TK_CONFIG}    \
@@ -105,31 +106,6 @@ Linux() {
     make install
     # Prevent C and C++ extensions from linking to libgfortran.
     sed -i -r 's|(^LDFLAGS = .*)-lgfortran|\1|g' ${PREFIX}/lib/R/etc/Makeconf
-
-    # Backup the old libR{blas,lapack}.so files and replace them with OpenBLAS
-    pushd ${PREFIX}/lib/R/lib
-      mv libRblas.so libRblas.so.reference
-      mv libRlapack.so libRlapack.so.reference
-      cp ../../libblas.so libRblas.so
-      cp ../../liblapack.so libRlapack.so
-      # .. and modify the SONAME.
-      patchelf --set-soname libRblas.so libRblas.so
-      patchelf --set-soname libRlapack.so libRlapack.so
-    popd
-
-    # # Backup the old libR{blas,lapack}.so files and make them symlinks to OpenBLAS
-    # pushd ${PREFIX}/lib/R/lib
-    #   mv libRblas.so libRblas.so.reference
-    #   mv libRlapack.so libRlapack.so.reference
-    #   ln -s ../../libblas.so libRblas.so
-    #   ln -s ../../liblapack.so libRlapack.so
-    # popd
-    # .. and make sure that the fact it is now a symlink to libblas.so in $PREFIX/lib
-    # does not trip up the linker when it tries to find DT_NEEDED for libgfortran.so.
-    # (r-rserve falls without this fix).
-    # pushd ${PREFIX}/lib/R/etc
-    #   sed -i -r "s|-lRblas|-Wl,-rpath-link,${PREFIX}/lib -lRblas|" Makeconf
-    # popd
 
     pushd ${PREFIX}/lib/R/etc
       # See: https://github.com/conda/conda/issues/6701
@@ -157,12 +133,13 @@ Mingw_w64_autotools() {
     ./configure --prefix=${PREFIX}              \
                 --enable-shared                 \
                 --enable-R-shlib                \
-                --enable-BLAS-shlib             \
                 --disable-prebuilt-html         \
                 --enable-memory-profiling       \
                 --with-tk-config=$TK_CONFIG     \
                 --with-tcl-config=$TCL_CONFIG   \
                 --with-x=no                     \
+                --with-blas=-lblas              \
+                --with-lapack=-llapack          \
                 --with-readline=no              \
                 --with-recommended-packages=no  \
                 LIBnn=lib
@@ -408,9 +385,6 @@ Darwin() {
     # unknown timezone 'GMT'
     # https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
 
-#                --with-blas="-framework Accelerate" \
-
-
     # May want to strip these from Makeconf at the end.
     CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CFLAGS}
     LDFLAGS="-Wl,-dead_strip_dylibs -isysroot ${CONDA_BUILD_SYSROOT} "${LDFLAGS}
@@ -437,10 +411,10 @@ Darwin() {
                 --with-sysroot=${CONDA_BUILD_SYSROOT}  \
                 --enable-shared                     \
                 --enable-R-shlib                    \
-                --enable-BLAS-shlib                 \
                 --with-tk-config=${TK_CONFIG}       \
                 --with-tcl-config=${TCL_CONFIG}     \
-                --with-lapack                       \
+                --with-blas=-lblas                  \
+                --with-lapack=-llapack              \
                 --enable-R-shlib                    \
                 --enable-memory-profiling           \
                 --without-x                         \
@@ -457,27 +431,6 @@ Darwin() {
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install
-
-    # Useful references for macOS R with OpenBLAS:
-    # http://luisspuerto.net/2018/01/install-r-100-homebrew-edition-with-openblas-openmp-my-version/
-    # https://github.com/luisspuerto/homebrew-core/blob/r-3.4.4/Formula/r.rb
-    # Backup the old libR{blas,lapack}.dylib files and replace them with OpenBLAS
-    pushd ${PREFIX}/lib/R/lib
-      # Need to ignore libopenblas run-exports if we keep these around:
-      # mv libRblas.dylib libRblas.dylib.reference
-      # mv libRlapack.dylib libRlapack.dylib.reference
-      cp ../../libblas.dylib libRblas.dylib
-      cp ../../liblapack.dylib libRlapack.dylib
-      ${INSTALL_NAME_TOOL} -id libRblas.dylib libRblas.dylib
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib libR.dylib
-      ${INSTALL_NAME_TOOL} -id libRlapack.dylib libRlapack.dylib
-    popd
-    pushd ${PREFIX}/lib/R/modules
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib lapack.so
-    popd
-    pushd ${PREFIX}/lib/R/library/stats/libs
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib stats.so
-    popd
 
     pushd ${PREFIX}/lib/R/etc
       sed -i -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
