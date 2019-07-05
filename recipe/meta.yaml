@@ -25,7 +25,6 @@ source:
     - 0013-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
     - 0014-Add-luuid-to-X_PRE_LIBS.patch
     - 0015-link-Xt-to-uuid.patch
-    - 0016-Mimic-OpenBLAS-when-making-reference-Rblas-and-Rlapa.patch
     - 0017-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
@@ -45,17 +44,6 @@ build:
     - lib/R/etc/x64/ldpaths
     - lib/R/etc/x64/javaconf
   detect_binary_files_with_prefix: true
-  # The current openblas-devel run exports
-  # are overly restrictive IMHO, should be
-  # open-ended, but actually because we
-  # need to copy the shared library into this
-  # package and change its SONAME to libRblas.so
-  # we do not want a run dependency on openblas
-  # at all (otherwise Matrix.so ends up with a
-  # DT_NEEDED of libopenblas.so and cannot be used
-  # against any old libRblas.so)
-  ignore_run_exports:
-    - libopenblas
 
 requirements:
   build:
@@ -129,9 +117,8 @@ requirements:
     - libxml2                            # [not win]
     - libssh2                            # [not win]
     - krb5                               # [not win]
-    - {{native}}openblas                 # [win]
-    - openblas                           # [not win]
-
+    - libblas
+    - liblapack
 
   run:
     - _r-mutex 1.* anacondar_1
@@ -162,7 +149,6 @@ requirements:
     - {{native}}gsl                      # [win]
     - {{native}}libtiff                  # [win]
     - {{native}}libxml2                  # [win]
-    - {{native}}openblas                 # [win]
     # Once run_exports are in place these will not be necessary:
     - {{ pin_compatible('pango') }}      # [not win]
     - {{ pin_compatible('bzip2') }}      # [not win]
