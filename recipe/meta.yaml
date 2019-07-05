@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = '3.5.1' %}
+{% set version = '3.6.1' %}
 
 package:
   name: r-base
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: 0463bff5eea0f3d93fa071f79c18d0993878fd4f2e18ae6cf22c1639d11457ed
+  sha256: 5baa9ebd3e71acecdcc3da31d9042fb174d55a42829f8315f2457080978b1389
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 1008
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
@@ -65,7 +65,6 @@ requirements:
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
     - {{ cdt('libxrender') }}            # [linux]
     - {{ cdt('libxext') }}               # [linux]
-    # - {{ cdt('libuuid-devel') }}         # [linux]
     - {{ cdt('libsm-devel') }}           # [linux]
     - {{ cdt('libice-devel') }}          # [linux]
     - {{ cdt('libx11-devel') }}          # [linux]
@@ -207,3 +206,4 @@ extra:
     - ocefpaf
     - sodre
     - jdblischak
+    - dpryan79
