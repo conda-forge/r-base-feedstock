@@ -473,10 +473,10 @@ Darwin() {
       ${INSTALL_NAME_TOOL} -id libRlapack.dylib libRlapack.dylib
     popd
     pushd ${PREFIX}/lib/R/modules
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib lapack.so
+      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib lapack.dylib
     popd
     pushd ${PREFIX}/lib/R/library/stats/libs
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib stats.so
+      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib stats.dylib
     popd
 
     pushd ${PREFIX}/lib/R/etc
