@@ -187,8 +187,8 @@ Mingw_w64_makefiles() {
     echo "BINPREF = "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF64 = "                                 >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ATLAS = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "ATLAS_PATH = ${PREFIX}/Library/lib"           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    sed -i.bak 's|-lf77blas -latlas|-lblas -llapack|g' src/extra/blas/Makefile.win
+    echo "ATLAS_PATH = ${PREFIX}/Library/mingw-w64/lib" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    sed -i.bak 's|-lf77blas -latlas|-llapack -lblas|g' src/extra/blas/Makefile.win
     rm src/extra/blas/Makefile.win.bak
     echo "MULTI =   "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BUILD_HTML = YES"                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
@@ -329,7 +329,10 @@ Mingw_w64_makefiles() {
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
     export MSYS2_ARG_CONV_EXCL="R_ARCH"
-    export PATH="${SRC_DIR}/bin/x64:${PATH}"
+    cp ${PREFIX}/Library/lib/blas.lib      ${PREFIX}/Library/mingw-w64/lib/blas.lib
+    cp ${PREFIX}/Library/lib/lapack.lib    ${PREFIX}/Library/mingw-w64/lib/lapack.lib
+    cp ${PREFIX}/Library/bin/libblas.dll   ${PREFIX}/Library/mingw-w64/bin/libblas.dll
+    cp ${PREFIX}/Library/bin/liblapack.dll ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
     cd "${SRC_DIR}/src/gnuwin32"
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         # rinstaller and crandir would come after manuals (if it worked with MSYS2/mingw-w64-{tcl,tk}, in which case we'd just use make distribution anyway)
