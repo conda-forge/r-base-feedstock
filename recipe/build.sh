@@ -329,6 +329,7 @@ Mingw_w64_makefiles() {
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
     export MSYS2_ARG_CONV_EXCL="R_ARCH"
+    export PATH="${SRC_DIR}/bin/x64:${PATH}"
     cd "${SRC_DIR}/src/gnuwin32"
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         # rinstaller and crandir would come after manuals (if it worked with MSYS2/mingw-w64-{tcl,tk}, in which case we'd just use make distribution anyway)
