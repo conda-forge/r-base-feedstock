@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = '3.5.1' %}
+{% set version = '3.6.1' %}
 
 package:
   name: r-base
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: 0463bff5eea0f3d93fa071f79c18d0993878fd4f2e18ae6cf22c1639d11457ed
+  sha256: 5baa9ebd3e71acecdcc3da31d9042fb174d55a42829f8315f2457080978b1389
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -25,12 +25,12 @@ source:
     - 0013-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
     - 0014-Add-luuid-to-X_PRE_LIBS.patch
     - 0015-link-Xt-to-uuid.patch
-    - 0016-Mimic-OpenBLAS-when-making-reference-Rblas-and-Rlapa.patch
     - 0017-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
+    - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
   merge_build_host: True  # [win]
-  number: 1008
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
@@ -44,17 +44,6 @@ build:
     - lib/R/etc/x64/ldpaths
     - lib/R/etc/x64/javaconf
   detect_binary_files_with_prefix: true
-  # The current openblas-devel run exports
-  # are overly restrictive IMHO, should be
-  # open-ended, but actually because we
-  # need to copy the shared library into this
-  # package and change its SONAME to libRblas.so
-  # we do not want a run dependency on openblas
-  # at all (otherwise Matrix.so ends up with a
-  # DT_NEEDED of libopenblas.so and cannot be used
-  # against any old libRblas.so)
-  ignore_run_exports:
-    - libopenblas
 
 requirements:
   build:
@@ -65,7 +54,6 @@ requirements:
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
     - {{ cdt('libxrender') }}            # [linux]
     - {{ cdt('libxext') }}               # [linux]
-    # - {{ cdt('libuuid-devel') }}         # [linux]
     - {{ cdt('libsm-devel') }}           # [linux]
     - {{ cdt('libice-devel') }}          # [linux]
     - {{ cdt('libx11-devel') }}          # [linux]
@@ -129,9 +117,8 @@ requirements:
     - libxml2                            # [not win]
     - libssh2                            # [not win]
     - krb5                               # [not win]
-    - {{native}}openblas                 # [win]
-    - openblas                           # [not win]
-
+    - libblas
+    - liblapack
 
   run:
     - _r-mutex 1.* anacondar_1
@@ -162,7 +149,6 @@ requirements:
     - {{native}}gsl                      # [win]
     - {{native}}libtiff                  # [win]
     - {{native}}libxml2                  # [win]
-    - {{native}}openblas                 # [win]
     # Once run_exports are in place these will not be necessary:
     - {{ pin_compatible('pango') }}      # [not win]
     - {{ pin_compatible('bzip2') }}      # [not win]
@@ -207,3 +193,4 @@ extra:
     - ocefpaf
     - sodre
     - jdblischak
+    - dpryan79
