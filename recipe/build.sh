@@ -111,6 +111,13 @@ Linux() {
       # See: https://github.com/conda/conda/issues/6701
       chmod g+w Makeconf ldpaths
     popd
+
+    # Remove hard coded paths to these commands in the build machine
+    sed -i.bak 's/PAGER=.*/PAGER=${PAGER-less}/g' ${PREFIX}/lib/R/etc/Renviron
+    sed -i.bak 's/TAR=.*/TAR=${TAR-tar}/g' ${PREFIX}/lib/R/etc/Renviron
+    sed -i.bak 's/SED=.*/SED=${SED-sed}/g' ${PREFIX}/lib/R/etc/Renviron
+    sed -i.bak 's/R_GZIPCMD=.*/R_GZIPCMD=${R_GZIPCMD-gzip}/g' ${PREFIX}/lib/R/etc/Renviron
+    rm ${PREFIX}/lib/R/etc/Renviron.bak
 }
 
 # This was an attempt to see how far we could get with using Autotools as things
