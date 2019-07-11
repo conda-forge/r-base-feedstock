@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 1
+  number: 2
   rpaths:
     - lib/R/lib/
     - lib/
@@ -74,7 +74,6 @@ requirements:
     - {{posix}}automake-wrapper          # [win]
     - {{posix}}automake                  # [not win]
     - make                               # [not win]
-    - sed                                # [linux]
   host:
     - msys2-conda-epoch                  # [win]
     # This is a hack, strong run_exports should cause this to be added
@@ -120,6 +119,7 @@ requirements:
     - krb5                               # [not win]
     - libblas
     - liblapack
+    - sed                                # [linux]
 
   run:
     - _r-mutex 1.* anacondar_1
@@ -154,6 +154,7 @@ requirements:
     - {{ pin_compatible('pango') }}      # [not win]
     - {{ pin_compatible('bzip2') }}      # [not win]
     - {{ pin_compatible('icu') }}        # [not win]
+    - sed                                # [linux]
 
 
 test:
