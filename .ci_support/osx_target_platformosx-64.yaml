@@ -45,7 +45,7 @@ libpng:
 libssh2:
 - '1.8'
 libtiff:
-- 4.0.9
+- 4.0.10
 libxml2:
 - '2.9'
 macos_machine:
