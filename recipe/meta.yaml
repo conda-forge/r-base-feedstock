@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 1008
+  number: 1009
   rpaths:
     - lib/R/lib/
     - lib/
@@ -130,7 +130,7 @@ requirements:
     - libssh2                            # [not win]
     - krb5                               # [not win]
     - {{native}}openblas                 # [win]
-    - openblas                           # [not win]
+    - openblas =0.3.6 0                  # [not win]
 
 
   run:
