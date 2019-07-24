@@ -48,8 +48,6 @@ libxml2:
 - '2.9'
 ncurses:
 - '6.1'
-openblas:
-- 0.3.6
 pango:
 - '1.42'
 pin_run_as_build:
@@ -79,8 +77,6 @@ pin_run_as_build:
     max_pin: x.x
   ncurses:
     max_pin: x.x
-  openblas:
-    max_pin: x.x.x
   pango:
     max_pin: x.x
   readline:
