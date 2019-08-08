@@ -108,12 +108,12 @@ Linux() {
 
     # Backup the old libR{blas,lapack}.so files and replace them with OpenBLAS
     pushd ${PREFIX}/lib/R/lib
-      mv libRblas.so libRblas.so.reference
-      mv libRlapack.so libRlapack.so.reference
-      cp ../../libblas.so libRblas.so
-      cp ../../liblapack.so libRlapack.so
+      #mv libRblas.so libRblas.so.reference
+      #mv libRlapack.so libRlapack.so.reference
+      cp ../../libopenblas.so.0 libRlapack.so
+      rm libRblas.so
+      ln -s libRlapack.so libRblas.so
       # .. and modify the SONAME.
-      patchelf --set-soname libRblas.so libRblas.so
       patchelf --set-soname libRlapack.so libRlapack.so
     popd
 
@@ -466,17 +466,21 @@ Darwin() {
       # Need to ignore libopenblas run-exports if we keep these around:
       # mv libRblas.dylib libRblas.dylib.reference
       # mv libRlapack.dylib libRlapack.dylib.reference
-      cp ../../libblas.dylib libRblas.dylib
-      cp ../../liblapack.dylib libRlapack.dylib
-      ${INSTALL_NAME_TOOL} -id libRblas.dylib libRblas.dylib
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib libR.dylib
+      cp ../../libopenblas.0.dylib libRlapack.dylib
+      rm libRblas.dylib
+      ln -s libRlapack.dylib libRblas.dylib
+      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.0.dylib @rpath/R/lib/libRblas.dylib libR.dylib
       ${INSTALL_NAME_TOOL} -id libRlapack.dylib libRlapack.dylib
+      ${OTOOL} -L libRlapack.dylib
+      ${OTOOL} -D libRlapack.dylib
+      ${OTOOL} -L libR.dylib
+      ${OTOOL} -D libR.dylib
     popd
     pushd ${PREFIX}/lib/R/modules
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib lapack.so
+      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.0.dylib @rpath/R/lib/libRblas.dylib lapack.so
     popd
     pushd ${PREFIX}/lib/R/library/stats/libs
-      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.dylib @rpath/R/lib/libRblas.dylib stats.so
+      ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.0.dylib @rpath/R/lib/libRblas.dylib stats.so
     popd
 
     pushd ${PREFIX}/lib/R/etc

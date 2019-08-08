@@ -130,7 +130,7 @@ requirements:
     - libssh2                            # [not win]
     - krb5                               # [not win]
     - {{native}}openblas                 # [win]
-    - openblas =0.3.6 0                  # [not win]
+    - openblas =0.3.6                    # [not win]
 
 
   run:
@@ -195,7 +195,9 @@ about:
   home: http://www.r-project.org/
   license: GPL-3.0
   license_family: GPL
-  license_file: COPYING
+  license_file:
+    - COPYING
+    - OpenBLAS_LICENSE
   summary: 'R is a free software environment for statistical computing and graphics.'
 
 extra:
