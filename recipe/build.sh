@@ -110,7 +110,8 @@ Linux() {
     pushd ${PREFIX}/lib/R/lib
       #mv libRblas.so libRblas.so.reference
       #mv libRlapack.so libRlapack.so.reference
-      cp ../../libopenblas.0.so libRlapack.so
+      cp ../../libopenblas.so.0 libRlapack.so
+      rm libRblas.so
       ln -s libRlapack.so libRblas.so
       # .. and modify the SONAME.
       patchelf --set-soname libRlapack.so libRlapack.so
@@ -466,6 +467,7 @@ Darwin() {
       # mv libRblas.dylib libRblas.dylib.reference
       # mv libRlapack.dylib libRlapack.dylib.reference
       cp ../../libopenblas.0.dylib libRlapack.dylib
+      rm libRblas.dylib
       ln -s libRlapack.dylib libRblas.dylib
       ${INSTALL_NAME_TOOL} -change @rpath/libopenblas.0.dylib @rpath/R/lib/libRblas.dylib libR.dylib
       ${INSTALL_NAME_TOOL} -id libRlapack.dylib libRlapack.dylib
