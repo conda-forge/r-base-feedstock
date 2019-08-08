@@ -22,8 +22,8 @@ index 20da6d5dbb..913d095010 100755
 -    RBLAS_LDFLAGS="-install_name libRblas.dylib -headerpad_max_install_names"
 +    if true; then
 +      # Be very explicit to mimic OpenBLAS dylibs
-+      RLAPACK_LDFLAGS="-install_name @rpath/libopenblas.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
-+      RBLAS_LDFLAGS="-install_name @rpath/libopenblas.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
++      RLAPACK_LDFLAGS="-install_name @rpath/libopenblas.0.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
++      RBLAS_LDFLAGS="-install_name @rpath/libopenblas.0.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
 +    else
 +      RLAPACK_LDFLAGS="-install_name libRlapack.dylib -compatibility_version ${MAJR_VERSION} -current_version ${PACKAGE_VERSION}  -headerpad_max_install_names"
 +      ## don't use version in libRblas so we can replace it with any BLAS implementation
@@ -45,8 +45,8 @@ index 5e31a157b2..fb335e893f 100644
 -    RBLAS_LDFLAGS="-install_name libRblas.dylib -headerpad_max_install_names"
 +    if true; then
 +      # Be very explicit to mimic OpenBLAS dylibs
-+      RLAPACK_LDFLAGS="-install_name @rpath/libopenblas.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
-+      RBLAS_LDFLAGS="-install_name @rpath/libopenblas.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
++      RLAPACK_LDFLAGS="-install_name @rpath/libopenblas.0.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
++      RBLAS_LDFLAGS="-install_name @rpath/libopenblas.0.dylib -compatibility_version 0.0.0  -current_version 0.0.0  -headerpad_max_install_names"
 +    else
 +      RLAPACK_LDFLAGS="-install_name libRlapack.dylib -compatibility_version ${MAJR_VERSION} -current_version ${PACKAGE_VERSION}  -headerpad_max_install_names"
 +      ## don't use version in libRblas so we can replace it with any BLAS implementation
