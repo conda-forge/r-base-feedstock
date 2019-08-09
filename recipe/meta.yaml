@@ -3,7 +3,7 @@
 {% set version = '3.6.1' %}
 
 package:
-  name: r-base
+  name: r-base-core
   version: {{ version }}
 
 source:
@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 3
+  number: 4
   rpaths:
     - lib/R/lib/
     - lib/
@@ -178,6 +178,15 @@ test:
     - Rscript -e "stopifnot(capabilities('png'), TRUE)"
   files:
     - test-svg.R
+
+outputs:
+  - name: r-base-core
+
+  - name: r-base
+    requirements:
+      run:
+        - {{ pin_subpackage('r-base-core', exact=True) }}
+        - mscorefonts
 
 about:
   home: http://www.r-project.org/
