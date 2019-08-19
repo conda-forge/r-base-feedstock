@@ -37,7 +37,7 @@ libcurl:
 libiconv:
 - '1.15'
 libpng:
-- 1.6.35
+- '1.6'
 libssh2:
 - '1.8'
 libtiff:
