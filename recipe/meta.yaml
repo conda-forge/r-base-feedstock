@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 4
+  number: 5
   rpaths:
     - lib/R/lib/
     - lib/
@@ -103,7 +103,7 @@ requirements:
     - {{native}}libpng                   # [win]
     - pango                              # [not win]
     - {{native}}icu                      # [win]
-    - icu                                # [not win]
+    - icu 58.2                           # [not win]
     - {{native}}pcre
     - tk                                 # [not win]
     - {{native}}tk                       # [win]
