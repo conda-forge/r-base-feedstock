@@ -3,6 +3,9 @@
 aclocal -I m4
 autoconf
 
+# Delete ICU headers from BUILD_PREFIX
+rm -rf $BUILD_PREFIX/include/unicode
+
 # Filter out -std=.* from CXXFLAGS as it disrupts checks for C++ language levels.
 re='(.*[[:space:]])\-std\=[^[:space:]]*(.*)'
 if [[ "${CXXFLAGS}" =~ $re ]]; then
