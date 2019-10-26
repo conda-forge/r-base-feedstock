@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 4
+  number: 5
   rpaths:
     - lib/R/lib/
     - lib/
@@ -63,7 +63,6 @@ requirements:
     - {{ cdt('libxau') }}                # [linux]
     - {{ cdt('java-1.7.0-openjdk') }}    # [linux]
     - {{posix}}pkg-config
-    - llvm-openmp >=4.0.1                # [osx]
     - posix                              # [win]
     - m2-texinfo-tex                     # [win]
     - m2-texinfo                         # [win]
@@ -77,7 +76,7 @@ requirements:
   host:
     - msys2-conda-epoch                  # [win]
     # This is a hack, strong run_exports should cause this to be added
-    - llvm-openmp >=4.0.1                # [osx]
+    - llvm-openmp                        # [osx]
     - freetype                           # [not win]
     - readline                           # [not win]
     - ncurses                            # [not win]
