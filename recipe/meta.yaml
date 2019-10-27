@@ -125,7 +125,7 @@ requirements:
     - {{ pin_compatible("msys2-conda-epoch", exact=True) }}  # [win]
     # Needed by R CMD javareconf
     - make                               # [not win]
-    - {{ fortran_compiler|default("blah") }}_{{ target_platform }} >={{ fortran_compiler_version|default("0") }}     # [not win]
+    - {{ compiler('fortran') }}     # [not win]
     - {{ c_compiler|default("blah") }}_{{ target_platform }} >={{ c_compiler_version|default("0") }}                 # [not win]
     - {{ cxx_compiler|default("blah") }}_{{ target_platform }} >={{ cxx_compiler_version|default("0") }}             # [not win]
     - {{ pin_compatible('llvm-openmp', max_pin=None) }}      # [osx]
