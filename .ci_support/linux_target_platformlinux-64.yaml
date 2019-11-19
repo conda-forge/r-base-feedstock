@@ -43,7 +43,7 @@ libpng:
 libssh2:
 - '1.8'
 libtiff:
-- 4.0.10
+- 4.1.0
 libuuid:
 - 2.32.1
 libxml2:
