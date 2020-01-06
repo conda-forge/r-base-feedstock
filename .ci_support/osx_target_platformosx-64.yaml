@@ -5,7 +5,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '4'
+- '9'
 cairo:
 - '1.16'
 channel_sources:
@@ -15,11 +15,11 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '4'
+- '9'
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '4'
+- '7'
 freetype:
 - 2.9.1
 gsl:
@@ -39,7 +39,7 @@ libpng:
 libssh2:
 - '1.8'
 libtiff:
-- 4.0.10
+- 4.1.0
 libxml2:
 - '2.9'
 macos_machine:
