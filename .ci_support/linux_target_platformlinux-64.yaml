@@ -25,7 +25,7 @@ freetype:
 glib:
 - '2.58'
 gsl:
-- '2.5'
+- '2.6'
 icu:
 - '64.2'
 jpeg:
