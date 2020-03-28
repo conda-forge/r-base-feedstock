@@ -86,6 +86,7 @@ requirements:
     - {{posix}}automake-wrapper          # [win]
     - {{posix}}automake                  # [not win]
     - make                               # [not win]
+    - libcurl                            # [not win]
   host:
     - msys2-conda-epoch                  # [win]
     # This is a hack, strong run_exports should cause this to be added
