@@ -416,6 +416,9 @@ Darwin() {
     # http://openradar.appspot.com/radar?id=6069753579831296
     # .. anyway, uuid is part of libc on Darwin, so let's just try to use that.
     rm -f "${PREFIX}"/include/uuid/uuid.h
+    
+    # Make sure curl is found from PREFIX instead of BUILD_PREFIX
+    rm "${BUILD_PREFIX}/bin/curl-config"
 
     ./configure --prefix=${PREFIX}                  \
                 --host=${HOST}                      \
@@ -433,7 +436,7 @@ Darwin() {
                 --without-internal-tzcode           \
                 --enable-R-framework=no             \
                 --with-included-gettext=yes         \
-                --with-recommended-packages=no
+                --with-recommended-packages=no || (cat config.log; false)
 
     # Horrendous hack to make up for what seems to be bugs (or over-cautiousness?) in ld64's -dead_strip_dylibs (and/or -no_implicit_dylibs)
     sed -i'.bak' 's|-lgobject-2.0 -lglib-2.0 -lintl||g' src/library/grDevices/src/cairo/Makefile

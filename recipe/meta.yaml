@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "3.6.2" %}
+{% set version = "3.6.3" %}
 
 package:
   name: r-base
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: bd65a45cddfb88f37370fbcee4ac8dd3f1aebeebe47c2f968fd9770ba2bbc954
+  sha256: 89302990d8e8add536e12125ec591d6951022cf8475861b3690bc8bf1cefaa8f
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 1
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
@@ -73,6 +73,7 @@ requirements:
     - {{posix}}automake-wrapper          # [win]
     - {{posix}}automake                  # [not win]
     - make                               # [not win]
+    - libcurl                            # [not win]
   host:
     - msys2-conda-epoch                  # [win]
     # This is a hack, strong run_exports should cause this to be added
