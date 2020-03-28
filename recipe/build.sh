@@ -416,6 +416,9 @@ Darwin() {
     # http://openradar.appspot.com/radar?id=6069753579831296
     # .. anyway, uuid is part of libc on Darwin, so let's just try to use that.
     rm -f "${PREFIX}"/include/uuid/uuid.h
+    
+    # Make sure curl is found from PREFIX instead of BUILD_PREFIX
+    rm "${BUILD_PREFIX}/bin/curl-config"
 
     ./configure --prefix=${PREFIX}                  \
                 --host=${HOST}                      \
