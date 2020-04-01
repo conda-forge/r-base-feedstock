@@ -47,4 +47,10 @@ set MSYS2_PATH_TYPE=inherit
 set CHERE_INVOKING=1
 bash -lc "./build.sh"
 if errorlevel 1 exit 1
+
+cd "%PREFIX%\lib\R\bin\x64"
+gendef R.dll
+if errorlevel 1 exit 1
+dlltool -d R.def -l R.lib
+if errorlevel 1 exit 1
 exit 0

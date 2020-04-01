@@ -30,7 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 0
+  number: 1
   rpaths:
     - lib/R/lib/
     - lib/
@@ -176,6 +176,7 @@ test:
     # Prevent regression mentioned in https://github.com/conda-forge/r-base-feedstock/issues/50
     - Rscript -e "stopifnot(capabilities('jpeg'), TRUE)"
     - Rscript -e "stopifnot(capabilities('png'), TRUE)"
+    - if not exist %PREFIX%\\Lib\\R\\bin\\x64\\R.lib exit 1  # [win]
   files:
     - test-svg.R
 
