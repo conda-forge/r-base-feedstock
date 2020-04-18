@@ -1,14 +1,15 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "3.6.3" %}
+{% set version = "4.0.0rc20200417" %}
 
 package:
   name: r-base
   version: {{ version }}
 
 source:
-  url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
-  sha256: 89302990d8e8add536e12125ec591d6951022cf8475861b3690bc8bf1cefaa8f
+  url: https://cran.r-project.org/src/base-prerelease/R-rc_2020-04-17_r78247.tar.gz
+  # url: https://cran.r-project.org/src/base/R-3/R-{{ version }}.tar.gz
+  sha256: 90a0aa3a1e89779d618335e8c8c7892919a47892b0d2ecc0cf67eb8448d42d90
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -30,7 +31,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 1
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
@@ -104,7 +105,7 @@ requirements:
     - pango                              # [not win]
     - {{native}}icu                      # [win]
     - icu                                # [not win]
-    - {{native}}pcre
+    - {{native}}pcre2
     - tk                                 # [not win]
     - {{native}}tk                       # [win]
     - {{native}}zlib                     # [win]
@@ -155,6 +156,7 @@ requirements:
     - {{ pin_compatible('bzip2') }}      # [not win]
     - {{ pin_compatible('icu') }}        # [not win]
     - sed                                # [linux]
+    - pcre2
 
 
 test:
