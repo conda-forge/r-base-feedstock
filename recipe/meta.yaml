@@ -157,7 +157,6 @@ requirements:
     - sed                                # [linux]
     - pcre2
 
-
 test:
   commands:
     - R -h
