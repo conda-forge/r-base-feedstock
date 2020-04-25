@@ -135,7 +135,7 @@ Mingw_w64_autotools() {
     export CPPFLAGS="${CPPFLAGS} -I${SRC_DIR}/src/gnuwin32/fixed/h"
     export C_INCLUDE_PATH=${PATH}/Library/include
     if [[ "${ARCH}" == "64" ]]; then
-        export CPPFLAGS="${CPPFLAGS} -DWIN=64 -DMULTI=64"
+        export CPPFLAGS="${CPPFLAGS} -DWIN=64 -DMULTI=64 -I${PATH}/Library/include"
     fi
     ./configure --prefix=${PREFIX}              \
                 --enable-shared                 \
