@@ -133,6 +133,7 @@ Mingw_w64_autotools() {
     export TCL_LIBRARY=${PREFIX}/Library/mingw-w64/lib/tcl8.6
     export TK_LIBRARY=${PREFIX}/Library/mingw-w64/lib/tk8.6
     export CPPFLAGS="${CPPFLAGS} -I${SRC_DIR}/src/gnuwin32/fixed/h"
+    export C_INCLUDE_PATH=${PATH}/Library/include
     if [[ "${ARCH}" == "64" ]]; then
         export CPPFLAGS="${CPPFLAGS} -DWIN=64 -DMULTI=64"
     fi
