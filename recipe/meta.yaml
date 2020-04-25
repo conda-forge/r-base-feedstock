@@ -104,7 +104,7 @@ requirements:
     - pango                              # [not win]
     - {{ native }}icu                      # [win]
     - icu                                # [not win]
-    - {{ native }}pcre2
+    - pcre2
     - tk                                 # [not win]
     - {{ native }}tk                       # [win]
     - {{ native }}zlib                     # [win]
@@ -155,7 +155,6 @@ requirements:
     - {{ pin_compatible('bzip2') }}      # [not win]
     - {{ pin_compatible('icu') }}        # [not win]
     - sed                                # [linux]
-    - pcre2
 
 test:
   commands:
