@@ -104,7 +104,8 @@ requirements:
     - pango                              # [not win]
     - {{native}}icu                      # [win]
     - icu                                # [not win]
-    - {{native}}pcre                     # [not win]
+    - pcre2                              # [not win]
+    - {{native}}pcre2                    # [win]
     - tk                                 # [not win]
     - {{native}}tk                       # [win]
     - {{native}}zlib                     # [win]
@@ -144,7 +145,7 @@ requirements:
     - {{native}}bwidget
     - {{native}}tktable
     - {{native}}libpng                   # [win]
-    - {{native}}pcre                     # [win]
+    - {{native}}pcre2                    # [win]
     - {{native}}tk                       # [win]
     - {{native}}zlib                     # [win]
     - {{native}}gsl                      # [win]
