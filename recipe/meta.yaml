@@ -30,6 +30,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
+  skip: true  # [not win]
   number: 0
   rpaths:
     - lib/R/lib/
