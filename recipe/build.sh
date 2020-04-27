@@ -339,7 +339,17 @@ Mingw_w64_makefiles() {
     # Following dlls are not found in the current place. Copy them for now and remove later
     cp ${PREFIX}/Library/bin/libblas.dll   ${PREFIX}/Library/mingw-w64/bin/libblas.dll
     cp ${PREFIX}/Library/bin/liblapack.dll ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
-    cp ${PREFIX}/Library/bin/pcre2-8.dll ${PREFIX}/Library/mingw-w64/bin/libpcre2-8.dll
+
+    # We should separately pakage reimp
+    curl -L http://pub.ist.ac.at/~schloegl/software/reimp-0.50.zip -o reimp-0.50.zip
+    unzip reimp-0.50.zip
+    pushd reimp
+    gcc -I . reimp.c util.c ar.c -o reimp.exe
+    popd
+    reimp/reimp.exe -c -d ${LIBRARY_LIB}/pcre2-8.lib
+    dlltool.exe -k --input-def pcre2-8.def --dllname pcre2-8.dll --output-lib pcre2-8.dll.a
+    cp pcre2-8.dll.a $LIBRARY_PREFIX/mingw-w64/lib
+
     cd "${SRC_DIR}/src/gnuwin32"
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         # rinstaller and crandir would come after manuals (if it worked with MSYS2/mingw-w64-{tcl,tk}, in which case we'd just use make distribution anyway)
