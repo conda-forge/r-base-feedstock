@@ -339,6 +339,7 @@ Mingw_w64_makefiles() {
     # Following dlls are not found in the current place. Copy them for now and remove later
     cp ${PREFIX}/Library/bin/libblas.dll   ${PREFIX}/Library/mingw-w64/bin/libblas.dll
     cp ${PREFIX}/Library/bin/liblapack.dll ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
+    cp ${PREFIX}/Library/bin/pcre2-8.dll ${PREFIX}/Library/mingw-w64/bin/libpcre2-8.dll
     cd "${SRC_DIR}/src/gnuwin32"
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         # rinstaller and crandir would come after manuals (if it worked with MSYS2/mingw-w64-{tcl,tk}, in which case we'd just use make distribution anyway)
