@@ -33,7 +33,7 @@ krb5:
 libblas:
 - 3.8 *netlib
 libcurl:
-- '7.64'
+- '7'
 libiconv:
 - '1.15'
 liblapack:
