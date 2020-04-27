@@ -205,6 +205,7 @@ Mingw_w64_makefiles() {
     else
         # -O3 is used by R by default. It might be sensible to adopt -O2 here instead?
         echo "EOPTS = -I${PREFIX}/Library/include -march=${CPU} -mtune=generic"     >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+        sed -i "s;\"s/@EOPTS@/\\\$(EOPTS)/;\"s|@EOPTS@|\\\$(EOPTS)|;" "${SRC_DIR}/src/gnuwin32/fixed/Makefile"
     fi
     echo "OPENMP = -fopenmp"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "PTHREAD = -pthread"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
