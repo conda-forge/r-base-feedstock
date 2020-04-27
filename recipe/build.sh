@@ -204,7 +204,7 @@ Mingw_w64_makefiles() {
         echo "DEBUG = 1"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     else
         # -O3 is used by R by default. It might be sensible to adopt -O2 here instead?
-        echo "EOPTS = -march=${CPU} -mtune=generic"     >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+        echo "EOPTS = -I${PREFIX}/Library/include -march=${CPU} -mtune=generic"     >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     fi
     echo "OPENMP = -fopenmp"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "PTHREAD = -pthread"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
