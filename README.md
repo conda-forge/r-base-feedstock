@@ -16,17 +16,10 @@ Current build status
 
 
 <table><tr>
-    <td>Travis</td>
-    <td>
-      <a href="https://travis-ci.com/conda-forge/r-base-feedstock">
-        <img alt="macOS" src="https://img.shields.io/travis/com/conda-forge/r-base-feedstock/master.svg?label=macOS">
-      </a>
-    </td>
-  </tr><tr>
     <td>Drone</td>
     <td>
       <a href="https://cloud.drone.io/conda-forge/r-base-feedstock">
-        <img alt="linux" src="https://img.shields.io/drone/build/conda-forge/master.svg?label=Linux">
+        <img alt="linux" src="https://img.shields.io/drone/build/conda-forge/r-base-feedstock/master.svg?label=Linux">
       </a>
     </td>
   </tr>
