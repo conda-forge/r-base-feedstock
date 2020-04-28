@@ -6,16 +6,6 @@
 @rem that it doesn't block the terminal, but we also can't get the return
 @rem value for the conda build tests.
 
-curl -C - -o "mingw-w64-x86_64-pcre2-10.34-1-any.pkg.tar.xz" -SLO http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-pcre2-10.34-1-any.pkg.tar.xz
-if errorlevel 1 exit 1
-tar xf mingw-w64-x86_64-pcre2-10.34-1-any.pkg.tar.xz
-if errorlevel 1 exit 1
-cd mingw64
-if errorlevel 1 exit 1
-xcopy /s . %LIBRARY_PREFIX%\mingw-w64
-if errorlevel 1 exit 1
-cd ..
-
 gcc -DGUI=0 -O -s -o launcher.exe "%RECIPE_DIR%\launcher.c"
 if errorlevel 1 exit 1
 
