@@ -131,7 +131,6 @@ requirements:
     - {{ c_compiler|default("blah") }}_{{ target_platform }} >={{ c_compiler_version|default("0") }}                 # [not win]
     - {{ cxx_compiler|default("blah") }}_{{ target_platform }} >={{ cxx_compiler_version|default("0") }}             # [not win]
     - {{ pin_compatible('llvm-openmp', max_pin=None) }}      # [osx]
-    - {{ native }}gcc-libs                 # [win]
     - curl                                 # [not win]
     - {{ native }}bzip2                    # [win]
     - {{ native }}libjpeg-turbo            # [win]
