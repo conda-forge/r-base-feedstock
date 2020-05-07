@@ -167,6 +167,8 @@ test:
     - Rscript -e  'cat("ok\\n")'
     # TODO does not work on windows, because winCairo.dll is missing
     - Rscript test-svg.R                 # [not win]
+    # Show third-party graphics software available
+    - R -e "grSoftVersion()"             # [not win]
     - open                               # [win]
      # There doesn't seem to be a way to test this one
      # - RSetReg                         # [win]
