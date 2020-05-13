@@ -25,7 +25,7 @@ freetype:
 gsl:
 - '2.6'
 icu:
-- '64.2'
+- '67'
 jpeg:
 - '9'
 krb5:
@@ -41,7 +41,7 @@ liblapack:
 libpng:
 - '1.6'
 libssh2:
-- '1.8'
+- '1'
 libtiff:
 - 4.1.0
 libxml2:
@@ -72,8 +72,6 @@ pin_run_as_build:
   libiconv:
     max_pin: x.x
   libpng:
-    max_pin: x.x
-  libssh2:
     max_pin: x.x
   libtiff:
     max_pin: x
