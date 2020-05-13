@@ -12,3 +12,9 @@ if [[ ! -z ${R_LIBS_USER+x} && -z ${CONDA_KEEP_R_LIBS_USER+x} ]]; then
   export R_LIBS_USER_PREV="$R_LIBS_USER"
 fi
 unset R_LIBS_USER
+
+# store existing R_LIBS if the user has not set CONDA_KEEP_R_LIBS
+if [[ ! -z ${R_LIBS+x} && -z ${CONDA_KEEP_R_LIBS+x} ]]; then
+  export R_LIBS_PREV="$R_LIBS"
+fi
+unset R_LIBS

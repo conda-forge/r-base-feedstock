@@ -13,3 +13,9 @@ if [[ ! -z ${R_LIBS_USER_PREV+x} ]]; then
   export R_LIBS_USER="$R_LIBS_USER_PREV"
   unset R_LIBS_USER_PREV
 fi
+
+# restore pre-existing R_LIBS
+if [[ ! -z ${R_LIBS_PREV+x} ]]; then
+  export R_LIBS="$R_LIBS_PREV"
+  unset R_LIBS_PREV
+fi
