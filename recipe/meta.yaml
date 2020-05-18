@@ -27,10 +27,11 @@ source:
     - 0015-link-Xt-to-uuid.patch
     - 0017-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+    - 0019-Disable-default-user-libraries.patch
 
 build:
   merge_build_host: True  # [win]
-  number: 3
+  number: 4
   rpaths:
     - lib/R/lib/
     - lib/
@@ -177,8 +178,14 @@ test:
     - Rscript -e "stopifnot(capabilities('jpeg'), TRUE)"
     - Rscript -e "stopifnot(capabilities('png'), TRUE)"
     - if not exist %PREFIX%\\Lib\\R\\bin\\x64\\R.lib exit 1  # [win]
+    - Rscript test-isolation-setup.R
+    - Rscript test-isolation.R
+    - Rscript test-isolation-teardown.R
   files:
     - test-svg.R
+    - test-isolation-setup.R
+    - test-isolation.R
+    - test-isolation-teardown.R
 
 about:
   home: http://www.r-project.org/
