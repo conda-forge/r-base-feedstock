@@ -47,7 +47,7 @@ liblapack:
 libpng:
 - '1.6'
 libssh2:
-- '1.8'
+- '1'
 libtiff:
 - 4.1.0
 libuuid:
@@ -74,8 +74,6 @@ pin_run_as_build:
   libcurl:
     max_pin: x
   libpng:
-    max_pin: x.x
-  libssh2:
     max_pin: x.x
   libtiff:
     max_pin: x
