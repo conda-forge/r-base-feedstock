@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.0.1" %}
+{% set version = "4.0.2" %}
 
 package:
   name: r-base
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: 95fe24a4d8d8f8f888460c8f5fe4311cec656e7a1722d233218bc03861bc6f32
+  sha256: d3bceab364da0876625e4097808b42512395fdf41292f4915ab1fd257c1bbe75
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
