@@ -25,7 +25,7 @@ freetype:
 gsl:
 - '2.6'
 icu:
-- '64.2'
+- '67'
 jpeg:
 - '9'
 krb5:
