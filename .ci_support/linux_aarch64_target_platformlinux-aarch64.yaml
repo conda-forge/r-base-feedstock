@@ -55,7 +55,7 @@ libuuid:
 libxml2:
 - '2.9'
 ncurses:
-- '6.1'
+- '6.2'
 pango:
 - '1.42'
 pin_run_as_build:
