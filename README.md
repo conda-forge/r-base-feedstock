@@ -5,7 +5,7 @@ Home: http://www.r-project.org/
 
 Package license: GPL-2.0-or-later
 
-Feedstock license: BSD 3-Clause
+Feedstock license: BSD-3-Clause
 
 Summary: R is a free software environment for statistical computing and graphics.
 
@@ -178,4 +178,5 @@ Feedstock Maintainers
 * [@mingwandroid](https://github.com/mingwandroid/)
 * [@ocefpaf](https://github.com/ocefpaf/)
 * [@sodre](https://github.com/sodre/)
+* [@xhochy](https://github.com/xhochy/)
 

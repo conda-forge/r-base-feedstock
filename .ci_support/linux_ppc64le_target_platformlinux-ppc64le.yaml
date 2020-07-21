@@ -27,7 +27,7 @@ glib:
 gsl:
 - '2.6'
 icu:
-- '64.2'
+- '67'
 jpeg:
 - '9'
 krb5:
@@ -49,7 +49,7 @@ libuuid:
 libxml2:
 - '2.9'
 ncurses:
-- '6.1'
+- '6.2'
 pango:
 - '1.42'
 pin_run_as_build:
