@@ -33,7 +33,7 @@ glib:
 gsl:
 - '2.6'
 icu:
-- '64.2'
+- '67'
 jpeg:
 - '9'
 krb5:
@@ -41,13 +41,13 @@ krb5:
 libblas:
 - 3.8 *netlib
 libcurl:
-- '7.64'
+- '7'
 liblapack:
 - 3.8.0 *netlib
 libpng:
 - '1.6'
 libssh2:
-- '1.8'
+- '1'
 libtiff:
 - 4.1.0
 libuuid:
@@ -55,7 +55,7 @@ libuuid:
 libxml2:
 - '2.9'
 ncurses:
-- '6.1'
+- '6.2'
 pango:
 - '1.42'
 pin_run_as_build:
@@ -74,8 +74,6 @@ pin_run_as_build:
   libcurl:
     max_pin: x
   libpng:
-    max_pin: x.x
-  libssh2:
     max_pin: x.x
   libtiff:
     max_pin: x
