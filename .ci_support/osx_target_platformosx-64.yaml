@@ -5,7 +5,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '9'
+- '10'
 cairo:
 - '1.16'
 channel_sources:
@@ -15,7 +15,7 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '9'
+- '10'
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
@@ -25,7 +25,7 @@ freetype:
 gsl:
 - '2.6'
 icu:
-- '64.2'
+- '67'
 jpeg:
 - '9'
 krb5:
@@ -33,7 +33,7 @@ krb5:
 libblas:
 - 3.8 *netlib
 libcurl:
-- '7.64'
+- '7'
 libiconv:
 - '1.15'
 liblapack:
@@ -41,7 +41,7 @@ liblapack:
 libpng:
 - '1.6'
 libssh2:
-- '1.8'
+- '1'
 libtiff:
 - 4.1.0
 libxml2:
@@ -51,7 +51,7 @@ macos_machine:
 macos_min_version:
 - '10.9'
 ncurses:
-- '6.1'
+- '6.2'
 pango:
 - '1.42'
 pin_run_as_build:
@@ -72,8 +72,6 @@ pin_run_as_build:
   libiconv:
     max_pin: x.x
   libpng:
-    max_pin: x.x
-  libssh2:
     max_pin: x.x
   libtiff:
     max_pin: x
