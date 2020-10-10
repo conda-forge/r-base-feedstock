@@ -35,7 +35,7 @@ libblas:
 libcurl:
 - '7'
 libiconv:
-- '1.15'
+- '1.16'
 liblapack:
 - 3.8.0 *netlib
 libpng:
@@ -48,8 +48,6 @@ libxml2:
 - '2.9'
 macos_machine:
 - x86_64-apple-darwin13.4.0
-macos_min_version:
-- '10.9'
 ncurses:
 - '6.2'
 pango:
@@ -60,8 +58,6 @@ pin_run_as_build:
   cairo:
     max_pin: x.x
   freetype:
-    max_pin: x
-  icu:
     max_pin: x
   jpeg:
     max_pin: x
@@ -97,5 +93,9 @@ tk:
 - '8.6'
 xz:
 - '5.2'
+zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
+  - fortran_compiler_version
 zlib:
 - '1.2'
