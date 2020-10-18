@@ -76,6 +76,7 @@ requirements:
     - {{ posix }}automake                # [not win]
     - make                               # [not win]
     - libcurl                            # [not win]
+    - pkg-config                         # [osx]
   host:
     # This is a hack, strong run_exports should cause this to be added
     - llvm-openmp                        # [osx]
