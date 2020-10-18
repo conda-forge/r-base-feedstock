@@ -11,7 +11,6 @@ jobs:
       win_64_target_platformwin-64:
         CONFIG: win_64_target_platformwin-64
         UPLOAD_PACKAGES: 'True'
-    maxParallel: 4
   timeoutInMinutes: 360
   variables:
     CONDA_BLD_PATH: D:\\bld\\

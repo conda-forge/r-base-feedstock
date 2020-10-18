@@ -8,15 +8,14 @@ jobs:
     vmImage: ubuntu-16.04
   strategy:
     matrix:
-      linux_64_target_platformlinux-64:
-        CONFIG: linux_64_target_platformlinux-64
+      linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7target_platformlinux-64:
+        CONFIG: linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7target_platformlinux-64
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_ppc64le_target_platformlinux-ppc64le:
-        CONFIG: linux_ppc64le_target_platformlinux-ppc64le
+      linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9target_platformlinux-64:
+        CONFIG: linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9target_platformlinux-64
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
-    maxParallel: 8
+        DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
 
   steps:
