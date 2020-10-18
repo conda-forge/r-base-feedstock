@@ -43,7 +43,7 @@ libblas:
 libcurl:
 - '7'
 liblapack:
-- 3.8.0 *netlib
+- 3.8 *netlib
 libpng:
 - '1.6'
 libssh2:

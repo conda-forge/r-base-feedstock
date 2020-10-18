@@ -29,7 +29,7 @@ fortran_compiler_version:
 freetype:
 - 2.9.1
 glib:
-- '2.58'
+- 2.64.6
 gsl:
 - '2.6'
 icu:
@@ -43,7 +43,7 @@ libblas:
 libcurl:
 - '7'
 liblapack:
-- 3.8.0 *netlib
+- 3.8 *netlib
 libpng:
 - '1.6'
 libssh2:
