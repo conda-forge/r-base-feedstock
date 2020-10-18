@@ -438,6 +438,9 @@ Darwin() {
                 --with-included-gettext=yes         \
                 --with-recommended-packages=no || (cat config.log; false)
 
+
+    cat config.log
+    exit 1
     # Horrendous hack to make up for what seems to be bugs (or over-cautiousness?) in ld64's -dead_strip_dylibs (and/or -no_implicit_dylibs)
     sed -i'.bak' 's|-lgobject-2.0 -lglib-2.0 -lintl||g' src/library/grDevices/src/cairo/Makefile
     rm src/library/grDevices/src/cairo/Makefile.bak
