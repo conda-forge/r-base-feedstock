@@ -5,13 +5,15 @@
 jobs:
 - job: osx
   pool:
-    vmImage: macOS-10.14
+    vmImage: macOS-10.15
   strategy:
     matrix:
-      osx_target_platformosx-64:
-        CONFIG: osx_target_platformosx-64
+      osx_64_fortran_compiler_version7target_platformosx-64:
+        CONFIG: osx_64_fortran_compiler_version7target_platformosx-64
         UPLOAD_PACKAGES: 'True'
-    maxParallel: 8
+      osx_64_fortran_compiler_version9target_platformosx-64:
+        CONFIG: osx_64_fortran_compiler_version9target_platformosx-64
+        UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
 
   steps:
@@ -25,3 +27,5 @@ jobs:
     displayName: Run OSX build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      FEEDSTOCK_TOKEN: $(FEEDSTOCK_TOKEN)
+      STAGING_BINSTAR_TOKEN: $(STAGING_BINSTAR_TOKEN)
