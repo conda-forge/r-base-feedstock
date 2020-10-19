@@ -5,7 +5,7 @@ channel_targets:
 libblas:
 - 3.8 *netlib
 liblapack:
-- 3.8.0 *netlib
+- 3.8 *netlib
 m2w64_c_compiler:
 - m2w64-toolchain
 m2w64_cxx_compiler:

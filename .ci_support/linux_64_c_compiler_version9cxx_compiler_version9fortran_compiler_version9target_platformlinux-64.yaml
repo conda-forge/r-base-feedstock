@@ -3,7 +3,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '7'
+- '9'
 cairo:
 - '1.16'
 channel_sources:
@@ -13,17 +13,17 @@ channel_targets:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '7'
+- '9'
 docker_image:
 - condaforge/linux-anvil-comp7
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '7'
+- '9'
 freetype:
 - 2.9.1
 glib:
-- '2.58'
+- 2.64.6
 gsl:
 - '2.6'
 icu:
@@ -37,7 +37,7 @@ libblas:
 libcurl:
 - '7'
 liblapack:
-- 3.8.0 *netlib
+- 3.8 *netlib
 libpng:
 - '1.6'
 libssh2:
@@ -58,8 +58,6 @@ pin_run_as_build:
   cairo:
     max_pin: x.x
   freetype:
-    max_pin: x
-  icu:
     max_pin: x
   jpeg:
     max_pin: x
@@ -95,5 +93,9 @@ tk:
 - '8.6'
 xz:
 - '5.2'
+zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
+  - fortran_compiler_version
 zlib:
 - '1.2'
