@@ -1,27 +1,33 @@
-MACOSX_DEPLOYMENT_TARGET:
-- '10.9'
+BUILD:
+- aarch64-conda_cos7-linux-gnu
 bzip2:
 - '1'
 c_compiler:
-- clang
+- gcc
 c_compiler_version:
-- '10'
+- '9'
 cairo:
 - '1.16'
+cdt_arch:
+- aarch64
+cdt_name:
+- cos7
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- clangxx
+- gxx
 cxx_compiler_version:
-- '10'
+- '9'
+docker_image:
+- quay.io/condaforge/linux-anvil-aarch64
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '7'
+- '9'
 freetype:
-- 2.9.1
+- '2'
 glib:
 - 2.64.6
 gsl:
@@ -36,8 +42,6 @@ libblas:
 - 3.8 *netlib
 libcurl:
 - '7'
-libiconv:
-- '1.16'
 liblapack:
 - 3.8 *netlib
 libpng:
@@ -46,10 +50,10 @@ libssh2:
 - '1'
 libtiff:
 - 4.1.0
+libuuid:
+- 2.32.1
 libxml2:
 - '2.9'
-macos_machine:
-- x86_64-apple-darwin13.4.0
 ncurses:
 - '6.2'
 pango:
@@ -67,11 +71,11 @@ pin_run_as_build:
     max_pin: x.x
   libcurl:
     max_pin: x
-  libiconv:
-    max_pin: x.x
   libpng:
     max_pin: x.x
   libtiff:
+    max_pin: x
+  libuuid:
     max_pin: x
   libxml2:
     max_pin: x.x
@@ -90,7 +94,7 @@ pin_run_as_build:
 readline:
 - '8.0'
 target_platform:
-- osx-64
+- linux-aarch64
 tk:
 - '8.6'
 xz:

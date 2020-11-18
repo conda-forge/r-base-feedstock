@@ -6,6 +6,8 @@ c_compiler_version:
 - '9'
 cairo:
 - '1.16'
+cdt_name:
+- cos7
 channel_sources:
 - conda-forge,defaults
 channel_targets:
@@ -15,13 +17,13 @@ cxx_compiler:
 cxx_compiler_version:
 - '9'
 docker_image:
-- condaforge/linux-anvil-comp7
+- quay.io/condaforge/linux-anvil-ppc64le
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
 - '9'
 freetype:
-- 2.9.1
+- '2'
 glib:
 - 2.64.6
 gsl:
@@ -79,8 +81,6 @@ pin_run_as_build:
     max_pin: x.x
   readline:
     max_pin: x
-  tk:
-    max_pin: x.x
   xz:
     max_pin: x.x
   zlib:
@@ -88,9 +88,7 @@ pin_run_as_build:
 readline:
 - '8.0'
 target_platform:
-- linux-64
-tk:
-- '8.6'
+- linux-ppc64le
 xz:
 - '5.2'
 zip_keys:
