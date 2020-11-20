@@ -1,5 +1,7 @@
 #!/bin/bash
 # Get an updated config.sub and config.guess
+set -x
+
 cp $BUILD_PREFIX/share/gnuconfig/config.* ./tools
 
 aclocal -I m4
@@ -393,6 +395,17 @@ Mingw_w64_makefiles() {
 
 Darwin() {
     unset JAVA_HOME
+
+    if [[ $CONDA_BUILD_CROSS_COMPILATION == 1 && $target_platform == osx-arm64 ]]; then
+	export r_cv_header_zlib_h=yes
+	export r_cv_have_bzlib=yes
+	export r_cv_have_lzma=yes
+	export r_cv_have_pcre2utf=yes
+	export r_cv_have_pcre832=yes
+	export r_cv_have_curl722=yes
+	export r_cv_have_curl728=yes
+	export r_cv_have_curl_https=yes
+    fi
 
     # --without-internal-tzcode to avoid warnings:
     # unknown timezone 'Europe/London'
