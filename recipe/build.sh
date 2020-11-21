@@ -16,6 +16,14 @@ if [[ $CONDA_BUILD_CROSS_COMPILATION == 1 ]]; then
     export r_cv_have_curl722=yes
     export r_cv_have_curl728=yes
     export r_cv_have_curl_https=yes
+    export r_cv_size_max=yes
+    export r_cv_prog_fc_char_len_t=size_t
+    export r_cv_kern_usrstack=yes
+    export ac_cv_lib_icucore_ucol_open=yes
+    export ac_cv_func_mmap_fixed_mapped=yes
+    export r_cv_working_mktime=yes
+    export r_cv_func_ctanh_works=yes
+    # Need to check for openmp simd...
 fi
 
 # Filter out -std=.* from CXXFLAGS as it disrupts checks for C++ language levels.
@@ -113,6 +121,8 @@ Linux() {
         cat config.log | grep pango
         exit 1
     fi
+
+    exit 1
 
     make -j${CPU_COUNT} ${VERBOSE_AT}
     # echo "Running make check-all, this will take some time ..."
