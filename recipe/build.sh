@@ -1,7 +1,38 @@
 #!/bin/bash
+# Get an updated config.sub and config.guess
+set -x
+
+cp $BUILD_PREFIX/share/gnuconfig/config.* ./tools
 
 aclocal -I m4
 autoconf
+
+if [[ $CONDA_BUILD_CROSS_COMPILATION == 1 ]]; then
+    export r_cv_header_zlib_h=yes
+    export r_cv_have_bzlib=yes
+    export r_cv_have_lzma=yes
+    export r_cv_have_pcre2utf=yes
+    export r_cv_have_pcre832=yes
+    export r_cv_have_curl722=yes
+    export r_cv_have_curl728=yes
+    export r_cv_have_curl_https=yes
+    export r_cv_size_max=yes
+    export r_cv_prog_fc_char_len_t=size_t
+    export r_cv_kern_usrstack=yes
+    export ac_cv_lib_icucore_ucol_open=yes
+    export ac_cv_func_mmap_fixed_mapped=yes
+    export r_cv_working_mktime=yes
+    export r_cv_func_ctanh_works=yes
+    # Need to check for openmp simd...
+    mkdir -p doc
+    export BUILD_R_PREFIX=$PREFIX/../cross
+    conda create -p $BUILD_R_PREFIX r-base=${PKG_VERSION} --yes --quiet
+    cp $BUILD_R_PREFIX/lib/R/doc/NEWS.rds doc/
+    cp $BUILD_R_PREFIX/lib/R/doc/NEWS.2.rds doc/
+    cp $BUILD_R_PREFIX/lib/R/doc/NEWS.3.rds doc/
+    cp $BUILD_R_PREFIX/share/man/man1/R.1 doc/
+    EXTRA_MAKE_ARGS="R_EXE=echo"
+fi
 
 # Filter out -std=.* from CXXFLAGS as it disrupts checks for C++ language levels.
 re='(.*[[:space:]])\-std\=[^[:space:]]*(.*)'
@@ -442,10 +473,10 @@ Darwin() {
     sed -i'.bak' 's|-lgobject-2.0 -lglib-2.0 -lintl||g' src/library/grDevices/src/cairo/Makefile
     rm src/library/grDevices/src/cairo/Makefile.bak
 
-    make -j${CPU_COUNT} ${VERBOSE_AT}
+    make -j${CPU_COUNT} ${VERBOSE_AT} ${EXTRA_MAKE_ARGS}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
-    make install
+    make install ${EXTRA_MAKE_ARGS}
 
     pushd ${PREFIX}/lib/R/etc
       sed -i -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
@@ -454,7 +485,7 @@ Darwin() {
     popd
 }
 
-if [[ $target_platform == osx-64 ]]; then
+if [[ $target_platform =~ .*osx.* ]]; then
   Darwin
   mkdir -p ${PREFIX}/etc/conda/activate.d
   cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
@@ -466,7 +497,18 @@ elif [[ $target_platform =~ .*linux.* ]]; then
   cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
   mkdir -p ${PREFIX}/etc/conda/deactivate.d
   cp "${RECIPE_DIR}"/deactivate-${PKG_NAME}.sh ${PREFIX}/etc/conda/deactivate.d/deactivate-${PKG_NAME}.sh
-elif [[ $(uname) =~ M.* ]]; then
+elif [[ $target_platform =~ .*win.* ]]; then
   # Mingw_w64_autotools
   Mingw_w64_makefiles
+fi
+
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
+  pushd $BUILD_R_PREFIX/lib/R
+  rm etc/Makeconf-r
+  for f in $(find . -type f); do
+    if [[ ! -f $PREFIX/lib/R/$f ]]; then
+      mkdir -p $PREFIX/lib/R/$(dirname $f)
+      cp $f $PREFIX/lib/R/$f
+    fi
+  done
 fi

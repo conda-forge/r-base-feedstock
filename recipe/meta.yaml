@@ -47,6 +47,7 @@ build:
 
 requirements:
   build:
+    - gnuconfig  # [unix]
     - {{ compiler('c') }}                # [not win]
     - {{ compiler('cxx') }}              # [not win]
     - {{ compiler('fortran') }}          # [not win]
