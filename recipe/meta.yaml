@@ -164,6 +164,30 @@ outputs:
         - {{ pin_compatible('icu') }}        # [not win]
         - sed                                # [linux]
 
+    test:
+      commands:
+        - R -h
+        - R --version
+        - R -e "library('tcltk')"            # [linux]
+        - R -e \"library('tcltk')\""         # [win]
+        - Rscript --version
+        - Rscript -e  'cat("ok\\n")'
+        # TODO does not work on windows, because winCairo.dll is missing
+        - Rscript test-svg.R                 # [not win]
+        - open                               # [win]
+         # There doesn't seem to be a way to test this one
+         # - RSetReg                         # [win]
+        - Rfe --help                         # [win]
+        - Rterm --help                       # [win]
+        - Rterm --version                    # [win]
+        # Prevent regression mentioned in https://github.com/conda-forge/r-base-feedstock/issues/50
+        - Rscript -e "stopifnot(capabilities('jpeg'), TRUE)"
+        - Rscript -e "stopifnot(capabilities('png'), TRUE)"
+        - if not exist %PREFIX%\\Lib\\R\\bin\\x64\\R.lib exit 1  # [win]
+      files:
+        - test-svg.R
+
+
   - name: cross-r-base
     build:
       skip: True  # [win]
@@ -171,29 +195,9 @@ outputs:
     requirements:
       run:
         - {{ pin_subpackage("r-base", exact=True) }}
-
-test:
-  commands:
-    - R -h
-    - R --version
-    - R -e "library('tcltk')"            # [linux]
-    - R -e \"library('tcltk')\""         # [win]
-    - Rscript --version
-    - Rscript -e  'cat("ok\\n")'
-    # TODO does not work on windows, because winCairo.dll is missing
-    - Rscript test-svg.R                 # [not win]
-    - open                               # [win]
-     # There doesn't seem to be a way to test this one
-     # - RSetReg                         # [win]
-    - Rfe --help                         # [win]
-    - Rterm --help                       # [win]
-    - Rterm --version                    # [win]
-    # Prevent regression mentioned in https://github.com/conda-forge/r-base-feedstock/issues/50
-    - Rscript -e "stopifnot(capabilities('jpeg'), TRUE)"
-    - Rscript -e "stopifnot(capabilities('png'), TRUE)"
-    - if not exist %PREFIX%\\Lib\\R\\bin\\x64\\R.lib exit 1  # [win]
-  files:
-    - test-svg.R
+    test:
+      commands:
+        - test -f $PREFIX/etc/conda/activate.d/activate-r-base-cross.sh
 
 about:
   home: http://www.r-project.org/
