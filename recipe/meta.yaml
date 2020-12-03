@@ -1,7 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
 {% set version = "4.0.3" %}
-{% set build_num = "3" %}
 
 package:
   name: r-base-split
@@ -30,7 +29,7 @@ source:
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
-  number: {{ build_num }}
+  number: 3
 
 outputs:
   - name: r-base
@@ -38,7 +37,6 @@ outputs:
     script: bld-r-base.bat  # [win]
     build:
       merge_build_host: true  # [win]
-      number: {{ build_num }}
       rpaths:
         - lib/R/lib/
         - lib/
