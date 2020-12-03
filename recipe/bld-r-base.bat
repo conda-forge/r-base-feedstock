@@ -39,13 +39,13 @@ if errorlevel 1 exit 1
 copy launcher.exe "%PREFIX%\Scripts\open.exe"
 if errorlevel 1 exit 1
 
-copy "%RECIPE_DIR%\build.sh" .
+copy "%RECIPE_DIR%\build-r-base.sh" .
 set PREFIX=%PREFIX:\=/%
 set SRC_DIR=%SRC_DIR:\=/%
 set MSYSTEM=MINGW%ARCH%
 set MSYS2_PATH_TYPE=inherit
 set CHERE_INVOKING=1
-bash -lc "./build.sh"
+bash -lc "./build-r-base.sh"
 if errorlevel 1 exit 1
 
 cd "%PREFIX%\lib\R\bin\x64"
