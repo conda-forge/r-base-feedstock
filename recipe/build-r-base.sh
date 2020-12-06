@@ -512,3 +512,9 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
     fi
   done
 fi
+
+if [[ -f $PREFIX/lib/R/etc/Makeconf ]]; then
+  mv $PREFIX/lib/R/etc/Makeconf .
+  echo "R_HOME=$PREFIX/lib/R"   > $PREFIX/lib/R/etc/Makeconf
+  cat Makeconf                 >> $PREFIX/lib/R/etc/Makeconf
+fi
