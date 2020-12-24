@@ -87,7 +87,9 @@ Linux() {
     unset JAVA_HOME
 
     export CPPFLAGS="${CPPFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
-    export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+    
+    # Make sure curl is found from PREFIX instead of BUILD_PREFIX
+    rm "${BUILD_PREFIX}/bin/curl-config"
 
     mkdir -p ${PREFIX}/lib
     # Tricky libuuid resolution issues against CentOS6's libSM. I may need to add some symbols to our libuuid library.
