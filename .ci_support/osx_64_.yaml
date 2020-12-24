@@ -23,11 +23,11 @@ fortran_compiler_version:
 freetype:
 - '2'
 glib:
-- 2.64.6
+- '2.66'
 gsl:
 - '2.6'
 icu:
-- '67'
+- '68'
 jpeg:
 - '9'
 krb5:
