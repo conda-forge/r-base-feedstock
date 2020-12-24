@@ -3,6 +3,7 @@
 set -x
 
 cp $BUILD_PREFIX/share/gnuconfig/config.* ./tools
+rm -rf $BUILD_PREFIX/include
 
 aclocal -I m4
 autoconf
