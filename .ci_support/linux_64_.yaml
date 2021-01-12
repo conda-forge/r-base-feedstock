@@ -1,35 +1,31 @@
-BUILD:
-- aarch64-conda_cos7-linux-gnu
 bzip2:
 - '1'
 c_compiler:
 - gcc
 c_compiler_version:
-- '7'
+- '9'
 cairo:
 - '1.16'
-cdt_arch:
-- aarch64
 cdt_name:
-- cos7
+- cos6
 channel_sources:
-- conda-forge
+- conda-forge,defaults
 channel_targets:
 - conda-forge main
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '7'
+- '9'
 docker_image:
-- condaforge/linux-anvil-aarch64
+- quay.io/condaforge/linux-anvil-comp7
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '7'
+- '9'
 freetype:
-- 2.9.1
+- '2'
 glib:
-- 2.64.6
+- '2.66'
 gsl:
 - '2.6'
 icu:
@@ -94,7 +90,7 @@ pin_run_as_build:
 readline:
 - '8.0'
 target_platform:
-- linux-aarch64
+- linux-64
 tk:
 - '8.6'
 xz:
@@ -103,5 +99,7 @@ zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
   - fortran_compiler_version
+- - cdt_name
+  - docker_image
 zlib:
 - '1.2'
