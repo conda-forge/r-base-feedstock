@@ -72,6 +72,10 @@ Linux() {
     #   export CFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64 ${CFLAGS}"
     #   export CXXFLAGS="-I${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64 ${CXXFLAGS}"
     # fi
+
+    # Make sure curl is found from PREFIX instead of BUILD_PREFIX
+    rm "${BUILD_PREFIX}/bin/curl-config"
+
     echo "ac_cv_lib_Xt_XtToolkitInitialize=yes" > config.site
     export CONFIG_SITE=${PWD}/config.site
     ./configure --prefix=${PREFIX}               \
