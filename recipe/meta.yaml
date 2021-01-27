@@ -29,7 +29,7 @@ source:
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
-  number: 4
+  number: 5
 
 outputs:
   - name: r-base
@@ -200,6 +200,7 @@ outputs:
     requirements:
       run:
         - {{ pin_subpackage("r-base", exact=True) }}
+        - rsync
     test:
       commands:
         - test -f $PREFIX/etc/conda/activate.d/activate-cross-r-base.sh
