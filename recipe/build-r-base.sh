@@ -87,7 +87,7 @@ Linux() {
     unset JAVA_HOME
 
     export CPPFLAGS="${CPPFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
-    
+
     # Make sure curl is found from PREFIX instead of BUILD_PREFIX
     rm "${BUILD_PREFIX}/bin/curl-config"
 
@@ -449,7 +449,7 @@ Darwin() {
     # http://openradar.appspot.com/radar?id=6069753579831296
     # .. anyway, uuid is part of libc on Darwin, so let's just try to use that.
     rm -f "${PREFIX}"/include/uuid/uuid.h
-    
+
     # Make sure curl is found from PREFIX instead of BUILD_PREFIX
     rm "${BUILD_PREFIX}/bin/curl-config"
 
@@ -482,6 +482,8 @@ Darwin() {
 
     pushd ${PREFIX}/lib/R/etc
       sed -i -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
+      sed -i -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf
+      sed -i -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf-r
       # See: https://github.com/conda/conda/issues/6701
       chmod g+w Makeconf ldpaths
     popd
