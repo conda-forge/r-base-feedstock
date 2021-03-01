@@ -29,7 +29,7 @@ source:
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
-  number: 6
+  number: 7
 
 outputs:
   - name: r-base
