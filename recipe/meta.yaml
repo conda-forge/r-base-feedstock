@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.0.3" %}
+{% set version = "4.0.4" %}
 
 package:
   name: r-base-split
@@ -8,28 +8,10 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: 09983a8a78d5fb6bc45d27b1c55f9ba5265f78fa54a55c13ae691f87c5bb9e0d
-  patches:
-    - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
-    - 0002-Fix-trio-config.h-include-depth-issue.patch
-    - 0003-Win32-Do-not-link-static-libgcc.patch
-    - 0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
-    - 0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
-    - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
-    - 0007-Use-AC_SEARCH_LIBS-to-search-for-ncursesw-then-ncurs.patch
-    - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0009-macOS-include-cairo.h-not-cairo-xlib.h.patch
-    - 0010-javareconf-Do-not-fail-on-compile-fail.patch
-    - 0011-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
-    - 0012-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
-    - 0013-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
-    - 0014-Add-luuid-to-X_PRE_LIBS.patch
-    - 0015-link-Xt-to-uuid.patch
-    - 0017-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
-    - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+  sha256: 523f27d69744a08c8f0bd5e1e6c3d89a4db29ed983388ba70963a3cd3a4a802e
 
 build:
-  number: 7
+  number: 0
 
 outputs:
   - name: r-base
@@ -196,7 +178,7 @@ outputs:
 
   - name: cross-r-base
     build:
-      skip: True  # [win]
+      skip: true  # [win]
     script: install-cross-activate.sh
     requirements:
       run:
