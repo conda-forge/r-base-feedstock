@@ -29,7 +29,7 @@ fortran_compiler_version:
 freetype:
 - '2'
 glib:
-- '2.66'
+- '2'
 gsl:
 - '2.6'
 icu:
@@ -49,7 +49,7 @@ libpng:
 libssh2:
 - '1'
 libtiff:
-- 4.1.0
+- '4'
 libuuid:
 - 2.32.1
 libxml2:
@@ -58,6 +58,8 @@ ncurses:
 - '6.2'
 pango:
 - '1.42'
+pcre2:
+- '10.36'
 pin_run_as_build:
   bzip2:
     max_pin: x
