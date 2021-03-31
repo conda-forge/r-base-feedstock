@@ -18,7 +18,7 @@ source:
     - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
     - 0007-Use-AC_SEARCH_LIBS-to-search-for-ncursesw-then-ncurs.patch
     - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0009-macOS-include-cairo.h-not-cairo-xlib.h.patch
+    # - 0009-macOS-include-cairo.h-not-cairo-xlib.h.patch
     - 0010-javareconf-Do-not-fail-on-compile-fail.patch
     - 0011-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
     - 0012-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
