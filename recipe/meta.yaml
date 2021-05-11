@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.0.3" %}
+{% set version = "4.0.5" %}
 
 package:
   name: r-base-split
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: 09983a8a78d5fb6bc45d27b1c55f9ba5265f78fa54a55c13ae691f87c5bb9e0d
+  sha256: 0a3ee079aa772e131fe5435311ab627fcbccb5a50cabc54292e6f62046f1ffef
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -18,7 +18,6 @@ source:
     - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
     - 0007-Use-AC_SEARCH_LIBS-to-search-for-ncursesw-then-ncurs.patch
     - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0009-macOS-include-cairo.h-not-cairo-xlib.h.patch
     - 0010-javareconf-Do-not-fail-on-compile-fail.patch
     - 0011-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
     - 0012-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
@@ -29,7 +28,7 @@ source:
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
-  number: 8
+  number: 0
 
 outputs:
   - name: r-base
@@ -56,7 +55,6 @@ outputs:
         - {{ compiler('c') }}                # [not win]
         - {{ compiler('cxx') }}              # [not win]
         - {{ compiler('fortran') }}          # [not win]
-        - gfortran_impl_osx-arm64 11.0.0.dev0 *_17  # [target_platform == "osx-arm64"]
         - {{ compiler('m2w64_c') }}          # [win]
         - {{ compiler('m2w64_cxx') }}        # [win]
         - {{ compiler('m2w64_fortran') }}     # [win]
@@ -196,7 +194,7 @@ outputs:
 
   - name: cross-r-base
     build:
-      skip: True  # [win]
+      skip: true  # [win]
     script: install-cross-activate.sh
     requirements:
       run:
