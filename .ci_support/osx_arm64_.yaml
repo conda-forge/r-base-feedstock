@@ -31,7 +31,7 @@ icu:
 jpeg:
 - '9'
 krb5:
-- 1.17.1
+- '1.19'
 libblas:
 - 3.9 *netlib
 libcurl:
