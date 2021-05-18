@@ -214,12 +214,9 @@ about:
 extra:
   feedstock-name: r-base
   recipe-maintainers:
-    - bgruening
-    - johanneskoester
+    - conda-forge/r
     - isuruf
     - mingwandroid
     - ocefpaf
     - sodre
-    - jdblischak
-    - dpryan79
     - xhochy
