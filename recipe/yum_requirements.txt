@@ -6,3 +6,4 @@ libXt-devel
 libXrender-devel
 libXext-devel
 libXdmcp-devel
+texlive-scheme-minimal
