@@ -7,3 +7,4 @@ libXrender-devel
 libXext-devel
 libXdmcp-devel
 texlive-latex
+texinfo
