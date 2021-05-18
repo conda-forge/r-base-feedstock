@@ -75,8 +75,7 @@ outputs:
         - m2-texinfo                         # [win]
         - m2-curl                            # [win]
         - m2-p7zip                           # [win]
-        # using yum on Linux
-        - texlive-core                       # [osx]
+        #- texlive-core                       # [unix]
         - openjdk
         - {{ posix }}autoconf
         - {{ posix }}automake-wrapper        # [win]
