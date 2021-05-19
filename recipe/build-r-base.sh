@@ -1,13 +1,12 @@
 #!/bin/bash
 # Get an updated config.sub and config.guess
-set -x
+set -exo pipefail
 
 cp $BUILD_PREFIX/share/gnuconfig/config.* ./tools
 
-aclocal -I m4
-autoconf
+export
 
-if [[ $CONDA_BUILD_CROSS_COMPILATION == 1 ]]; then
+if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     export r_cv_header_zlib_h=yes
     export r_cv_have_bzlib=yes
     export r_cv_have_lzma=yes
@@ -25,14 +24,45 @@ if [[ $CONDA_BUILD_CROSS_COMPILATION == 1 ]]; then
     export r_cv_func_ctanh_works=yes
     # Need to check for openmp simd...
     mkdir -p doc
-    export BUILD_R_PREFIX=$PREFIX/../cross
-    conda create -p $BUILD_R_PREFIX r-base=${PKG_VERSION} --yes --quiet
-    cp $BUILD_R_PREFIX/lib/R/doc/NEWS.rds doc/
-    cp $BUILD_R_PREFIX/lib/R/doc/NEWS.2.rds doc/
-    cp $BUILD_R_PREFIX/lib/R/doc/NEWS.3.rds doc/
-    cp $BUILD_R_PREFIX/share/man/man1/R.1 doc/
-    EXTRA_MAKE_ARGS="R_EXE=echo"
+    (
+      export CFLAGS=""
+
+      export CXXFLAGS=""
+      export CC=$CC_FOR_BUILD
+      export CXX=$CXX_FOR_BUILD
+      export AR=$($CC_FOR_BUILD -print-prog-name=ar)
+      export F77=${F77//$HOST/$BUILD}
+      export F90=${F90//$HOST/$BUILD}
+      export F95=${F95//$HOST/$BUILD}
+      export FC=${FC//$HOST/$BUILD}
+      export GFORTRAN=${FC//$HOST/$BUILD}
+      export LD=${LD//$HOST/$BUILD}
+      export FFLAGS=${FFLAGS//$PREFIX/$BUILD_PREFIX}
+      export FORTRANFLAGS=${FORTRANFLAGS//$PREFIX/$BUILD_PREFIX}
+      # Filter out -march=.* from F*FLAGS
+      re='\-march\=[^[:space:]]*(.*)'
+      if [[ "${FFLAGS}" =~ $re ]]; then
+        export FFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+      fi
+      re='\-march\=[^[:space:]]*(.*)'
+      if [[ "${FORTRANFLAGS}" =~ $re ]]; then
+        export FORTRANFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+      fi
+      export LDFLAGS=${LDFLAGS//$PREFIX/$BUILD_PREFIX}
+      export CPPFLAGS=${CPPFLAGS//$PREFIX/$BUILD_PREFIX}
+      export NM=$($CC_FOR_BUILD -print-prog-name=nm)
+      export PKG_CONFIG_PATH=${BUILD_PREFIX}/lib/pkgconfig
+      export CONDA_BUILD_CROSS_COMPILATION=0
+      export HOST=$BUILD
+      export PREFIX=$BUILD_PREFIX
+      export IS_MINIMAL_R_BUILD=1
+      # Use the original script without the prepended activation commands.
+      /bin/bash ${RECIPE_DIR}/build-r-base.sh
+    )
 fi
+
+aclocal -I m4
+autoconf
 
 # Filter out -std=.* from CXXFLAGS as it disrupts checks for C++ language levels.
 re='(.*[[:space:]])\-std\=[^[:space:]]*(.*)'
@@ -89,7 +119,7 @@ Linux() {
     export CPPFLAGS="${CPPFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
 
     # Make sure curl is found from PREFIX instead of BUILD_PREFIX
-    rm "${BUILD_PREFIX}/bin/curl-config"
+    rm -f "${BUILD_PREFIX}/bin/curl-config"
 
     mkdir -p ${PREFIX}/lib
     # Tricky libuuid resolution issues against CentOS6's libSM. I may need to add some symbols to our libuuid library.
@@ -107,24 +137,27 @@ Linux() {
     # fi
     echo "ac_cv_lib_Xt_XtToolkitInitialize=yes" > config.site
     export CONFIG_SITE=${PWD}/config.site
+    if [[ "${IS_MINIMAL_R_BUILD:-0}" == "1" ]]; then
+	CONFIGURE_ARGS="--without-x"
+    else
+	CONFIGURE_ARGS="--with-x --with-blas=-lblas --with-lapack=-llapack"
+    fi
     ./configure --prefix=${PREFIX}               \
                 --host=${HOST}                   \
                 --build=${BUILD}                 \
                 --enable-shared                  \
                 --enable-R-shlib                 \
-                --with-blas=-lblas               \
-                --with-lapack=-llapack           \
                 --disable-prebuilt-html          \
                 --enable-memory-profiling        \
                 --with-tk-config=${TK_CONFIG}    \
                 --with-tcl-config=${TCL_CONFIG}  \
-                --with-x                         \
                 --with-pic                       \
                 --with-cairo                     \
                 --with-readline                  \
                 --with-recommended-packages=no   \
                 --without-libintl-prefix         \
-                LIBnn=lib
+		${CONFIGURE_ARGS}                \
+		LIBnn=lib || (cat config.log; exit 1)
 
     if cat src/include/config.h | grep "undef HAVE_PANGOCAIRO"; then
         echo "Did not find pangocairo, refusing to continue"
@@ -451,7 +484,7 @@ Darwin() {
     rm -f "${PREFIX}"/include/uuid/uuid.h
 
     # Make sure curl is found from PREFIX instead of BUILD_PREFIX
-    rm "${BUILD_PREFIX}/bin/curl-config"
+    rm -f "${BUILD_PREFIX}/bin/curl-config"
 
     ./configure --prefix=${PREFIX}                  \
                 --host=${HOST}                      \
@@ -475,6 +508,14 @@ Darwin() {
     sed -i'.bak' 's|-lgobject-2.0 -lglib-2.0 -lintl||g' src/library/grDevices/src/cairo/Makefile
     rm src/library/grDevices/src/cairo/Makefile.bak
 
+    make clean
+    if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
+      cp $BUILD_PREFIX/lib/R/doc/NEWS.rds doc/
+      cp $BUILD_PREFIX/lib/R/doc/NEWS.2.rds doc/
+      cp $BUILD_PREFIX/lib/R/doc/NEWS.3.rds doc/
+      cp $BUILD_PREFIX/share/man/man1/R.1 doc/
+      EXTRA_MAKE_ARGS="R_EXE=echo"
+    fi
     make -j${CPU_COUNT} ${VERBOSE_AT} ${EXTRA_MAKE_ARGS}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
@@ -507,7 +548,7 @@ elif [[ $target_platform =~ .*win.* ]]; then
 fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
-  pushd $BUILD_R_PREFIX/lib/R
+  pushd $BUILD_PREFIX/lib/R
   rm etc/Makeconf-r
   for f in $(find . -type f); do
     if [[ ! -f $PREFIX/lib/R/$f ]]; then
