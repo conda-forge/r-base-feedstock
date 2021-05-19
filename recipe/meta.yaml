@@ -83,6 +83,33 @@ outputs:
         - {{ posix }}automake                # [not win]
         - make                               # [not win]
         - libcurl                            # [not win]
+        - sed                                # [linux]
+        - freetype                            # [build_platform != target_platform]
+        - readline                            # [build_platform != target_platform]
+        - ncurses                             # [build_platform != target_platform]
+        - libcurl                             # [build_platform != target_platform]
+        - xz                                  # [build_platform != target_platform]
+        - libpng                              # [build_platform != target_platform]
+        - bzip2                               # [build_platform != target_platform]
+        - cairo                               # [build_platform != target_platform]
+        - jpeg                                # [build_platform != target_platform]
+        - libiconv                            # [osx and (build_platform != target_platform)]
+        - libuuid                             # [linux and (build_platform != target_platform)]
+        - glib                                # [unix and (build_platform != target_platform)]
+        - bwidget                             # [build_platform != target_platform]
+        - tktable                             # [build_platform != target_platform]
+        - pango                               # [build_platform != target_platform]
+        - icu                                 # [build_platform != target_platform]
+        - pcre2                               # [build_platform != target_platform]
+        - tk                                  # [build_platform != target_platform]
+        - zlib                                # [build_platform != target_platform]
+        - gsl                                 # [build_platform != target_platform]
+        - libtiff                             # [build_platform != target_platform]
+        - libxml2                             # [build_platform != target_platform]
+        - libssh2                             # [build_platform != target_platform]
+        - krb5                                # [build_platform != target_platform]
+        - libblas                             # [build_platform != target_platform]
+        - liblapack                           # [build_platform != target_platform]
       host:
         # This is a hack, strong run_exports should cause this to be added
         - llvm-openmp                        # [osx]
@@ -128,7 +155,6 @@ outputs:
         - krb5                               # [not win]
         - libblas
         - liblapack
-        - sed                                # [linux]
       run:
         - _r-mutex 1.* anacondar_1
         # Needed by R CMD javareconf
