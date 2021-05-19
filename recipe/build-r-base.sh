@@ -2,7 +2,9 @@
 # Get an updated config.sub and config.guess
 set -exo pipefail
 
-cp $BUILD_PREFIX/share/gnuconfig/config.* ./tools
+if [[ ! $target_platform =~ .*win.* ]]; then
+    cp $BUILD_PREFIX/share/gnuconfig/config.* ./tools
+fi
 
 export
 
