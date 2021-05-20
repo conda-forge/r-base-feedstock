@@ -230,6 +230,8 @@ Mingw_w64_makefiles() {
     local _use_w32tex=no
     local _debug=no
 
+    echo "R_PKGS_RECOMMENDED = " >> share/make/vars.mk
+
     # Instead of copying a MkRules.dist file to MkRules.local
     # just create one with the options we know our toolchains
     # support, and don't set any
@@ -441,7 +443,7 @@ Mingw_w64_makefiles() {
     cp -rf ${SRC_DIR}/lib/R/Tcl ${PREFIX}/lib/R
 
     # Remove the recommeded libraries, we package them separately as-per the other platforms now.
-    rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
+    # rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
     return 0
     # * Here we force our MSYS2/mingw-w64 sysroot to be looked in for LOCAL_SOFT during r-packages builds (but actually this will not work since
     # R will append lib/$(R_ARCH) to this in various Makefiles. So long as we set build/merge_build_host then they will get found automatically)
