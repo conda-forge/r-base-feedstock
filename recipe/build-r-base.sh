@@ -149,7 +149,7 @@ Linux() {
                 --build=${BUILD}                 \
                 --enable-shared                  \
                 --enable-R-shlib                 \
-                --disable-prebuilt-html          \
+                --enable-prebuilt-html           \
                 --enable-memory-profiling        \
                 --with-tk-config=${TK_CONFIG}    \
                 --with-tcl-config=${TCL_CONFIG}  \
@@ -507,6 +507,7 @@ Darwin() {
                 --without-internal-tzcode           \
                 --enable-R-framework=no             \
                 --with-included-gettext=yes         \
+                --enable-prebuilt-html              \
                 --with-recommended-packages=no || (cat config.log; false)
 
     # Horrendous hack to make up for what seems to be bugs (or over-cautiousness?) in ld64's -dead_strip_dylibs (and/or -no_implicit_dylibs)
