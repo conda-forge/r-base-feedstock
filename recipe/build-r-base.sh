@@ -400,7 +400,6 @@ Mingw_w64_makefiles() {
       popd
     fi
 
-    return 0
 
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
@@ -420,6 +419,7 @@ Mingw_w64_makefiles() {
         echo "***** R-${PACKAGE_VERSION} Stage started: distribution *****"
         make distribution -j${CPU_COUNT} || exit 1
     fi
+    return 0
     # The flakiness mentioned below can be seen if the values are hacked to:
     # supremum error =  0.022  with p-value= 1e-04
     #  FAILED
