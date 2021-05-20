@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.0.5" %}
+{% set version = "4.1.0" %}
 
 package:
   name: r-base-split
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: 0a3ee079aa772e131fe5435311ab627fcbccb5a50cabc54292e6f62046f1ffef
+  sha256: e8e68959d7282ca147360fc9644ada9bd161bab781bab14d33b8999a95182781
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -28,7 +28,7 @@ source:
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: r-base
@@ -75,13 +75,41 @@ outputs:
         - m2-texinfo                         # [win]
         - m2-curl                            # [win]
         - m2-p7zip                           # [win]
-        - texlive-core                       # [unix]
+        #- texlive-core                       # [unix]
+        - texinfo                            # [unix]
         - openjdk
         - {{ posix }}autoconf
         - {{ posix }}automake-wrapper        # [win]
         - {{ posix }}automake                # [not win]
         - make                               # [not win]
         - libcurl                            # [not win]
+        - sed                                # [linux]
+        - freetype                            # [build_platform != target_platform]
+        - readline                            # [build_platform != target_platform]
+        - ncurses                             # [build_platform != target_platform]
+        - libcurl                             # [build_platform != target_platform]
+        - xz                                  # [build_platform != target_platform]
+        - libpng                              # [build_platform != target_platform]
+        - bzip2                               # [build_platform != target_platform]
+        - cairo                               # [build_platform != target_platform]
+        - jpeg                                # [build_platform != target_platform]
+        - libiconv                            # [osx and (build_platform != target_platform)]
+        - libuuid                             # [linux and (build_platform != target_platform)]
+        - glib                                # [unix and (build_platform != target_platform)]
+        - bwidget                             # [build_platform != target_platform]
+        - tktable                             # [build_platform != target_platform]
+        - pango                               # [build_platform != target_platform]
+        - icu                                 # [build_platform != target_platform]
+        - pcre2                               # [build_platform != target_platform]
+        - tk                                  # [build_platform != target_platform]
+        - zlib                                # [build_platform != target_platform]
+        - gsl                                 # [build_platform != target_platform]
+        - libtiff                             # [build_platform != target_platform]
+        - libxml2                             # [build_platform != target_platform]
+        - libssh2                             # [build_platform != target_platform]
+        - krb5                                # [build_platform != target_platform]
+        - libblas                             # [build_platform != target_platform]
+        - liblapack                           # [build_platform != target_platform]
       host:
         # This is a hack, strong run_exports should cause this to be added
         - llvm-openmp                        # [osx]
@@ -127,7 +155,6 @@ outputs:
         - krb5                               # [not win]
         - libblas
         - liblapack
-        - sed                                # [linux]
       run:
         - _r-mutex 1.* anacondar_1
         # Needed by R CMD javareconf
@@ -214,12 +241,9 @@ about:
 extra:
   feedstock-name: r-base
   recipe-maintainers:
-    - bgruening
-    - johanneskoester
+    - conda-forge/r
     - isuruf
     - mingwandroid
     - ocefpaf
     - sodre
-    - jdblischak
-    - dpryan79
     - xhochy
