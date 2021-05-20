@@ -435,7 +435,6 @@ Mingw_w64_makefiles() {
     cp -Rf R-${PKG_VERSION} R
     # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
     mkdir -p "${PREFIX}"/lib
-    return 0
 
     cp -Rf R "${PREFIX}"/lib/
     # Copy Tcl/Tk support files
@@ -443,6 +442,7 @@ Mingw_w64_makefiles() {
 
     # Remove the recommeded libraries, we package them separately as-per the other platforms now.
     rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
+    return 0
     # * Here we force our MSYS2/mingw-w64 sysroot to be looked in for LOCAL_SOFT during r-packages builds (but actually this will not work since
     # R will append lib/$(R_ARCH) to this in various Makefiles. So long as we set build/merge_build_host then they will get found automatically)
     for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
