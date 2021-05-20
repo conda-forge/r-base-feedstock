@@ -265,7 +265,9 @@ Mingw_w64_makefiles() {
     sed -i.bak 's|-lf77blas -latlas|-llapack -lblas|g' src/extra/blas/Makefile.win
     rm src/extra/blas/Makefile.win.bak
     echo "MULTI =   "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BUILD_HTML = YES"                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    # BUILD_HTML causes filenames with special characters to be created, see
+    #   https://github.com/conda-forge/r-base-feedstock/pull/177#issuecomment-845279175
+    # echo "BUILD_HTML = YES"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "WIN = ${ARCH}"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     if [[ "${_debug}" == "yes" ]]; then
         echo "EOPTS = -march=${CPU} -mtune=generic -O0" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
