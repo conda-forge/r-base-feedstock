@@ -454,6 +454,7 @@ Mingw_w64_makefiles() {
     rm ${PREFIX}/Library/mingw-w64/bin/libblas.dll
     rm ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
 
+    find "${PREFIX}/lib/R/library/base/help"
     find "${PREFIX}/lib/R/library/base/help" -type f -name \*.html -delete
 
     return 0
