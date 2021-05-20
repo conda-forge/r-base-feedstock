@@ -35,7 +35,6 @@ outputs:
     script: build-r-base.sh  # [not win]
     script: bld-r-base.bat  # [win]
     build:
-      skip: true  # [not win]
       merge_build_host: true  # [win]
       rpaths:
         - lib/R/lib/
