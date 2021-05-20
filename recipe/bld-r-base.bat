@@ -48,9 +48,9 @@ set CHERE_INVOKING=1
 bash -lc "./build-r-base.sh"
 if errorlevel 1 exit 1
 
-cd "%PREFIX%\lib\R\bin\x64"
-gendef R.dll
-if errorlevel 1 exit 1
-dlltool -d R.def -l R.lib
-if errorlevel 1 exit 1
-exit 0
+@rem cd "%PREFIX%\lib\R\bin\x64"
+@rem gendef R.dll
+@rem if errorlevel 1 exit 1
+@rem dlltool -d R.def -l R.lib
+@rem if errorlevel 1 exit 1
+@rem exit 0

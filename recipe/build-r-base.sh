@@ -400,6 +400,8 @@ Mingw_w64_makefiles() {
       popd
     fi
 
+    return 0
+
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
     export MSYS2_ARG_CONV_EXCL="R_ARCH"
