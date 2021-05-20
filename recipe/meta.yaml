@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.1.0" %}
+{% set version = "4.0.5" %}
 
 package:
   name: r-base-split
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: e8e68959d7282ca147360fc9644ada9bd161bab781bab14d33b8999a95182781
+  sha256: 0a3ee079aa772e131fe5435311ab627fcbccb5a50cabc54292e6f62046f1ffef
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -35,6 +35,7 @@ outputs:
     script: build-r-base.sh  # [not win]
     script: bld-r-base.bat  # [win]
     build:
+      skip: true  # [not win]
       merge_build_host: true  # [win]
       rpaths:
         - lib/R/lib/
