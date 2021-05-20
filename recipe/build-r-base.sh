@@ -440,7 +440,7 @@ Mingw_w64_makefiles() {
 
     cp -Rf R "${PREFIX}"/lib/
     # Copy Tcl/Tk support files
-    cp -rf ${SRC_DIR}/lib/R/Tcl ${PREFIX}/lib/R
+    ### XXX: cp -rf ${SRC_DIR}/lib/R/Tcl ${PREFIX}/lib/R
 
     # Remove the recommeded libraries, we package them separately as-per the other platforms now.
     # rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
