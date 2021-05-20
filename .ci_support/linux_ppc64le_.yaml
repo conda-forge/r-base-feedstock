@@ -1,0 +1,10 @@
+cdt_name:
+- cos7
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- conda-forge main
+docker_image:
+- quay.io/condaforge/linux-anvil-ppc64le
+target_platform:
+- linux-ppc64le
