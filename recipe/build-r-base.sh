@@ -419,7 +419,6 @@ Mingw_w64_makefiles() {
         echo "***** R-${PACKAGE_VERSION} Stage started: distribution *****"
         make distribution -j${CPU_COUNT} || exit 1
     fi
-    return 0
     # The flakiness mentioned below can be seen if the values are hacked to:
     # supremum error =  0.022  with p-value= 1e-04
     #  FAILED
@@ -436,6 +435,7 @@ Mingw_w64_makefiles() {
     cp -Rf R-${PKG_VERSION} R
     # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
     mkdir -p "${PREFIX}"/lib
+    return 0
 
     cp -Rf R "${PREFIX}"/lib/
     # Copy Tcl/Tk support files
