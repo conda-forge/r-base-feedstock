@@ -12,7 +12,7 @@ source:
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
-    - 0003-Win32-Do-not-link-static-libgcc.patch
+    #- 0003-Win32-Do-not-link-static-libgcc.patch
     - 0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
     - 0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
     - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
@@ -29,6 +29,7 @@ source:
 
 build:
   number: 0
+  skip: true  # [not win]
 
 outputs:
   - name: r-base
