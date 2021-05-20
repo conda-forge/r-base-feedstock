@@ -29,6 +29,7 @@ source:
 
 build:
   number: 1
+  skip: true  # [not win]
 
 outputs:
   - name: r-base
