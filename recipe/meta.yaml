@@ -154,6 +154,7 @@ outputs:
         - krb5                               # [not win]
         - libblas
         - liblapack
+        # sed is in host env because its path is recorded in R's shell wrapper
         - sed                                # [linux]
       run:
         - _r-mutex 1.* anacondar_1
