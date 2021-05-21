@@ -28,7 +28,7 @@ source:
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: r-base
@@ -83,7 +83,6 @@ outputs:
         - {{ posix }}automake                # [not win]
         - make                               # [not win]
         - libcurl                            # [not win]
-        - sed                                # [linux]
         - freetype                            # [build_platform != target_platform]
         - readline                            # [build_platform != target_platform]
         - ncurses                             # [build_platform != target_platform]
@@ -155,6 +154,8 @@ outputs:
         - krb5                               # [not win]
         - libblas
         - liblapack
+        # sed is in host env because its path is recorded in R's shell wrapper
+        - sed                                # [linux]
       run:
         - _r-mutex 1.* anacondar_1
         # Needed by R CMD javareconf
