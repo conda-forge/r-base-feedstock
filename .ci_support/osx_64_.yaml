@@ -25,7 +25,7 @@ freetype:
 glib:
 - '2'
 gsl:
-- '2.6'
+- '2.7'
 icu:
 - '68'
 jpeg:
@@ -48,6 +48,8 @@ libtiff:
 - '4'
 libxml2:
 - '2.9'
+llvm_openmp:
+- '11'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 ncurses:
