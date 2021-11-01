@@ -9,7 +9,7 @@ cairo:
 cdt_name:
 - cos7
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
@@ -47,7 +47,7 @@ libssh2:
 libtiff:
 - '4'
 libuuid:
-- 2.32.1
+- '2'
 libxml2:
 - '2.9'
 ncurses:
