@@ -21,7 +21,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '9'
 docker_image:
-- quay.io/condaforge/linux-anvil-aarch64
+- quay.io/condaforge/linux-anvil-comp7
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
@@ -33,7 +33,7 @@ glib:
 gsl:
 - '2.7'
 icu:
-- '68'
+- '69'
 jpeg:
 - '9'
 krb5:
@@ -51,7 +51,7 @@ libssh2:
 libtiff:
 - '4'
 libuuid:
-- 2.32.1
+- '2'
 libxml2:
 - '2.9'
 ncurses:
