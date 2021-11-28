@@ -18,7 +18,11 @@ if [[ $CONDA_BUILD_CROSS_COMPILATION == 1 ]]; then
     export r_cv_have_curl_https=yes
     export r_cv_size_max=yes
     export r_cv_prog_fc_char_len_t=size_t
-    export r_cv_kern_usrstack=yes
+    if [[ "${target_platform}" == linux* ]]; then
+      export r_cv_kern_usrstack=no
+    else
+      export r_cv_kern_usrstack=yes
+    fi
     export ac_cv_lib_icucore_ucol_open=yes
     export ac_cv_func_mmap_fixed_mapped=yes
     export r_cv_working_mktime=yes
@@ -508,7 +512,7 @@ fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
   pushd $BUILD_R_PREFIX/lib/R
-  rm etc/Makeconf-r
+  rm -f etc/Makeconf-r
   for f in $(find . -type f); do
     if [[ ! -f $PREFIX/lib/R/$f ]]; then
       mkdir -p $PREFIX/lib/R/$(dirname $f)
