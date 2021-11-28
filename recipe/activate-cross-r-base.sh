@@ -3,6 +3,9 @@ if [[ "$CONDA_BUILD" == "" ]]; then
   exit 1
 fi
 
+# Just for debug
+export
+
 if [[ "$CONDA_BUILD_STATE" != "test" && "$build_platform" != "$target_platform" ]]; then
   export R=$BUILD_PREFIX/bin/R
   export R_ARGS="--library=$PREFIX/lib/R/library --no-test-load"
