@@ -567,7 +567,7 @@ fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
   pushd $BUILD_PREFIX/lib/R
-  rm etc/Makeconf-r
+  rm -f etc/Makeconf-r
   for f in $(find . -type f); do
     if [[ ! -f $PREFIX/lib/R/$f ]]; then
       mkdir -p $PREFIX/lib/R/$(dirname $f)
