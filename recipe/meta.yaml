@@ -55,7 +55,7 @@ outputs:
         - {{ compiler('c') }}                # [not win]
         - {{ compiler('cxx') }}              # [not win]
         - {{ compiler('fortran') }}          # [not win]
-        - gfortran_impl_linux-64 {{ fortran_compiler_version }}  # [ppc64le or aarch64]
+        - gfortran_impl_{{ build_platform }} {{ fortran_compiler_version }}  # [build_platform != target_platform]
         - {{ compiler('m2w64_c') }}          # [win]
         - {{ compiler('m2w64_cxx') }}        # [win]
         - {{ compiler('m2w64_fortran') }}     # [win]
