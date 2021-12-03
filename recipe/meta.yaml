@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.1.1" %}
+{% set version = "4.1.2" %}
 
 package:
   name: r-base-split
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: 515e03265752257d0b7036f380f82e42b46ed8473f54f25c7b67ed25bbbdd364
+  sha256: 2036225e9f7207d4ce097e54972aecdaa8b40d7d9911cd26491fac5a0fab38af
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -28,7 +28,7 @@ source:
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
-  number: 2
+  number: 0
 
 outputs:
   - name: r-base
