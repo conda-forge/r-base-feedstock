@@ -19,7 +19,11 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     export r_cv_have_curl_https=yes
     export r_cv_size_max=yes
     export r_cv_prog_fc_char_len_t=size_t
-    export r_cv_kern_usrstack=yes
+    if [[ "${target_platform}" == linux-* ]]; then
+      export r_cv_kern_usrstack=no
+    else
+      export r_cv_kern_usrstack=yes
+    fi
     export ac_cv_lib_icucore_ucol_open=yes
     export ac_cv_func_mmap_fixed_mapped=yes
     export r_cv_working_mktime=yes
@@ -47,6 +51,15 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
         export FFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
       fi
       re='\-march\=[^[:space:]]*(.*)'
+      if [[ "${FORTRANFLAGS}" =~ $re ]]; then
+        export FORTRANFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+      fi
+      # Filter out -mtune=.* from F*FLAGS
+      re='\-mtune\=[^[:space:]]*(.*)'
+      if [[ "${FFLAGS}" =~ $re ]]; then
+        export FFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+      fi
+      re='\-mtune\=[^[:space:]]*(.*)'
       if [[ "${FORTRANFLAGS}" =~ $re ]]; then
         export FORTRANFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
       fi
@@ -167,6 +180,7 @@ Linux() {
         exit 1
     fi
 
+    make clean
     make -j${CPU_COUNT} ${VERBOSE_AT}
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1 || make check-all -j1 V=1 > $(uname)-make-check.2.log 2>&1
@@ -553,7 +567,7 @@ fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
   pushd $BUILD_PREFIX/lib/R
-  rm etc/Makeconf-r
+  rm -f etc/Makeconf-r
   for f in $(find . -type f); do
     if [[ ! -f $PREFIX/lib/R/$f ]]; then
       mkdir -p $PREFIX/lib/R/$(dirname $f)
