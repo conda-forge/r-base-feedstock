@@ -1,7 +1,7 @@
-From 4cebb20837fcbfe08cd1781bbce8851ae508c889 Mon Sep 17 00:00:00 2001
+From 047aecc647a6ea4a90e5464b81a5940c8e5ee6d6 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 16:17:34 +0000
-Subject: [PATCH 01/18] Darwin: Remove unicode elipsis character from grDevice
+Subject: [PATCH 01/16] Darwin: Remove unicode elipsis character from grDevice
  "Page Setup..." menu entry
 
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 01/18] Darwin: Remove unicode elipsis character from grDevice
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/library/grDevices/src/qdCocoa.m b/src/library/grDevices/src/qdCocoa.m
-index 3319130975..d90407d1e9 100644
+index 825e07c..63b9b10 100644
 --- a/src/library/grDevices/src/qdCocoa.m
 +++ b/src/library/grDevices/src/qdCocoa.m
-@@ -129,7 +129,7 @@ static QuartzFunctions_t *qf;
+@@ -130,7 +130,7 @@ static QuartzFunctions_t *qf;
  	    menuItem = [[NSMenuItem alloc] initWithTitle:@"Close Window" action:@selector(performClose:) keyEquivalent:@"w"]; [menu addItem:menuItem]; [menuItem release];
  	    menuItem = [[NSMenuItem alloc] initWithTitle:@"Save" action:@selector(saveDocument:) keyEquivalent:@"s"]; [menu addItem:menuItem]; [menuItem release];
  	    [menu addItem:[NSMenuItem separatorItem]];
@@ -22,5 +22,5 @@ index 3319130975..d90407d1e9 100644
  	    
              menuItem = [[NSMenuItem alloc] initWithTitle:[menu title] action:nil keyEquivalent:@""]; /* the "Quartz" item in the main menu */
 -- 
-2.20.1
+2.34.1
 

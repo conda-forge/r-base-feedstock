@@ -1,7 +1,7 @@
-From e0e31b382993ee1efe45cd787ce0553936dd0f75 Mon Sep 17 00:00:00 2001
+From c793762a3d18b2505092c4c0a29c9e37acf1a0bf Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 15:51:41 +0000
-Subject: [PATCH 08/18] Linux: Do not modify LD_LIBRARY_PATH
+Subject: [PATCH 08/16] Linux: Do not modify LD_LIBRARY_PATH
 
 ---
  Makeconf.in     |  3 ++-
@@ -11,12 +11,12 @@ Subject: [PATCH 08/18] Linux: Do not modify LD_LIBRARY_PATH
  4 files changed, 30 insertions(+), 5 deletions(-)
 
 diff --git a/Makeconf.in b/Makeconf.in
-index 95f9d58748..2f90c5c0c3 100644
+index 6b2a680..fb70773 100644
 --- a/Makeconf.in
 +++ b/Makeconf.in
-@@ -65,7 +65,8 @@ MAIN_CFLAGS = @MAIN_CFLAGS@
+@@ -66,7 +66,8 @@ MAIN_CFLAGS = @MAIN_CFLAGS@
  MAIN_FFLAGS = @MAIN_FFLAGS@
- MAIN_LD = @MAIN_LD@@BUILD_LTO_TRUE@ $(CFLAGS)
+ MAIN_LD = @MAIN_LD@@BUILD_LTO_TRUE@ $(CFLAGS) $(CPICFLAGS) @LTO_LD@
  MAIN_LDFLAGS = @MAIN_LDFLAGS@ @WANT_R_SHLIB_FALSE@ @USE_EXPORTFILES_TRUE@ -Wl,-bE:$(top_builddir)/etc/R.exp
 -MAIN_LINK = $(MAIN_LD) $(MAIN_LDFLAGS) $(LIBR0) $(LDFLAGS)
 +RPATH_LDFLAGS = -Wl,-rpath,$(abs_top_builddir)/lib @RPATH_LDFLAGS@
@@ -25,10 +25,10 @@ index 95f9d58748..2f90c5c0c3 100644
  MKINSTALLDIRS = @R_SHELL@ $(top_srcdir)/src/scripts/mkinstalldirs.in
  NOTANGLE = @NOTANGLE@
 diff --git a/configure.ac b/configure.ac
-index 6cfbcf5ee9..45162206e2 100644
+index 55a5f42..b92b61e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -688,7 +688,7 @@ AC_SUBST(LIBTOOL_DEPS)
+@@ -798,7 +798,7 @@ AC_SUBST(LIBTOOL_DEPS)
  
  ### * Checks for libraries.
  
@@ -37,7 +37,7 @@ index 6cfbcf5ee9..45162206e2 100644
  ## <FIXME>
  ## What is this doing *HERE*?
  ## Should be needed for tests using AC_RUN_IFELSE()?
-@@ -715,6 +715,7 @@ case "${host_os}" in
+@@ -825,6 +825,7 @@ case "${host_os}" in
          -L*)
  	  lib=`echo ${arg} | sed "s/^-L//"`
  	  R_SH_VAR_ADD(R_LD_LIBRARY_PATH, [${lib}], [${PATH_SEPARATOR}])
@@ -45,7 +45,7 @@ index 6cfbcf5ee9..45162206e2 100644
  	  ;;
        esac
      done
-@@ -734,13 +735,20 @@ case "${host_os}" in
+@@ -844,13 +845,20 @@ case "${host_os}" in
      Rshlibpath_var=${shlibpath_var}
  esac
  AC_SUBST(shlibpath_var)
@@ -68,7 +68,7 @@ index 6cfbcf5ee9..45162206e2 100644
  AC_SUBST(Rshlibpath_var)
  
  ## record how to strip shared/dynamic libraries.
-@@ -1600,6 +1608,7 @@ AM_CONDITIONAL(DYLIB_UNDEFINED_ALLOWED, [test "x${dylib_undefined_allowed}" = xy
+@@ -1762,6 +1770,7 @@ AM_CONDITIONAL(DYLIB_UNDEFINED_ALLOWED, [test "x${dylib_undefined_allowed}" = xy
  
  AC_SUBST(MAIN_LD)
  AC_SUBST(MAIN_LDFLAGS)
@@ -77,10 +77,10 @@ index 6cfbcf5ee9..45162206e2 100644
  AC_SUBST(CXXPICFLAGS)
  AC_SUBST(DYLIB_LD)
 diff --git a/etc/Makeconf.in b/etc/Makeconf.in
-index 20e8b241cd..4c4a50159d 100644
+index 0ceb75d..2e79884 100644
 --- a/etc/Makeconf.in
 +++ b/etc/Makeconf.in
-@@ -82,7 +82,8 @@ LTO = @LTOALL@
+@@ -88,7 +88,8 @@ LTO_FC_OPT = @LTO_FC@
  ## needed to build applications linking to static libR
  MAIN_LD = @MAIN_LD@
  MAIN_LDFLAGS = @MAIN_LDFLAGS@
@@ -88,10 +88,10 @@ index 20e8b241cd..4c4a50159d 100644
 +RPATH_LDFLAGS = -Wl,-rpath,$(abs_top_builddir)/lib @RPATH_LDFLAGS@
 +MAIN_LINK = $(MAIN_LD) $(MAIN_LDFLAGS) $(LDFLAGS) $(RPATH_LDFLAGS)
  MKINSTALLDIRS = "$(R_HOME)/bin/mkinstalldirs"
+ NM = @NM@
  OBJC = @OBJC@
- OBJCFLAGS = @OBJCFLAGS@ $(LTO)
 diff --git a/etc/ldpaths.in b/etc/ldpaths.in
-index 314d364f5c..3fb5331f9c 100644
+index 314d364..3fb5331 100644
 --- a/etc/ldpaths.in
 +++ b/etc/ldpaths.in
 @@ -1,3 +1,17 @@
@@ -113,5 +113,5 @@ index 314d364f5c..3fb5331f9c 100644
  : ${R_JAVA_LD_LIBRARY_PATH=@R_JAVA_LD_LIBRARY_PATH@}
  if test -n "@R_LD_LIBRARY_PATH@"; then
 -- 
-2.20.1
+2.34.1
 

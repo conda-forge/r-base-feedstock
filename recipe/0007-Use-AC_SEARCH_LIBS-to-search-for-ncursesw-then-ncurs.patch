@@ -1,7 +1,7 @@
-From db6b99f1b2cfb235a121519a2419894c2538828c Mon Sep 17 00:00:00 2001
+From a7e01d57363e2dc3042d789cf9ed066fa882de2a Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
-Date: Tue, 21 Jun 2016 14:22:30 +0100
-Subject: [PATCH 07/18] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
+Date: Wed, 15 Dec 2021 09:24:02 +0100
+Subject: [PATCH 07/16] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
 
 ---
  configure    | 58 +++++++++++++++++++++++++++++++++-------------------
@@ -9,21 +9,22 @@ Subject: [PATCH 07/18] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
  2 files changed, 38 insertions(+), 22 deletions(-)
 
 diff --git a/configure b/configure
-index e0a536c9be..a2149cae09 100755
+index e55984a..3b5b5d6 100755
 --- a/configure
 +++ b/configure
-@@ -22924,42 +22924,59 @@ fi
+@@ -24356,43 +24356,59 @@ fi
    if test "${use_readline}" = no; then
      ## only need ncurses if libreadline is not statically linked against it
      unset ac_cv_lib_readline_rl_callback_read_char
--    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lncurses" >&5
--$as_echo_n "checking for main in -lncurses... " >&6; }
--if ${ac_cv_lib_ncurses_main+:} false; then :
+-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lncurses" >&5
+-printf %s "checking for main in -lncurses... " >&6; }
+-if test ${ac_cv_lib_ncurses_main+y}
 +    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing initscr" >&5
 +$as_echo_n "checking for library containing initscr... " >&6; }
 +if ${ac_cv_search_initscr+:} false; then :
-   $as_echo_n "(cached) " >&6
- else
+ then :
+   printf %s "(cached) " >&6
+ else $as_nop
 -  ac_check_lib_save_LIBS=$LIBS
 -LIBS="-lncurses  $LIBS"
 +  ac_func_search_save_LIBS=$LIBS
@@ -39,7 +40,7 @@ index e0a536c9be..a2149cae09 100755
 +#endif
 +char initscr ();
  int
- main ()
+ main (void)
  {
 -return main ();
 +return initscr ();
@@ -47,9 +48,10 @@ index e0a536c9be..a2149cae09 100755
    return 0;
  }
  _ACEOF
--if ac_fn_c_try_link "$LINENO"; then :
+-if ac_fn_c_try_link "$LINENO"
+-then :
 -  ac_cv_lib_ncurses_main=yes
--else
+-else $as_nop
 -  ac_cv_lib_ncurses_main=no
 +for ac_lib in '' ncursesw curses; do
 +  if test -z "$ac_lib"; then
@@ -61,24 +63,23 @@ index e0a536c9be..a2149cae09 100755
 +  if ac_fn_c_try_link "$LINENO"; then :
 +  ac_cv_search_initscr=$ac_res
  fi
- rm -f core conftest.err conftest.$ac_objext \
+ rm -f core conftest.err conftest.$ac_objext conftest.beam \
 -    conftest$ac_exeext conftest.$ac_ext
 -LIBS=$ac_check_lib_save_LIBS
 +    conftest$ac_exeext
 +  if ${ac_cv_search_initscr+:} false; then :
 +  break
  fi
--{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ncurses_main" >&5
--$as_echo "$ac_cv_lib_ncurses_main" >&6; }
--if test "x$ac_cv_lib_ncurses_main" = xyes; then :
--  cat >>confdefs.h <<_ACEOF
--#define HAVE_LIBNCURSES 1
--_ACEOF
+-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ncurses_main" >&5
+-printf "%s\n" "$ac_cv_lib_ncurses_main" >&6; }
+-if test "x$ac_cv_lib_ncurses_main" = xyes
+-then :
+-  printf "%s\n" "#define HAVE_LIBNCURSES 1" >>confdefs.h
+-
+-  LIBS="-lncurses $LIBS"
 +done
 +if ${ac_cv_search_initscr+:} false; then :
- 
--  LIBS="-lncurses $LIBS"
-+else
++ 
 +  ac_cv_search_initscr=no
 +fi
 +rm conftest.$ac_ext
@@ -90,21 +91,13 @@ index e0a536c9be..a2149cae09 100755
 +if test "$ac_res" != no; then :
 +  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
  
- else
-   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -ltermcap" >&5
-@@ -44758,7 +44775,6 @@ fi
- { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MKDIR_P" >&5
- $as_echo "$MKDIR_P" >&6; }
- 
--
- mkdir_p="$MKDIR_P"
- case $mkdir_p in
-   [\\/$]* | ?:[\\/]*) ;;
+ else $as_nop
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -ltermcap" >&5
 diff --git a/configure.ac b/configure.ac
-index 4c1cdbb745..6cfbcf5ee9 100644
+index 200a740..55a5f42 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -772,7 +772,7 @@ if test "${use_readline}" = yes; then
+@@ -884,7 +884,7 @@ if test "${use_readline}" = yes; then
    if test "${use_readline}" = no; then
      ## only need ncurses if libreadline is not statically linked against it
      unset ac_cv_lib_readline_rl_callback_read_char
@@ -114,5 +107,5 @@ index 4c1cdbb745..6cfbcf5ee9 100644
                                AC_CHECK_LIB(termlib, main)))
      AC_CHECK_LIB(readline, rl_callback_read_char)
 -- 
-2.20.1
+2.34.1
 

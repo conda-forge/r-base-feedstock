@@ -1,0 +1,25 @@
+From 9c541630cd86796700b50e6d94ecae3ad7939935 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Fri, 1 Jun 2018 23:26:13 +0100
+Subject: [PATCH 13/16] Add -luuid to X_PRE_LIBS
+
+---
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 3b5b5d6..00f30b2 100755
+--- a/configure
++++ b/configure
+@@ -45248,7 +45248,7 @@ fi
+ printf "%s\n" "$ac_cv_lib_ICE_IceConnectionNumber" >&6; }
+ if test "x$ac_cv_lib_ICE_IceConnectionNumber" = xyes
+ then :
+-  X_PRE_LIBS="$X_PRE_LIBS -lSM -lICE"
++  X_PRE_LIBS="$X_PRE_LIBS -luuid -lSM -lICE"
+ fi
+ 
+   LDFLAGS=$ac_save_LDFLAGS
+-- 
+2.34.1
+
