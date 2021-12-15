@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.1.1" %}
+{% set version = "4.1.2" %}
 
 package:
   name: r-base-split
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: 515e03265752257d0b7036f380f82e42b46ed8473f54f25c7b67ed25bbbdd364
+  sha256: 2036225e9f7207d4ce097e54972aecdaa8b40d7d9911cd26491fac5a0fab38af
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -18,17 +18,17 @@ source:
     - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
     - 0007-Use-AC_SEARCH_LIBS-to-search-for-ncursesw-then-ncurs.patch
     - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0010-javareconf-Do-not-fail-on-compile-fail.patch
-    - 0011-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
-    - 0012-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
-    - 0013-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
-    - 0014-Add-luuid-to-X_PRE_LIBS.patch
-    - 0015-link-Xt-to-uuid.patch
-    - 0017-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
-    - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+    - 0009-javareconf-Do-not-fail-on-compile-fail.patch
+    - 0010-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
+    - 0011-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
+    - 0012-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
+    - 0013-Add-luuid-to-X_PRE_LIBS.patch
+    - 0014-link-Xt-to-uuid.patch
+    - 0015-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
+    - 0016-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
-  number: 2
+  number: 0
 
 outputs:
   - name: r-base
