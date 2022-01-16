@@ -55,7 +55,7 @@ macos_machine:
 ncurses:
 - '6.2'
 pango:
-- '1.48'
+- '1.50'
 pcre2:
 - '10.37'
 pin_run_as_build:
