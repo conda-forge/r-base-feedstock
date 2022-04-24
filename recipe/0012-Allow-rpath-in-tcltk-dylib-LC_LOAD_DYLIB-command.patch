@@ -8,18 +8,15 @@ Subject: [PATCH 12/16] Allow @rpath in tcltk dylib LC_LOAD_DYLIB command
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/library/tcltk/R/unix/zzz.R b/src/library/tcltk/R/unix/zzz.R
-index f397d36..e7ad6d7 100644
+index 3ec0722..e135dc0 100644
 --- a/src/library/tcltk/R/unix/zzz.R
 +++ b/src/library/tcltk/R/unix/zzz.R
-@@ -50,7 +50,7 @@
+@@ -49,7 +49,7 @@
+             ind <- grep("libtk[.0-9]+[.]dylib", out)
              if(length(ind)) {
                  this <- sub(" .*", "", sub("^\t", "", out[ind]))
-                 ##  message("tcltk DLL is linked to ", shQuote(this))
--                if(!file.exists(this))
-+                if(!file.exists(this) && !grepl("@rpath",this))
-                     stop("Tcl/Tk libraries are missing: install the Tcl/Tk component from the R installer",
-                          domain = NA)
-             }
--- 
-2.34.1
-
+-                if(!file.exists(this)) {
++                if(!file.exists(this) && !grepl("@rpath",this)) {
+                     ## one issue here is that libtk built from unpatched
+                     ## sources has wrong id, so we report what it is looking for
+                     ## (/opt/R/arm64/lib:/usr/X11R6/lib/libtk8.6.dylib is wrong)

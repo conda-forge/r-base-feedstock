@@ -21,7 +21,7 @@ source:
     - 0009-javareconf-Do-not-fail-on-compile-fail.patch
     - 0010-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
     - 0011-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
-    - 0012-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
+    #- 0012-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
     - 0013-Add-luuid-to-X_PRE_LIBS.patch
     - 0014-link-Xt-to-uuid.patch
     - 0015-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
