@@ -9,10 +9,10 @@ Subject: [PATCH 07/16] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
  2 files changed, 38 insertions(+), 22 deletions(-)
 
 diff --git a/configure b/configure
-index e55984a..3b5b5d6 100755
+index d2be94f..d56ca86 100755
 --- a/configure
 +++ b/configure
-@@ -24356,43 +24356,59 @@ fi
+@@ -24351,43 +24351,59 @@ fi
    if test "${use_readline}" = no; then
      ## only need ncurses if libreadline is not statically linked against it
      unset ac_cv_lib_readline_rl_callback_read_char
@@ -25,9 +25,8 @@ index e55984a..3b5b5d6 100755
  then :
    printf %s "(cached) " >&6
  else $as_nop
--  ac_check_lib_save_LIBS=$LIBS
+   ac_check_lib_save_LIBS=$LIBS
 -LIBS="-lncurses  $LIBS"
-+  ac_func_search_save_LIBS=$LIBS
  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
  /* end confdefs.h.  */
  
@@ -92,20 +91,17 @@ index e55984a..3b5b5d6 100755
 +  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
  
  else $as_nop
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -ltermcap" >&5
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -ltinfo" >&5
 diff --git a/configure.ac b/configure.ac
-index 200a740..55a5f42 100644
+index 9ce4b77..96cea1f 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -884,7 +884,7 @@ if test "${use_readline}" = yes; then
+@@ -882,7 +882,7 @@ if test "${use_readline}" = yes; then
    if test "${use_readline}" = no; then
      ## only need ncurses if libreadline is not statically linked against it
      unset ac_cv_lib_readline_rl_callback_read_char
 -    AC_CHECK_LIB(ncurses, main, [],
 +    AC_SEARCH_LIBS([initscr], [ncursesw curses], [],
-                  AC_CHECK_LIB(termcap, main, [],
-                               AC_CHECK_LIB(termlib, main)))
-     AC_CHECK_LIB(readline, rl_callback_read_char)
--- 
-2.34.1
-
+                  AC_CHECK_LIB(tinfo, main, [],
+                               AC_CHECK_LIB(termcap, main, [],
+                                            AC_CHECK_LIB(termlib, main))))
