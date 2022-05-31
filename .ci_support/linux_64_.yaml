@@ -35,11 +35,11 @@ jpeg:
 krb5:
 - '1.19'
 libblas:
-- 3.8 *netlib
+- 3.9 *netlib
 libcurl:
 - '7'
 liblapack:
-- 3.8 *netlib
+- 3.9 *netlib
 libpng:
 - '1.6'
 libssh2:
