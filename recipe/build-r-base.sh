@@ -346,12 +346,12 @@ Mingw_w64_makefiles() {
         #
         # curl claims most servers do not support byte ranges, hence the || true
         mkdir -p "${SRC_DIR}/lib/R"
-        curl --insecure -C - -o ${DLCACHE}/Rtools34.exe -SLO http://cran.r-project.org/bin/windows/Rtools/Rtools34.exe || true
+        curl --insecure -C - -o ${DLCACHE}/Rtools42.exe -SLO https://cran.r-project.org/bin/windows/Rtools/rtools42/files/rtools42-5253-5107-signed.exe || true
         if [[ "${ARCH}" == "64" ]]; then
-            ./innoextract.exe -I "code\$rhome64" ${DLCACHE}/Rtools34.exe
+            ./innoextract.exe -I "code\$rhome64" ${DLCACHE}/Rtools42.exe
             mv "code\$rhome64/Tcl" "${SRC_DIR}/lib/R"
         else
-            ./innoextract.exe -I "code\$rhome" ${DLCACHE}/Rtools34.exe
+            ./innoextract.exe -I "code\$rhome" ${DLCACHE}/Rtools42.exe
             mv "code\$rhome/Tcl" "${SRC_DIR}/lib/R"
         fi
     fi
