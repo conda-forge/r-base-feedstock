@@ -305,12 +305,12 @@ Mingw_w64_makefiles() {
 
     # The build process copies this across if it finds it and rummaging about on
     # the website I found a file, so why not, eh?
-    curl -C - -o "${SRC_DIR}/etc/curl-ca-bundle.crt" -SLO http://www.stats.ox.ac.uk/pub/Rtools/goodies/multilib/curl-ca-bundle.crt
+    curl --insecure -C - -o "${SRC_DIR}/etc/curl-ca-bundle.crt" -SLO http://www.stats.ox.ac.uk/pub/Rtools/goodies/multilib/curl-ca-bundle.crt
 
     # The hoops we must jump through to get innosetup installed in an unattended way.
-    curl -C - -o ${DLCACHE}/innoextract-1.6-windows.zip -SLO http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip
+    curl --insecure -C - -o ${DLCACHE}/innoextract-1.6-windows.zip -SLO http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip
     unzip -o ${DLCACHE}/innoextract-1.6-windows.zip -d ${PWD}
-    curl -C - -o ${DLCACHE}/innosetup-5.5.9-unicode.exe -SLO http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe || true
+    curl --insecure -C - -o ${DLCACHE}/innosetup-5.5.9-unicode.exe -SLO http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe || true
     ./innoextract.exe ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
     mv app isdir
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
@@ -346,7 +346,7 @@ Mingw_w64_makefiles() {
         #
         # curl claims most servers do not support byte ranges, hence the || true
         mkdir -p "${SRC_DIR}/lib/R"
-        curl -C - -o ${DLCACHE}/Rtools34.exe -SLO http://cran.r-project.org/bin/windows/Rtools/Rtools34.exe || true
+        curl --insecure -C - -o ${DLCACHE}/Rtools34.exe -SLO http://cran.r-project.org/bin/windows/Rtools/Rtools34.exe || true
         if [[ "${ARCH}" == "64" ]]; then
             ./innoextract.exe -I "code\$rhome64" ${DLCACHE}/Rtools34.exe
             mv "code\$rhome64/Tcl" "${SRC_DIR}/lib/R"
@@ -371,7 +371,7 @@ Mingw_w64_makefiles() {
     if [[ "${_use_w32tex}" == "yes" ]]; then
       mkdir w32tex || true
         pushd w32tex
-        curl -C - -o ${DLCACHE}/texinst2016.zip -SLO http://ctan.ijs.si/mirror/w32tex/current/texinst2016.zip
+        curl --insecure -C - -o ${DLCACHE}/texinst2016.zip -SLO http://ctan.ijs.si/mirror/w32tex/current/texinst2016.zip
         unzip -o ${DLCACHE}/texinst2016.zip
         mkdir archives || true
           pushd archives
@@ -380,7 +380,7 @@ Mingw_w64_makefiles() {
                          luatex-w32 makeindex-w32 manual newtxpx-boondoxfonts pgfcontrib \
                          t1fonts tex-gyre timesnew ttf2pk-w32 txpx-pazofonts vf-a2bk \
                          xetex-w32 xindy-w32 xypic; do
-              curl -C - -o ${DLCACHE}/${_file}.tar.xz -SLO http://ctan.ijs.si/mirror/w32tex/current/${_file}.tar.xz
+              curl --insecure -C - -o ${DLCACHE}/${_file}.tar.xz -SLO http://ctan.ijs.si/mirror/w32tex/current/${_file}.tar.xz
             done
           popd
         ./texinst2016.exe ${PWD}/archives
