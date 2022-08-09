@@ -28,6 +28,7 @@ source:
     - 0016-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
+  skip: true  # [win]
   number: 1
 
 outputs:
