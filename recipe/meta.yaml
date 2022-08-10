@@ -28,7 +28,8 @@ source:
     - 0018-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
 
 build:
-  number: 6
+  skip: true  # [win]
+  number: 7
 
 outputs:
   - name: r-base
@@ -132,9 +133,12 @@ outputs:
         - _r-mutex 1.* anacondar_1
         # Needed by R CMD javareconf
         - make                               # [not win]
-        - {{ compiler('fortran') }}     # [not win]
-        - {{ c_compiler|default("blah") }}_{{ target_platform }} >={{ c_compiler_version|default("0") }}                 # [not win]
-        - {{ cxx_compiler|default("blah") }}_{{ target_platform }} >={{ cxx_compiler_version|default("0") }}             # [not win]
+        - gcc_impl_{{ target_platform }}  >={{ c_compiler_version|default("0") }}    # [linux]
+        - gxx_impl_{{ target_platform }}  >={{ cxx_compiler_version|default("0") }}  # [linux]
+        - gfortran_impl_{{ target_platform }}  # [linux]
+        - {{ c_compiler|default("blah") }}_{{ target_platform }} >={{ c_compiler_version|default("0") }}      # [osx]
+        - {{ cxx_compiler|default("blah") }}_{{ target_platform }} >={{ cxx_compiler_version|default("0") }}  # [osx]
+        - {{ compiler('fortran') }}  # [osx]
         - {{ pin_compatible('llvm-openmp', max_pin=None) }}      # [osx]
         - curl                                 # [not win]
         - {{ native }}bzip2                    # [win]
