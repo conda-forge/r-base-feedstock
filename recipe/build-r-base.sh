@@ -540,9 +540,9 @@ Darwin() {
     make install ${EXTRA_MAKE_ARGS}
 
     pushd ${PREFIX}/lib/R/etc
-      sed -i -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
-      sed -i -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf
-      sed -i -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf-r
+      sed -i'.bak' -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
+      sed -i'.bak' -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf
+      rm Makeconf.bak
       # See: https://github.com/conda/conda/issues/6701
       chmod g+w Makeconf ldpaths
     popd
@@ -567,7 +567,6 @@ fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
   pushd $BUILD_PREFIX/lib/R
-  rm -f etc/Makeconf-r
   for f in $(find . -type f); do
     if [[ ! -f $PREFIX/lib/R/$f ]]; then
       mkdir -p $PREFIX/lib/R/$(dirname $f)
