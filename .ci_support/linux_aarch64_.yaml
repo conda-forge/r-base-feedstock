@@ -7,7 +7,7 @@ c_compiler:
 c_compiler_version:
 - '10'
 cairo:
-- '1.16'
+- '1'
 cdt_arch:
 - aarch64
 cdt_name:
@@ -60,37 +60,6 @@ pango:
 - '1.50'
 pcre2:
 - '10.37'
-pin_run_as_build:
-  bzip2:
-    max_pin: x
-  cairo:
-    max_pin: x.x
-  freetype:
-    max_pin: x
-  jpeg:
-    max_pin: x
-  krb5:
-    max_pin: x.x
-  libcurl:
-    max_pin: x
-  libpng:
-    max_pin: x.x
-  libtiff:
-    max_pin: x
-  libuuid:
-    max_pin: x
-  libxml2:
-    max_pin: x.x
-  pango:
-    max_pin: x.x
-  readline:
-    max_pin: x
-  tk:
-    max_pin: x.x
-  xz:
-    max_pin: x.x
-  zlib:
-    max_pin: x.x
 readline:
 - '8'
 target_platform:
@@ -98,7 +67,7 @@ target_platform:
 tk:
 - '8.6'
 xz:
-- '5.2'
+- '5'
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
