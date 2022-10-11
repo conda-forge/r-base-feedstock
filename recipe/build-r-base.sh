@@ -542,7 +542,7 @@ Darwin() {
     pushd ${PREFIX}/lib/R/etc
       sed -i'.bak' -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
       sed -i'.bak' -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf
-      sed -i'.bak' -r "s|-lemutls_w|-lgcc_s.1.1|g" Makeconf
+      sed -i'.bak' -r "s|-lemutls_w||g" Makeconf
       rm Makeconf.bak
       # See: https://github.com/conda/conda/issues/6701
       chmod g+w Makeconf ldpaths
