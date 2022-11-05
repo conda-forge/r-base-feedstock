@@ -55,7 +55,7 @@ ncurses:
 pango:
 - '1.50'
 pcre2:
-- '10.37'
+- '10.40'
 readline:
 - '8'
 target_platform:
