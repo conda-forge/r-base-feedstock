@@ -265,11 +265,7 @@ Mingw_w64_makefiles() {
         fi
     fi
 
-    # I want to use /tmp and have that mounted to Windows %TEMP% in Conda's MSYS2
-    # but there's a permissions issue preventing that from working at present.
-    # DLCACHE=/tmp
-    DLCACHE=/c/Users/${USER}/Downloads
-    [[ -d $DLCACHE ]] || mkdir -p $DLCACHE
+    DLCACHE="${SRC_DIR}/win-extra-files"
     # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
     echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF = "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
@@ -305,13 +301,10 @@ Mingw_w64_makefiles() {
 
     # The build process copies this across if it finds it and rummaging about on
     # the website I found a file, so why not, eh?
-    curl -C - -o "${SRC_DIR}/etc/curl-ca-bundle.crt" -SLO http://www.stats.ox.ac.uk/pub/Rtools/goodies/multilib/curl-ca-bundle.crt
+    mv "${DLCACHE}/curl-ca-bundle.crt" "${SRC_DIR}/etc/curl-ca-bundle.crt"
 
     # The hoops we must jump through to get innosetup installed in an unattended way.
-    curl -C - -o ${DLCACHE}/innoextract-1.6-windows.zip -SLO http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip
-    unzip -o ${DLCACHE}/innoextract-1.6-windows.zip -d ${PWD}
-    curl -C - -o ${DLCACHE}/innosetup-5.5.9-unicode.exe -SLO http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe || true
-    ./innoextract.exe ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
+    "${DLCACHE}/innoextract/innoextract.exe" "${DLCACHE}/innosetup-5.5.9-unicode.exe" 2>&1
     mv app isdir
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         # I wanted to go for the following unusual approach here of using conda install (in copy mode)
@@ -389,31 +382,17 @@ Mingw_w64_makefiles() {
         PATH=${PWD}/bin:${PATH}
       popd
     else
-      mkdir miktex || true
-      pushd miktex
       # Fetch e.g.:
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
       # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        # FIXME: Newer MiKTeX installer does not finish on AppVeyor and Azure, somehow.
-        #   MIKTEX_VER=2.9.7100
-        #   curl --insecure -C - -o ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe -SL https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/basic-miktex-${MIKTEX_VER}.exe || true
-        #   echo "Extracting basic-miktex-${MIKTEX_VER}.exe, this will take some time ..."
-        #   ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe --portable=${PWD} --unattended --no-registry || exit 1
-        # FIXME: Temporary workaround! Fix the above as soon as possible, please.
-        #        Downloading this archived version may not comply with the ToS of archive.org!
-        curl --insecure -C - -o ${DLCACHE}/miktex-portable-2.9.6942.exe -SL https://web.archive.org/web/20190325114245/https://mirrors.rit.edu/CTAN/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6942.exe || true
-        echo "Extracting miktex-portable-2.9.6942.exe, this will take some time ..."
-        7za x -y ${DLCACHE}/miktex-portable-2.9.6942.exe > /dev/null || exit 1
         # We also need the url, incolsolata and mptopdf packages and
         # do not want a GUI to prompt us about installing these.
         # sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
         #see also: http://tex.stackexchange.com/q/302679
-        PATH=${PWD}/texmfs/install/miktex/bin:${PATH}
         initexmf.exe --set-config-value [MPM]AutoInstall=1
         initexmf.exe --update-fndb
-        cat texmfs/config/miktex/config/miktex.ini
-      popd
+        # cat texmfs/config/miktex/config/miktex.ini
     fi
 
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
