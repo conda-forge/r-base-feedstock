@@ -1,3 +1,5 @@
+azure:
+  store_build_artifacts: true
 bot:
   abi_migration_branches:
   - 4.0.x
@@ -6,8 +8,6 @@ build_platform:
   linux_ppc64le: linux_64
   osx_arm64: osx_64
 conda_forge_output_validation: true
-azure:
-  store_build_artifacts: true
 github:
   branch_name: main
   tooling_branch_name: main
