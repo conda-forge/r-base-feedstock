@@ -5,9 +5,9 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '13'
+- '14'
 cairo:
-- '1.16'
+- '1'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -15,11 +15,11 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '13'
+- '14'
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '9'
+- '11'
 freetype:
 - '2'
 glib:
@@ -37,7 +37,7 @@ libblas:
 libcurl:
 - '7'
 libiconv:
-- '1.16'
+- '1'
 liblapack:
 - 3.9 *netlib
 libpng:
@@ -47,9 +47,9 @@ libssh2:
 libtiff:
 - '4'
 libxml2:
-- '2.9'
+- '2.10'
 llvm_openmp:
-- '13'
+- '14'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 ncurses:
@@ -57,38 +57,7 @@ ncurses:
 pango:
 - '1.50'
 pcre2:
-- '10.37'
-pin_run_as_build:
-  bzip2:
-    max_pin: x
-  cairo:
-    max_pin: x.x
-  freetype:
-    max_pin: x
-  jpeg:
-    max_pin: x
-  krb5:
-    max_pin: x.x
-  libcurl:
-    max_pin: x
-  libiconv:
-    max_pin: x.x
-  libpng:
-    max_pin: x.x
-  libtiff:
-    max_pin: x
-  libxml2:
-    max_pin: x.x
-  pango:
-    max_pin: x.x
-  readline:
-    max_pin: x
-  tk:
-    max_pin: x.x
-  xz:
-    max_pin: x.x
-  zlib:
-    max_pin: x.x
+- '10.40'
 readline:
 - '8'
 target_platform:
@@ -96,7 +65,7 @@ target_platform:
 tk:
 - '8.6'
 xz:
-- '5.2'
+- '5'
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
