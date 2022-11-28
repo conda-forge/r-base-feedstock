@@ -249,6 +249,7 @@ extra:
   recipe-maintainers:
     - conda-forge/r
     - isuruf
+    - mbargull
     - mingwandroid
     - ocefpaf
     - sodre
