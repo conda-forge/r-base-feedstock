@@ -2,7 +2,7 @@ azure:
   store_build_artifacts: true
 bot:
   abi_migration_branches:
-  - 4.0.x
+  - 4.1.x
 build_platform:
   osx_arm64: osx_64
 conda_forge_output_validation: true
