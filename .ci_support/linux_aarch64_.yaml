@@ -53,13 +53,13 @@ libtiff:
 libuuid:
 - '2'
 libxml2:
-- '2.9'
+- '2.10'
 ncurses:
 - '6'
 pango:
 - '1.50'
 pcre2:
-- '10.37'
+- '10.40'
 readline:
 - '8'
 target_platform:

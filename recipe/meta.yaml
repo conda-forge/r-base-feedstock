@@ -39,7 +39,7 @@ source:
     folder: win-extra-files                                                                  # [win]
 
 build:
-  number: 3
+  number: 4
 
 outputs:
   - name: r-base
@@ -259,6 +259,7 @@ extra:
   recipe-maintainers:
     - conda-forge/r
     - isuruf
+    - mbargull
     - mingwandroid
     - ocefpaf
     - sodre
