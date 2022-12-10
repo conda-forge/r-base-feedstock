@@ -5,7 +5,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '10'
+- '11'
 cairo:
 - '1'
 cdt_arch:
@@ -19,13 +19,13 @@ channel_targets:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '10'
+- '11'
 docker_image:
 - quay.io/condaforge/linux-anvil-cos7-x86_64
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '10'
+- '11'
 freetype:
 - '2'
 glib:
