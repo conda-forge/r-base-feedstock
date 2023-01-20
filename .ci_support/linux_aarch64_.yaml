@@ -49,7 +49,7 @@ libpng:
 libssh2:
 - '1'
 libtiff:
-- '4'
+- '4.4'
 libuuid:
 - '2'
 libxml2:
