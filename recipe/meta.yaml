@@ -29,7 +29,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 3
+  number: 4
 
 outputs:
   - name: r-base
@@ -93,7 +93,7 @@ outputs:
         - libpng                              # [build_platform != target_platform]
         - bzip2                               # [build_platform != target_platform]
         - cairo                               # [build_platform != target_platform]
-        - jpeg                                # [build_platform != target_platform]
+        - libjpeg-turbo                                 # [build_platform != target_platform]
         - libiconv                            # [osx and (build_platform != target_platform)]
         - libuuid                             # [linux and (build_platform != target_platform)]
         - glib                                # [unix and (build_platform != target_platform)]
@@ -124,7 +124,7 @@ outputs:
         - {{ native }}bzip2                  # [win]
         - cairo                              # [not win]
         - {{ native }}libjpeg-turbo          # [win]
-        - jpeg                               # [not win]
+        - libjpeg-turbo                                # [not win]
         - libiconv                           # [osx]
         - {{ native }}libiconv               # [win]
         - libuuid                            # [linux]
