@@ -9,13 +9,13 @@ Subject: [PATCH 07/16] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
  2 files changed, 38 insertions(+), 22 deletions(-)
 
 diff --git a/configure b/configure
-index d2be94f..d56ca86 100755
+index 9af2755..a342123 100755
 --- a/configure
 +++ b/configure
-@@ -24351,43 +24351,59 @@ fi
-   if test "${use_readline}" = no; then
+@@ -24744,43 +24744,59 @@ fi
      ## only need ncurses if libreadline is not statically linked against it
      unset ac_cv_lib_readline_rl_callback_read_char
+     ## FIXME replace main, maybe by tputs
 -    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lncurses" >&5
 -printf %s "checking for main in -lncurses... " >&6; }
 -if test ${ac_cv_lib_ncurses_main+y}
@@ -30,7 +30,7 @@ index d2be94f..d56ca86 100755
  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
  /* end confdefs.h.  */
  
--
+ 
 +/* Override any GCC internal prototype to avoid an error.
 +   Use char because int might match the return type of a GCC
 +   builtin and then its argument prototype would still apply.  */
@@ -61,13 +61,21 @@ index d2be94f..d56ca86 100755
 +  fi
 +  if ac_fn_c_try_link "$LINENO"; then :
 +  ac_cv_search_initscr=$ac_res
- fi
- rm -f core conftest.err conftest.$ac_objext conftest.beam \
--    conftest$ac_exeext conftest.$ac_ext
--LIBS=$ac_check_lib_save_LIBS
++  fi
++  rm -f core conftest.err conftest.$ac_objext conftest.beam \
 +    conftest$ac_exeext
 +  if ${ac_cv_search_initscr+:} false; then :
-+  break
++    break
++  fi
++done
++if ${ac_cv_search_initscr+:} false; then :
++  ac_cv_search_initscr=no
+ fi
+-rm -f core conftest.err conftest.$ac_objext conftest.beam \
+-    conftest$ac_exeext conftest.$ac_ext
+-LIBS=$ac_check_lib_save_LIBS
++rm conftest.$ac_ext
++LIBS=$ac_func_search_save_LIBS
  fi
 -{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ncurses_main" >&5
 -printf "%s\n" "$ac_cv_lib_ncurses_main" >&6; }
@@ -76,14 +84,6 @@ index d2be94f..d56ca86 100755
 -  printf "%s\n" "#define HAVE_LIBNCURSES 1" >>confdefs.h
 -
 -  LIBS="-lncurses $LIBS"
-+done
-+if ${ac_cv_search_initscr+:} false; then :
-+ 
-+  ac_cv_search_initscr=no
-+fi
-+rm conftest.$ac_ext
-+LIBS=$ac_func_search_save_LIBS
-+fi
 +{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_initscr" >&5
 +$as_echo "$ac_cv_search_initscr" >&6; }
 +ac_res=$ac_cv_search_initscr
@@ -93,13 +93,13 @@ index d2be94f..d56ca86 100755
  else $as_nop
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -ltinfo" >&5
 diff --git a/configure.ac b/configure.ac
-index 9ce4b77..96cea1f 100644
+index d86dd3e..32f2403 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -882,7 +882,7 @@ if test "${use_readline}" = yes; then
-   if test "${use_readline}" = no; then
+@@ -957,7 +957,7 @@ if test "${use_readline}" = yes; then
      ## only need ncurses if libreadline is not statically linked against it
      unset ac_cv_lib_readline_rl_callback_read_char
+     ## FIXME replace main, maybe by tputs
 -    AC_CHECK_LIB(ncurses, main, [],
 +    AC_SEARCH_LIBS([initscr], [ncursesw curses], [],
                   AC_CHECK_LIB(tinfo, main, [],
