@@ -1,14 +1,14 @@
-From cb58f265c082a74918884dbf6802d86d0db1a24b Mon Sep 17 00:00:00 2001
+From 47d5c097e380158204cd812f086213a56fc62e68 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 15:53:45 +0000
-Subject: [PATCH 09/16] javareconf: Do not fail on compile fail
+Subject: [PATCH 09/17] javareconf: Do not fail on compile fail
 
 ---
  src/scripts/javareconf.in | 14 ++++++++++----
  1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/src/scripts/javareconf.in b/src/scripts/javareconf.in
-index ff4724a..e9472b9 100644
+index 2bf0537a..63cce1a0 100644
 --- a/src/scripts/javareconf.in
 +++ b/src/scripts/javareconf.in
 @@ -347,10 +347,16 @@ ${R_HOME}/bin/R CMD SHLIB conftest.c
@@ -32,6 +32,3 @@ index ff4724a..e9472b9 100644
  fi
  
  rm -f conftest.c conftest.o conftest.so Makevars
--- 
-2.34.1
-

@@ -1,18 +1,18 @@
-From a7e01d57363e2dc3042d789cf9ed066fa882de2a Mon Sep 17 00:00:00 2001
+From 1e36c90bb4ddefc02ca5b1eb2a11ef1b20e10ec3 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 15 Dec 2021 09:24:02 +0100
-Subject: [PATCH 07/16] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
+Subject: [PATCH 07/17] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
 
 ---
- configure    | 58 +++++++++++++++++++++++++++++++++-------------------
+ configure    | 56 +++++++++++++++++++++++++++++++++-------------------
  configure.ac |  2 +-
- 2 files changed, 38 insertions(+), 22 deletions(-)
+ 2 files changed, 37 insertions(+), 21 deletions(-)
 
 diff --git a/configure b/configure
-index d2be94f..d56ca86 100755
+index b9201e7a..41c1debe 100755
 --- a/configure
 +++ b/configure
-@@ -24351,43 +24351,59 @@ fi
+@@ -24352,43 +24352,59 @@ fi
    if test "${use_readline}" = no; then
      ## only need ncurses if libreadline is not statically linked against it
      unset ac_cv_lib_readline_rl_callback_read_char
@@ -93,7 +93,7 @@ index d2be94f..d56ca86 100755
  else $as_nop
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -ltinfo" >&5
 diff --git a/configure.ac b/configure.ac
-index 9ce4b77..96cea1f 100644
+index 1d0c3ce9..372daaa4 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -882,7 +882,7 @@ if test "${use_readline}" = yes; then

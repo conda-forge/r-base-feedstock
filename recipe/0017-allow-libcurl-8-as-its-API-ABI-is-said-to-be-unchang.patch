@@ -1,0 +1,120 @@
+From 3f4660a8235cae28c53a88af00ae06d71b7f550f Mon Sep 17 00:00:00 2001
+From: ripley <ripley@00db46b3-68df-0310-9c12-caf00c1e9a41>
+Date: Sat, 25 Mar 2023 09:01:30 +0000
+Subject: [PATCH 17/17] allow libcurl 8 as its API/ABI is said to be unchanged
+
+git-svn-id: https://svn.r-project.org/R/trunk@84049 00db46b3-68df-0310-9c12-caf00c1e9a41
+
+another (inessential) tweak for libcurl 8
+
+git-svn-id: https://svn.r-project.org/R/trunk@84229 00db46b3-68df-0310-9c12-caf00c1e9a41
+
+a better version of r84229
+
+git-svn-id: https://svn.r-project.org/R/trunk@84232 00db46b3-68df-0310-9c12-caf00c1e9a41
+
+Tweak curl version conditions for TCP_KEEPALIVE (PR#18497).
+
+git-svn-id: https://svn.r-project.org/R/trunk@84247 00db46b3-68df-0310-9c12-caf00c1e9a41
+
+Co-authored-by: kalibera <kalibera@00db46b3-68df-0310-9c12-caf00c1e9a41>
+---
+ configure                      |  6 +++---
+ doc/manual/R-admin.texi        | 13 ++++++-------
+ m4/R.m4                        |  4 ++--
+ src/modules/internet/libcurl.c |  5 +++--
+ 4 files changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/configure b/configure
+index 75fbbe4a..a5a05baa 100755
+--- a/configure
++++ b/configure
+@@ -47603,8 +47603,8 @@ fi
+ done
+ 
+ if test "x${have_libcurl}" = "xyes"; then
+-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if libcurl is version 7 and >= 7.28.0" >&5
+-printf %s "checking if libcurl is version 7 and >= 7.28.0... " >&6; }
++{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if libcurl is >= 7.28.0" >&5
++printf %s "checking if libcurl is >= 7.28.0... " >&6; }
+ if test ${r_cv_have_curl728+y}
+ then :
+   printf %s "(cached) " >&6
+@@ -47622,7 +47622,7 @@ int main(int argc, const char * argv[])
+ {
+ #ifdef LIBCURL_VERSION_MAJOR
+ #if LIBCURL_VERSION_MAJOR > 7
+-  exit(1);
++  exit(0);
+ #elif LIBCURL_VERSION_MAJOR == 7 && LIBCURL_VERSION_MINOR >= 28
+   exit(0);
+ #else
+diff --git a/doc/manual/R-admin.texi b/doc/manual/R-admin.texi
+index 5909b683..8400587e 100644
+--- a/doc/manual/R-admin.texi
++++ b/doc/manual/R-admin.texi
+@@ -3314,13 +3314,12 @@ by calling @code{pcre_config()}.
+ @c   end-of-life May 2018. 
+ @c libcurl 7.28.0 was released in Oct 2012
+ @c Ubuntu 16.04LTS has 7.47.0
+-Library @code{libcurl} (version 7.28.0 or later@footnote{but not a major
+-version greater than 7 should there ever be one: the major version has
+-been 7 since 2000.}) is required.  Information on @code{libcurl} is
+-found from the @command{curl-config} script: if that is missing or needs
+-to be overridden@footnote{for example to specify static linking with a
+-build which has both shared and static libraries.} there are macros to
+-do so described in file @file{config.site}.
++Library @code{libcurl} (version 7.28.0 or later) is required.
++Information on @code{libcurl} is found from the @command{curl-config}
++script: if that is missing or needs to be overridden@footnote{for
++example to specify static linking with a build which has both shared and
++static libraries.} there are macros to do so described in file
++@file{config.site}.
+ 
+ A @command{tar} program is needed to unpack the sources and packages
+ (including the recommended packages).  A version@footnote{Such as
+diff --git a/m4/R.m4 b/m4/R.m4
+index 3eda3f99..4c9f380b 100644
+--- a/m4/R.m4
++++ b/m4/R.m4
+@@ -4300,7 +4300,7 @@ LIBS="${CURL_LIBS} ${LIBS}"
+ AC_CHECK_HEADERS(curl/curl.h, [have_libcurl=yes], [have_libcurl=no])
+ 
+ if test "x${have_libcurl}" = "xyes"; then
+-AC_CACHE_CHECK([if libcurl is version 7 and >= 7.28.0], [r_cv_have_curl728],
++AC_CACHE_CHECK([if libcurl is >= 7.28.0], [r_cv_have_curl728],
+ [AC_RUN_IFELSE([AC_LANG_SOURCE([[
+ #include <stdlib.h>
+ #include <curl/curl.h>
+@@ -4308,7 +4308,7 @@ int main(int argc, const char * argv[])
+ {
+ #ifdef LIBCURL_VERSION_MAJOR
+ #if LIBCURL_VERSION_MAJOR > 7
+-  exit(1);
++  exit(0);
+ #elif LIBCURL_VERSION_MAJOR == 7 && LIBCURL_VERSION_MINOR >= 28
+   exit(0);
+ #else
+diff --git a/src/modules/internet/libcurl.c b/src/modules/internet/libcurl.c
+index 79e46ff2..66ebc745 100644
+--- a/src/modules/internet/libcurl.c
++++ b/src/modules/internet/libcurl.c
+@@ -584,7 +584,8 @@ in_do_curlDownload(SEXP call, SEXP op, SEXP args, SEXP rho)
+ 	/* Users will normally expect to follow redirections, although
+ 	   that is not the default in either curl or libcurl. */
+ 	curlCommon(hnd[i], 1, 1);
+-#if (LIBCURL_VERSION_MINOR >= 25)
++	// all but Unix-alikes with ancient libcurl (before 2012-03-22)
++#if (LIBCURL_VERSION_MAJOR > 7) || (LIBCURL_VERSION_MAJOR == 7 && LIBCURL_VERSION_MINOR >= 25)
+ 	curl_easy_setopt(hnd[i], CURLOPT_TCP_KEEPALIVE, 1L);
+ #endif
+ 	curl_easy_setopt(hnd[i], CURLOPT_HTTPHEADER, headers);
+@@ -894,7 +895,7 @@ static Rboolean Curl_open(Rconnection con)
+     curl_easy_setopt(ctxt->hnd, CURLOPT_FAILONERROR, 1L);
+     curlCommon(ctxt->hnd, 1, 1);
+     curl_easy_setopt(ctxt->hnd, CURLOPT_NOPROGRESS, 1L);
+-#if (LIBCURL_VERSION_MINOR >= 25)
++#if LIBCURL_VERSION_MAJOR > 7 || (LIBCURL_VERSION_MAJOR == 7 && LIBCURL_VERSION_MINOR >= 25)
+     curl_easy_setopt(ctxt->hnd, CURLOPT_TCP_KEEPALIVE, 1L);
+ #endif
+ 
