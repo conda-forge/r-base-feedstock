@@ -1,7 +1,7 @@
-From 4b9f9c7eadb839835e3a50315c0f52e935c8222b Mon Sep 17 00:00:00 2001
+From 129269a74eaa41bfa0eec9e662d484cf35184334 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 15:40:19 +0000
-Subject: [PATCH 03/16] Win32: Do not link -static-libgcc
+Subject: [PATCH 03/17] Win32: Do not link -static-libgcc
 
 ---
  src/gnuwin32/fixed/etc/Makeconf | 4 ++--
@@ -22,6 +22,3 @@ index d54c158..b8ac01a 100644
  
  ## The rtools40 installer sets RTOOLS40_HOME, default to standard install path
  RTOOLS40_HOME ?= c:/rtools40
--- 
-2.34.1
-

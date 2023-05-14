@@ -1,7 +1,7 @@
-From 0566ead0e83a7e8ccfc6cac3c4f2aa9166fdaa2b Mon Sep 17 00:00:00 2001
+From 025916862e92e9e450e4edcd503cd066fbff9062 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 29 Apr 2018 19:30:59 +0100
-Subject: [PATCH 12/16] Allow @rpath in tcltk dylib LC_LOAD_DYLIB command
+Subject: [PATCH 12/17] Allow @rpath in tcltk dylib LC_LOAD_DYLIB command
 
 ---
  src/library/tcltk/R/unix/zzz.R | 2 +-
@@ -20,6 +20,3 @@ index f397d36..e7ad6d7 100644
                      stop("Tcl/Tk libraries are missing: install the Tcl/Tk component from the R installer",
                           domain = NA)
              }
--- 
-2.34.1
-

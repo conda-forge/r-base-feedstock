@@ -1,7 +1,7 @@
-From 295501726d5ef003131e52af6cbc282142c67a52 Mon Sep 17 00:00:00 2001
+From 0badfaaf4a713b4ff156de9b7e080474473f8cb5 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 15 Dec 2021 07:32:32 +0100
-Subject: [PATCH 02/16] Fix trio config.h include depth issue
+Subject: [PATCH 02/17] Fix trio config.h include depth issue
 
 ---
  src/extra/trio/Makefile.win | 2 +-
@@ -20,6 +20,3 @@ index 5a8abf8..935ba50 100644
  
  CPPFLAGS = -I../../include -I../../main
  
--- 
-2.34.1
-
