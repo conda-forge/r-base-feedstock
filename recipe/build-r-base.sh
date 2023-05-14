@@ -366,6 +366,12 @@ Mingw_w64_makefiles() {
         sed -i 's| = \$(BINPREF)| = |g' ${_makeconf}
     done
 
+    # We use "merge_build_host: true" => remove the portable MiKTeX installation to not
+    # include added/changed files from it in the r-base package.
+    rm -R "${PREFIX}/Library/miktex"
+    # NB: Better alternative would be https://github.com/conda/conda-build/pull/4197
+    #     and/or somehow make MiKTeX not modify anything in the prefix.
+
     return 0
 }
 
