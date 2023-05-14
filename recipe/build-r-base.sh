@@ -449,6 +449,14 @@ Mingw_w64_makefiles() {
     rm ${PREFIX}/Library/mingw-w64/bin/libblas.dll
     rm ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
 
+    if [[ "${_use_w32tex}" != "yes" ]]; then
+        # We use "merge_build_host: true" => remove the portable MiKTeX installation to not
+        # include added/changed files from it in the r-base package.
+        rm -R "${PREFIX}/Library/miktex"
+        # NB: Better alternative would be https://github.com/conda/conda-build/pull/4197
+        #     and/or somehow make MiKTeX not modify anything in the prefix.
+    fi
+
     return 0
 }
 

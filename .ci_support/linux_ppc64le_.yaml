@@ -30,14 +30,14 @@ gsl:
 - '2.7'
 icu:
 - '70'
-jpeg:
-- '9'
 krb5:
 - '1.20'
 libblas:
 - 3.9 *netlib
 libcurl:
 - '8'
+libjpeg_turbo:
+- 2.1.5
 liblapack:
 - 3.9 *netlib
 libpng:
