@@ -27,7 +27,7 @@ glib:
 gsl:
 - '2.7'
 icu:
-- '70'
+- '72'
 krb5:
 - '1.20'
 libblas:
