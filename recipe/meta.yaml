@@ -26,6 +26,7 @@ source:
       - 0014-link-Xt-to-uuid.patch
       - 0015-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
       - 0016-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+      - 0017-allow-libcurl-8-as-its-API-ABI-is-said-to-be-unchang.patch
   # The following are used for the Mingw_w64 builds, added in
   # https://github.com/conda-archive/conda-recipes/commit/959fa4bb8b14c522e5f791d1463c9bc0021059e0
   - url: http://www.stats.ox.ac.uk/pub/Rtools/goodies/multilib/curl-ca-bundle.crt            # [win]
@@ -39,7 +40,7 @@ source:
     folder: win-extra-files                                                                  # [win]
 
 build:
-  number: 5
+  number: 6
 
 outputs:
   - name: r-base

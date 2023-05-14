@@ -1,7 +1,7 @@
-From f24fbd0c19d1e6b6ded30eed1632205f62599a30 Mon Sep 17 00:00:00 2001
+From 94502e90951884b82e0a2a8de35192083264ee4a Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sat, 27 Apr 2019 00:36:24 +0100
-Subject: [PATCH 16/16] Use LAPACK_LDFLAGS in Rlapack_la_LIBADD
+Subject: [PATCH 16/17] Use LAPACK_LDFLAGS in Rlapack_la_LIBADD
 
 ---
  src/modules/lapack/Makefile.in | 2 +-
@@ -20,6 +20,3 @@ index 4a5e1d5..a351a53 100644
  
  ALL_CFLAGS = $(ALL_CFLAGS_LO)
  ALL_FFLAGS = $(ALL_FFLAGS_LO)
--- 
-2.34.1
-

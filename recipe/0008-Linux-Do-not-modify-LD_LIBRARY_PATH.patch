@@ -1,7 +1,7 @@
-From c793762a3d18b2505092c4c0a29c9e37acf1a0bf Mon Sep 17 00:00:00 2001
+From bea2976615305b56d66338cb004aee56b548fc1e Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 15:51:41 +0000
-Subject: [PATCH 08/16] Linux: Do not modify LD_LIBRARY_PATH
+Subject: [PATCH 08/17] Linux: Do not modify LD_LIBRARY_PATH
 
 ---
  Makeconf.in     |  3 ++-
@@ -25,7 +25,7 @@ index 6b2a680..fb70773 100644
  MKINSTALLDIRS = @R_SHELL@ $(top_srcdir)/src/scripts/mkinstalldirs.in
  NOTANGLE = @NOTANGLE@
 diff --git a/configure.ac b/configure.ac
-index 55a5f42..b92b61e 100644
+index 18ccdb7..2b9e251 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -798,7 +798,7 @@ AC_SUBST(LIBTOOL_DEPS)
@@ -112,6 +112,3 @@ index 314d364..3fb5331 100644
  : ${JAVA_HOME=@JAVA_HOME@}
  : ${R_JAVA_LD_LIBRARY_PATH=@R_JAVA_LD_LIBRARY_PATH@}
  if test -n "@R_LD_LIBRARY_PATH@"; then
--- 
-2.34.1
-

@@ -1,14 +1,14 @@
-From b91e0a5241faaf4b87d97f556f37c2709f34c651 Mon Sep 17 00:00:00 2001
+From 9f3235631f9e26a9ec0ae1f9d991781ed12616ca Mon Sep 17 00:00:00 2001
 From: Marcel Bargull <marcel.bargull@udo.edu>
 Date: Wed, 15 Dec 2021 09:40:05 +0100
-Subject: [PATCH 15/16] Check for changes then forcibly mv in javareconf.in
+Subject: [PATCH 15/17] Check for changes then forcibly mv in javareconf.in
 
 ---
  src/scripts/javareconf.in | 16 +++++++++-------
  1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/src/scripts/javareconf.in b/src/scripts/javareconf.in
-index b627966..5a75896 100644
+index a6e3409..8be3283 100644
 --- a/src/scripts/javareconf.in
 +++ b/src/scripts/javareconf.in
 @@ -419,13 +419,15 @@ else
@@ -34,6 +34,3 @@ index b627966..5a75896 100644
  done
  
  echo "Done."
--- 
-2.34.1
-

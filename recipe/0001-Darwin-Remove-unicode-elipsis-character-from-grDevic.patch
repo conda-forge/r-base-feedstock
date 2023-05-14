@@ -1,7 +1,7 @@
-From 047aecc647a6ea4a90e5464b81a5940c8e5ee6d6 Mon Sep 17 00:00:00 2001
+From 95bc886eeb0ad5744aaa72d6c6ee463524fc5332 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 16:17:34 +0000
-Subject: [PATCH 01/16] Darwin: Remove unicode elipsis character from grDevice
+Subject: [PATCH 01/17] Darwin: Remove unicode elipsis character from grDevice
  "Page Setup..." menu entry
 
 ---
@@ -21,6 +21,3 @@ index 825e07c..63b9b10 100644
  	    menuItem = [[NSMenuItem alloc] initWithTitle:@"Print" action:@selector(printDocument:) keyEquivalent:@"p"]; [menu addItem:menuItem]; [menuItem release];   
  	    
              menuItem = [[NSMenuItem alloc] initWithTitle:[menu title] action:nil keyEquivalent:@""]; /* the "Quartz" item in the main menu */
--- 
-2.34.1
-

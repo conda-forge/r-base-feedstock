@@ -1,7 +1,7 @@
-From 46b07fcb6a671ea6e9bcf8f03442511997ee5e32 Mon Sep 17 00:00:00 2001
+From c549200f2f6e96f65d6961231c482c2ec4f30007 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 15:42:00 +0000
-Subject: [PATCH 04/16] Win32: Extend sqrt NA_real_ hack to all GCC versions
+Subject: [PATCH 04/17] Win32: Extend sqrt NA_real_ hack to all GCC versions
 
 Also fix for GCC 5.3 ISNAN(int) emitting UD2 insn
 ---
@@ -24,6 +24,3 @@ index f4dff54..bfd4e83 100644
  #else
  # define R_sqrt sqrt
  #endif
--- 
-2.34.1
-
