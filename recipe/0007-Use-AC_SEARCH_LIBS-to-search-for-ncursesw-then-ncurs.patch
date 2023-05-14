@@ -1,7 +1,7 @@
-From a7e01d57363e2dc3042d789cf9ed066fa882de2a Mon Sep 17 00:00:00 2001
+From 014014445512387c9d6f71a5050df81a057f629d Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 15 Dec 2021 09:24:02 +0100
-Subject: [PATCH 07/16] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
+Subject: [PATCH 07/17] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
 
 ---
  configure    | 58 +++++++++++++++++++++++++++++++++-------------------
@@ -9,7 +9,7 @@ Subject: [PATCH 07/16] Use AC_SEARCH_LIBS to search for ncursesw then ncurses
  2 files changed, 38 insertions(+), 22 deletions(-)
 
 diff --git a/configure b/configure
-index e55984a..3b5b5d6 100755
+index a9689a4..bda08cc 100755
 --- a/configure
 +++ b/configure
 @@ -24356,43 +24356,59 @@ fi
@@ -94,7 +94,7 @@ index e55984a..3b5b5d6 100755
  else $as_nop
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -ltermcap" >&5
 diff --git a/configure.ac b/configure.ac
-index 200a740..55a5f42 100644
+index 01b3164..18ccdb7 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -884,7 +884,7 @@ if test "${use_readline}" = yes; then
@@ -106,6 +106,3 @@ index 200a740..55a5f42 100644
                   AC_CHECK_LIB(termcap, main, [],
                                AC_CHECK_LIB(termlib, main)))
      AC_CHECK_LIB(readline, rl_callback_read_char)
--- 
-2.34.1
-
