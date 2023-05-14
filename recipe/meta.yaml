@@ -40,7 +40,7 @@ source:
     folder: win-extra-files                                                                  # [win]
 
 build:
-  number: 6
+  number: 7
 
 outputs:
   - name: r-base
