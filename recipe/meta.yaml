@@ -53,6 +53,7 @@ outputs:
       detect_binary_files_with_prefix: true
     requirements:
       build:
+        - cross-r-base {{ r_base }}  # [build_platform != target_platform]
         - gnuconfig  # [unix]
         - {{ compiler('c') }}                # [not win]
         - {{ compiler('cxx') }}              # [not win]
