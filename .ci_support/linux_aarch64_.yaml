@@ -5,7 +5,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '11'
+- '12'
 cairo:
 - '1'
 cdt_arch:
@@ -19,13 +19,13 @@ channel_targets:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '11'
+- '12'
 docker_image:
 - quay.io/condaforge/linux-anvil-aarch64
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '11'
+- '12'
 freetype:
 - '2'
 glib:
@@ -39,7 +39,7 @@ krb5:
 libblas:
 - 3.9 *netlib
 libcurl:
-- '7'
+- '8'
 libjpeg_turbo:
 - 2.1.5
 liblapack:
@@ -53,7 +53,7 @@ libtiff:
 libuuid:
 - '2'
 libxml2:
-- '2.10'
+- '2.11'
 ncurses:
 - '6'
 pango:

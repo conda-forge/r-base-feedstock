@@ -1,7 +1,7 @@
-From f5c1dbed601028fb92ca67410bad103c89e23782 Mon Sep 17 00:00:00 2001
+From 484f50672c088493437cd6aff07e2bac4c5ebcf9 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Sun, 29 Apr 2018 19:27:02 +0100
-Subject: [PATCH 10/16] Revert part of 9b818c6dc00143ff18775a4015a3f43b5196fa31
+Subject: [PATCH 10/17] Revert part of 9b818c6dc00143ff18775a4015a3f43b5196fa31
  (support for old Java on macOS)
 
 ---
@@ -9,7 +9,7 @@ Subject: [PATCH 10/16] Revert part of 9b818c6dc00143ff18775a4015a3f43b5196fa31
  1 file changed, 17 insertions(+)
 
 diff --git a/src/scripts/javareconf.in b/src/scripts/javareconf.in
-index e9472b9..a59e77a 100644
+index 63cce1a0..8a6c6f9c 100644
 --- a/src/scripts/javareconf.in
 +++ b/src/scripts/javareconf.in
 @@ -199,6 +199,23 @@ custom_JAVA_CPPFLAGS="${JAVA_CPPFLAGS}"
@@ -36,6 +36,3 @@ index e9472b9..a59e77a 100644
  # sys-dependent tweaks to JNI flags -- Darwin ones removed for R 3.5
  
  ## we now look for a path to put in R_LD_LIBRARY_PATH which will
--- 
-2.34.1
-

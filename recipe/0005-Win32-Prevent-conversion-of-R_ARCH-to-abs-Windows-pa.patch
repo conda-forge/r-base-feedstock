@@ -1,17 +1,17 @@
-From a0f9a4d1d27487d6961464c88f45a5a0079027a9 Mon Sep 17 00:00:00 2001
+From 9dacf3505745b4db6187413cc521f11ace0a43b5 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 15 Dec 2021 07:35:00 +0100
-Subject: [PATCH 05/16] Win32: Prevent conversion of R_ARCH to abs Windows path
+Subject: [PATCH 05/17] Win32: Prevent conversion of R_ARCH to abs Windows path
 
 ---
  src/main/main.c | 28 ++++++++++++++++++++++++++++
  1 file changed, 28 insertions(+)
 
 diff --git a/src/main/main.c b/src/main/main.c
-index a2e3f75..fa87813 100644
+index e1ed38b0..89412668 100644
 --- a/src/main/main.c
 +++ b/src/main/main.c
-@@ -842,6 +842,34 @@ void setup_Rmainloop(void)
+@@ -841,6 +841,34 @@ void setup_Rmainloop(void)
  	    snprintf(deferred_warnings[ndeferred_warnings++], 250,
  		     "Setting LC_TIME=%.200s failed\n", p);
  
@@ -46,6 +46,3 @@ index a2e3f75..fa87813 100644
  	/* We set R_ARCH here: Unix does it in the shell front-end */
  	char Rarch[30];
  	strcpy(Rarch, "R_ARCH=/");
--- 
-2.34.1
-

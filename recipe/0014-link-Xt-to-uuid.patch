@@ -1,17 +1,17 @@
-From 89af2dc803f45ecb5a876c0dc6e417c2b93dbdf4 Mon Sep 17 00:00:00 2001
+From c14cbd3072ec056b3925943cc9155208da7b1e78 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Oct 2018 10:55:37 +0100
-Subject: [PATCH 14/16] link Xt to uuid
+Subject: [PATCH 14/17] link Xt to uuid
 
 ---
  m4/R.m4 | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/m4/R.m4 b/m4/R.m4
-index f6e3835..81bf493 100644
+index 55ace6ac..3eda3f99 100644
 --- a/m4/R.m4
 +++ b/m4/R.m4
-@@ -1653,7 +1653,7 @@ if test -z "${no_x}"; then
+@@ -1659,7 +1659,7 @@ if test -z "${no_x}"; then
    CPPFLAGS="${r_save_CPPFLAGS}"
    if test "${ac_cv_header_X11_Intrinsic_h}" = yes ; then
      AC_CHECK_LIB(Xt, XtToolkitInitialize, [have_Xt=yes], [have_Xt=no],
@@ -20,7 +20,7 @@ index f6e3835..81bf493 100644
      if test "${have_Xt}" = yes; then
        use_X11="yes"
      fi
-@@ -1663,7 +1663,7 @@ if test "x${use_X11}" = "xyes"; then
+@@ -1669,7 +1669,7 @@ if test "x${use_X11}" = "xyes"; then
    AC_DEFINE(HAVE_X11, 1,
              [Define if you have the X11 headers and libraries, and want
               the X11 GUI to be built.])
@@ -29,6 +29,3 @@ index f6e3835..81bf493 100644
  else
    if test "x${with_x}" != "xno"; then
      AC_MSG_ERROR(
--- 
-2.34.1
-
