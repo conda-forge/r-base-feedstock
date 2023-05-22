@@ -422,6 +422,8 @@ Mingw_w64_makefiles() {
     # Following dlls are not found in the current place. Copy them for now and remove later
     cp ${PREFIX}/Library/bin/libblas.dll   ${PREFIX}/Library/mingw-w64/bin/libblas.dll
     cp ${PREFIX}/Library/bin/liblapack.dll ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
+    # The makefile lacks the lib prefix
+    export ICU_LIBS="-lsicuin -lsicuuc ${PREFIX}/Library/mingw-w64/lib/libsicudt.a -lstdc++"
     cd "${SRC_DIR}/src/gnuwin32"
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         # rinstaller and crandir would come after manuals (if it worked with MSYS2/mingw-w64-{tcl,tk}, in which case we'd just use make distribution anyway)
