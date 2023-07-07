@@ -28,6 +28,7 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     export ac_cv_func_mmap_fixed_mapped=yes
     export r_cv_working_mktime=yes
     export r_cv_func_ctanh_works=yes
+    export r_cv_prog_fc_cc_compat_complex=yes
     # Need to check for openmp simd...
     mkdir -p doc
     (
