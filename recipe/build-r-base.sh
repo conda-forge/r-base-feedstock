@@ -541,6 +541,12 @@ Darwin() {
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install ${EXTRA_MAKE_ARGS}
 
+    # fail if build did not use external BLAS/LAPACK
+    if [[ -e ${PREFIX}/lib/R/lib/libRblas.dylib || -e ${PREFIX}/lib/R/lib/libRlapack.dylib ]]; then
+      echo "Test failed: Detected generic R BLAS/LAPACK"
+      exit 1
+    fi
+
     pushd ${PREFIX}/lib/R/etc
       sed -i'.bak' -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
       sed -i'.bak' -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf
