@@ -28,6 +28,8 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     export ac_cv_func_mmap_fixed_mapped=yes
     export r_cv_working_mktime=yes
     export r_cv_func_ctanh_works=yes
+    export r_cv_prog_fc_cc_compat_complex=yes
+    export r_cv_zdotu_is_usable=yes
     # Need to check for openmp simd...
     mkdir -p doc
     (
@@ -538,6 +540,12 @@ Darwin() {
     # echo "Running make check-all, this will take some time ..."
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1
     make install ${EXTRA_MAKE_ARGS}
+
+    # fail if build did not use external BLAS/LAPACK
+    if [[ -e ${PREFIX}/lib/R/lib/libRblas.dylib || -e ${PREFIX}/lib/R/lib/libRlapack.dylib ]]; then
+      echo "Test failed: Detected generic R BLAS/LAPACK"
+      exit 1
+    fi
 
     pushd ${PREFIX}/lib/R/etc
       sed -i'.bak' -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
