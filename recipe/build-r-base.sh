@@ -188,6 +188,13 @@ Linux() {
     # make check-all -j1 V=1 > $(uname)-make-check.log 2>&1 || make check-all -j1 V=1 > $(uname)-make-check.2.log 2>&1
 
     make install
+    
+    # fail if build did not use external BLAS/LAPACK
+    if [[ -e ${PREFIX}/lib/R/lib/libRblas.so || -e ${PREFIX}/lib/R/lib/libRlapack.so ]]; then
+      echo "Test failed: Detected generic R BLAS/LAPACK"
+      exit 1
+    fi
+     
     # Prevent C and C++ extensions from linking to libgfortran.
     sed -i -r 's|(^LDFLAGS = .*)-lgfortran|\1|g' ${PREFIX}/lib/R/etc/Makeconf
 
