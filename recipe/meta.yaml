@@ -30,7 +30,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 4
+  number: 5
 
 outputs:
   - name: r-base
