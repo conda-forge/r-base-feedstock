@@ -29,7 +29,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 2
+  number: 3
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -201,7 +201,7 @@ outputs:
       commands:
         - R -h
         - R --version
-        - R -e "library('tcltk')"            # [linux]
+        - R -e "library('tcltk')"            # [linux or osx]
         - R -e \"library('tcltk')\""         # [win]
         - Rscript --version
         - Rscript -e  'cat("ok\\n")'
