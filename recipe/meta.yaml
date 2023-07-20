@@ -201,6 +201,7 @@ outputs:
       commands:
         - R -h
         - R --version
+        - R -e "print(.Platform\$dynlib.ext)"
         - R -e "library('tcltk')"            # [linux or osx]
         - R -e \"library('tcltk')\""         # [win]
         - Rscript --version
