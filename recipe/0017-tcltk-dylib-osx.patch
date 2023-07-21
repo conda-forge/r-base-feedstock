@@ -1,4 +1,4 @@
-diff --git a/library/tcltk/R/unix/zzz.R b/library/tcltk/R/unix/zzz.R
+diff --git a/src/library/tcltk/R/unix/zzz.R b/src/library/tcltk/R/unix/zzz.R
 index 9715367..2ba8d1c 100644
 --- a/library/tcltk/R/unix/zzz.R
 +++ b/library/tcltk/R/unix/zzz.R
