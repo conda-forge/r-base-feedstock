@@ -1,0 +1,13 @@
+diff --git a/src/library/tcltk/R/unix/zzz.R b/src/library/tcltk/R/unix/zzz.R
+index 9715367..2ba8d1c 100644
+--- a/src/library/tcltk/R/unix/zzz.R
++++ b/src/library/tcltk/R/unix/zzz.R
+@@ -41,7 +41,7 @@
+         ## installed, and check libX11 is present since this is a
+         ## common cause of problems with CRAN binary installs reported
+         ## for Rcmdr.
+-        DSO <- file.path(libname, pkgname, "libs", .Platform$r_arch, "tcltk.so")
++        DSO <- file.path(libname, pkgname, "libs", .Platform$r_arch, "tcltk.dylib")
+         loads <- utils:::macDynLoads(DSO)
+         ind <- grep("^/.*libtk[.0-9]+[.]dylib", loads)
+         if (length(ind)) {

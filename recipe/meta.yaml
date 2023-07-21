@@ -26,10 +26,11 @@ source:
     - 0014-link-Xt-to-uuid.patch
     - 0015-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
     - 0016-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+    - 0017-tcltk-dylib-osx.patch
 
 build:
   skip: true  # [win]
-  number: 2
+  number: 3
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -201,7 +202,8 @@ outputs:
       commands:
         - R -h
         - R --version
-        - R -e "library('tcltk')"            # [linux]
+        - R -e "print(.Platform\$dynlib.ext)"
+        - R -e "library('tcltk')"            # [linux or osx]
         - R -e \"library('tcltk')\""         # [win]
         - Rscript --version
         - Rscript -e  'cat("ok\\n")'
