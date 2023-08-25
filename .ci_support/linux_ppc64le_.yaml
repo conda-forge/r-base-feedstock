@@ -29,7 +29,7 @@ glib:
 gsl:
 - '2.7'
 icu:
-- '72'
+- '73'
 krb5:
 - '1.21'
 libblas:
