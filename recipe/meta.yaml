@@ -30,7 +30,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 3
+  number: 4
   no_link:
     - lib/R/doc/html/packages.html
 
