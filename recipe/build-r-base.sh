@@ -312,7 +312,7 @@ Mingw_w64_makefiles() {
     # This won't take and we'll force the issue at the end of the build* It's not really clear
     # if this is the best way to achieve my goal here (shared libraries, libpng, curl etc) but
     # it seems fairly reasonable all options considered. On other OSes, it's for '/usr/local'
-    echo "LOCAL_SOFT = \$(R_HOME)/../Library/mingw-w64" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "LOCAL_SOFT = ${PREFIX}/Library/" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
 
     # The hoops we must jump through to get innosetup installed in an unattended way.
     curl --insecure -C - -o ${DLCACHE}/innoextract-1.6-windows.zip -SLO http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip
