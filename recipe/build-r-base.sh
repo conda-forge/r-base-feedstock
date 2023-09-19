@@ -264,7 +264,7 @@ Mingw_w64_makefiles() {
         CPU="i686"
     fi
 
-    export CPATH=${PREFIX}/include
+    export CPATH=${PREFIX}/Library/include
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         TCLTK_VER=86
     else
