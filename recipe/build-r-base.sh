@@ -312,10 +312,6 @@ Mingw_w64_makefiles() {
     # it seems fairly reasonable all options considered. On other OSes, it's for '/usr/local'
     echo "LOCAL_SOFT = \$(R_HOME)/../Library/mingw-w64" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
 
-    # The build process copies this across if it finds it and rummaging about on
-    # the website I found a file, so why not, eh?
-    curl --insecure -C - -o "${SRC_DIR}/etc/curl-ca-bundle.crt" -SLO http://www.stats.ox.ac.uk/pub/Rtools/goodies/multilib/curl-ca-bundle.crt
-
     # The hoops we must jump through to get innosetup installed in an unattended way.
     curl --insecure -C - -o ${DLCACHE}/innoextract-1.6-windows.zip -SLO http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip
     unzip -o ${DLCACHE}/innoextract-1.6-windows.zip -d ${PWD}
