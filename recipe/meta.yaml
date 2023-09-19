@@ -117,7 +117,7 @@ outputs:
         - freetype                           # [not win]
         - readline                           # [not win]
         - ncurses                            # [not win]
-        - libcurl                            # [not win]
+        - libcurl
         - xz                                 # [not win]
         - libpng                             # [not win]
         - bzip2
