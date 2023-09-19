@@ -1,0 +1,30 @@
+bzip2:
+- '1'
+channel_sources:
+- isuruf/label/m2,isuruf/label/ucrt64,conda-forge
+channel_targets:
+- conda-forge main
+gsl:
+- '2.7'
+icu:
+- '73'
+libblas:
+- 3.9 *netlib
+libiconv:
+- '1'
+libjpeg_turbo:
+- 2.1.5
+liblapack:
+- 3.9 *netlib
+libtiff:
+- '4.6'
+libxml2:
+- '2.11'
+pcre2:
+- '10.40'
+target_platform:
+- win-64
+tk:
+- '8.6'
+zlib:
+- '1.2'
