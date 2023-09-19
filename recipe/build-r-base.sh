@@ -265,6 +265,7 @@ Mingw_w64_makefiles() {
     fi
 
     export CPATH=${PREFIX}/Library/include
+    export LIBRARY_PATH=${PREFIX}/Library/lib
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         TCLTK_VER=86
     else
