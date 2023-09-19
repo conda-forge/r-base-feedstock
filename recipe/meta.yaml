@@ -29,7 +29,6 @@ source:
     - 0017-tcltk-dylib-osx.patch
 
 build:
-  skip: true  # [win]
   number: 4
   no_link:
     - lib/R/doc/html/packages.html
@@ -55,14 +54,12 @@ outputs:
       detect_binary_files_with_prefix: true
     requirements:
       build:
-        - gnuconfig  # [unix]
+        - gnuconfig                          # [unix]
         - {{ compiler('c') }}                # [not win]
         - {{ compiler('cxx') }}              # [not win]
         - {{ compiler('fortran') }}          # [not win]
-        - gfortran_impl_{{ build_platform }} {{ fortran_compiler_version }}  # [(build_platform != target_platform) and linux]
-        - {{ compiler('m2w64_c') }}          # [win]
-        - {{ compiler('m2w64_cxx') }}        # [win]
-        - {{ compiler('m2w64_fortran') }}     # [win]
+        - mingw-w64-ucrt-x86_64-gcc          # [win]
+        - mingw-w64-ucrt-x86_64-gcc-fortran  # [win]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - {{ cdt('libxrender') }}            # [linux]
         - {{ cdt('libxext') }}               # [linux]
@@ -85,7 +82,7 @@ outputs:
         - openjdk
         - {{ posix }}autoconf
         - {{ posix }}automake-wrapper        # [win]
-        - {{ posix }}automake                # [not win]
+        - automake                           # [not win]
         - make                               # [not win]
         - libcurl                            # [not win]
         - freetype                            # [build_platform != target_platform]
@@ -96,7 +93,7 @@ outputs:
         - libpng                              # [build_platform != target_platform]
         - bzip2                               # [build_platform != target_platform]
         - cairo                               # [build_platform != target_platform]
-        - libjpeg-turbo                                 # [build_platform != target_platform]
+        - libjpeg-turbo                       # [build_platform != target_platform]
         - libiconv                            # [osx and (build_platform != target_platform)]
         - libuuid                             # [linux and (build_platform != target_platform)]
         - glib                                # [unix and (build_platform != target_platform)]
@@ -115,52 +112,36 @@ outputs:
         - libblas                             # [build_platform != target_platform]
         - liblapack                           # [build_platform != target_platform]
       host:
-        # This is a hack, strong run_exports should cause this to be added
-        - llvm-openmp                        # [osx]
         - freetype                           # [not win]
         - readline                           # [not win]
         - ncurses                            # [not win]
         - libcurl                            # [not win]
         - xz                                 # [not win]
         - libpng                             # [not win]
-        - bzip2                              # [not win]
-        - {{ native }}bzip2                  # [win]
+        - bzip2
         - cairo                              # [not win]
-        - {{ native }}libjpeg-turbo          # [win]
-        - libjpeg-turbo                                # [not win]
-        - libiconv                           # [osx]
-        - {{ native }}libiconv               # [win]
+        - libjpeg-turbo
+        - libiconv                           # [osx or win]
         - libuuid                            # [linux]
-        - {{ native }}gmp                    # [win]
         - glib                               # [unix]
-        - {{ native }}fftw                   # [win]
-        - {{ native }}xz                     # [win]
-        - {{ native }}mpfr                   # [win]
-        - {{ native }}libsndfile             # [win]
-        - {{ native }}bwidget
-        - {{ native }}tktable
-        - {{ native }}libpng                 # [win]
+        - bwidget
+        - tktable                            # [not win]
         - pango                              # [not win]
-        - {{ native }}icu                    # [win]
-        - icu                                # [not win]
-        - pcre2                              # [not win]
-        - {{ native }}pcre2                  # [win]
-        - tk                                 # [not win]
-        - {{ native }}tk                     # [win]
-        - {{ native }}zlib                   # [win]
-        - zlib                               # [not win]
-        - {{ native }}gsl                    # [win]
-        - gsl                                # [not win]
-        - {{ native }}libtiff                # [win]
-        - libtiff                            # [not win]
-        - {{ native }}libxml2                # [win]
-        - libxml2                            # [not win]
+        - icu
+        - pcre2
+        - tk
+        - zlib
+        - gsl
+        - libtiff
+        - libxml2
         - libssh2                            # [not win]
         - krb5                               # [not win]
         - libblas
         - liblapack
         # sed is in host env because its path is recorded in R's shell wrapper
         - sed                                # [linux]
+        - mingw-w64-ucrt-x86_64-gcc-libs            # [win]
+        - mingw-w64-ucrt-x86_64-gcc-libgfortran     # [win]
       run:
         - _r-mutex 1.* anacondar_1
         # Needed by R CMD javareconf
@@ -172,31 +153,18 @@ outputs:
         - {{ cxx_compiler|default("blah") }}_{{ target_platform }} >={{ cxx_compiler_version|default("0") }}  # [osx]
         - {{ compiler('fortran') }}  # [osx]
         - {{ pin_compatible('llvm-openmp', max_pin=None) }}      # [osx]
-        - curl                                 # [not win]
-        - {{ native }}bzip2                    # [win]
-        - {{ native }}libjpeg-turbo            # [win]
-        - {{ native }}libiconv                 # [win]
+        - curl
         - libuuid                              # [linux]
         - xorg-libxt                           # [linux]
-        - {{ native }}gmp                      # [win]
-        - {{ native }}fftw                     # [win]
-        - {{ native }}xz                       # [win]
-        - {{ native }}mpfr                     # [win]
-        - {{ native }}libsndfile               # [win]
-        - {{ native }}bwidget
-        - {{ native }}tktable
-        - {{ native }}libpng                   # [win]
-        - {{ native }}pcre2                    # [win]
-        - {{ native }}tk                       # [win]
-        - {{ native }}zlib                     # [win]
-        - {{ native }}gsl                      # [win]
-        - {{ native }}libtiff                  # [win]
-        - {{ native }}libxml2                  # [win]
+        - bwidget
+        - tktable
         # Once run_exports are in place these will not be necessary:
         - {{ pin_compatible('pango') }}      # [not win]
-        - {{ pin_compatible('bzip2') }}      # [not win]
-        - {{ pin_compatible('icu') }}        # [not win]
+        - {{ pin_compatible('bzip2') }}
+        - {{ pin_compatible('icu') }}
         - sed                                # [linux]
+        - mingw-w64-ucrt-x86_64-gcc-libs            # [win]
+        - mingw-w64-ucrt-x86_64-gcc-libgfortran     # [win]
 
     test:
       commands:
