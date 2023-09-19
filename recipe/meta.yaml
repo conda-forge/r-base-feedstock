@@ -138,8 +138,8 @@ outputs:
         - libxml2
         - libssh2                            # [not win]
         - krb5                               # [not win]
-        - libblas
-        - liblapack
+        - libblas                            # [not win]
+        - liblapack                          # [not win]
         # sed is in host env because its path is recorded in R's shell wrapper
         - sed                                # [linux]
         - mingw-w64-ucrt-x86_64-gcc-libs            # [win]

@@ -235,8 +235,6 @@ Mingw_w64_autotools() {
                 --with-tk-config=$TK_CONFIG     \
                 --with-tcl-config=$TCL_CONFIG   \
                 --with-x=no                     \
-                --with-blas=-lblas              \
-                --with-lapack=-llapack          \
                 --with-readline=no              \
                 --with-recommended-packages=no  \
                 LIBnn=lib
@@ -284,8 +282,6 @@ Mingw_w64_makefiles() {
     echo "BINPREF64 = "                                 >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ATLAS = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ATLAS_PATH = ${PREFIX}/Library/lib"           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    sed -i.bak 's|-lf77blas -latlas|-llapack -lblas|g' src/extra/blas/Makefile.win
-    rm src/extra/blas/Makefile.win.bak
     echo "MULTI =   "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # BUILD_HTML causes filenames with special characters to be created, see
     #   https://github.com/conda-forge/r-base-feedstock/pull/177#issuecomment-845279175
@@ -367,9 +363,6 @@ Mingw_w64_makefiles() {
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
     export MSYS2_ARG_CONV_EXCL="R_ARCH"
-    # Following dlls are not found in the current place. Copy them for now and remove later
-    cp ${PREFIX}/Library/bin/libblas.dll   ${PREFIX}/Library/mingw-w64/bin/libblas.dll
-    cp ${PREFIX}/Library/bin/liblapack.dll ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
     cd "${SRC_DIR}/src/gnuwin32"
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         # rinstaller and crandir would come after manuals (if it worked with MSYS2/mingw-w64-{tcl,tk}, in which case we'd just use make distribution anyway)
@@ -414,9 +407,6 @@ Mingw_w64_makefiles() {
         # For compilers it is not, since they're put in the build prefix.
         sed -i 's| = \$(BINPREF)| = |g' ${_makeconf}
     done
-    # Remove previously copied file
-    rm ${PREFIX}/Library/mingw-w64/bin/libblas.dll
-    rm ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
 
     return 0
 }
