@@ -308,7 +308,7 @@ Mingw_w64_makefiles() {
     echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ICU = YES"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ICU_PATH = ${PREFIX}/Library/"                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "ICU_LIBS = -lsicuin -lsicuuc -lsicudt ${PREFIX}/Library/lib"        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ICU_LIBS = -lsicuin -lsicuuc -lsicudt -L\"${PREFIX}/Library/lib\""        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # This won't take and we'll force the issue at the end of the build* It's not really clear
     # if this is the best way to achieve my goal here (shared libraries, libpng, curl etc) but
     # it seems fairly reasonable all options considered. On other OSes, it's for '/usr/local'
