@@ -29,7 +29,7 @@ source:
     - 0017-tcltk-dylib-osx.patch
 
 build:
-  number: 4
+  number: 5
   no_link:
     - lib/R/doc/html/packages.html
 
