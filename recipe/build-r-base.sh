@@ -297,6 +297,8 @@ Mingw_w64_makefiles() {
     echo "TEXI2ANY = texi2any"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "TCL_VERSION = ${TCLTK_VER}"                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "USE_LIBCURL = YES"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "CURL_LIBS = -lcurl"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ICU = YES"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ICU_PATH = ${PREFIX}/Library/"                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ICU_LIBS = -licuin -licuuc -licudt -L\"${PREFIX}/Library/lib\""        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
