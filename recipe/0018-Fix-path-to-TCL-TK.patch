@@ -1,32 +1,29 @@
-From e1a9695c38de7616103964a64e9c59b7b65a59e8 Mon Sep 17 00:00:00 2001
+From 4473a2eb84deb2f6509e0ae576a478661a9d3b49 Mon Sep 17 00:00:00 2001
 From: Isuru Fernando <isuruf@gmail.com>
-Date: Tue, 19 Sep 2023 17:05:40 -0500
+Date: Tue, 19 Sep 2023 17:28:19 -0500
 Subject: [PATCH] Fix path to TCL/TK
 
 ---
- src/library/tcltk/R/windows/zzz.R | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ src/library/tcltk/R/windows/zzz.R | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/library/tcltk/R/windows/zzz.R b/src/library/tcltk/R/windows/zzz.R
-index 29934de5d3..0582596d54 100644
+index 87cb0a2d73..4d6626273d 100644
 --- a/src/library/tcltk/R/windows/zzz.R
 +++ b/src/library/tcltk/R/windows/zzz.R
-@@ -21,12 +21,12 @@
+@@ -21,10 +21,10 @@
  .onLoad <- function(libname, pkgname)
  {
      if(!nzchar(tclbin <- Sys.getenv("MY_TCLTK"))) {
--        tclbin <- file.path(R.home(), "Tcl",
--                            if(.Machine$sizeof.pointer == 8) "bin64" else "bin")
-+        tclbin <- file.path(R.home(), "..", "..", "Library",
-+                            if(.Machine$sizeof.pointer == 8) "bin" else "bin")
+-        tclbin <- file.path(R.home(), "Tcl", "bin")
++        tclbin <- file.path(R.home(), "..", "..", "Library", "bin")
          if(!file.exists(tclbin))
              stop("Tcl/Tk support files were not installed", call.=FALSE)
-         if(.Machine$sizeof.pointer == 8) {
--            lib64 <- gsub("\\", "/", file.path(R.home(), "Tcl", "lib64"),
-+            lib64 <- gsub("\\", "/", file.path(R.home(), "..", "..", "Library", "lib"),
-                           fixed=TRUE)
-             Sys.setenv(TCLLIBPATH = lib64)
-         } else Sys.unsetenv("TCLLIBPATH") # in case called from a 64-bit process
+-        lib <- gsub("\\", "/", file.path(R.home(), "Tcl", "lib"),
++        lib <- gsub("\\", "/", file.path(R.home(), "..", "..", "Library", "lib"),
+                       fixed=TRUE)
+         Sys.setenv(TCLLIBPATH = lib)
+     }
 -- 
 2.42.0
 
