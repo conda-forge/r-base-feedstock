@@ -264,6 +264,7 @@ Mingw_w64_makefiles() {
         CPU="i686"
     fi
 
+    export CPATH=${PREFIX}/include
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         TCLTK_VER=86
     else
@@ -306,7 +307,7 @@ Mingw_w64_makefiles() {
     echo "TCL_VERSION = ${TCLTK_VER}"                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ICU = YES"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "ICU_PATH = \$(R_HOME)/../Library/mingw-w64"   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ICU_PATH = \$(R_HOME)/../Library/"            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # This won't take and we'll force the issue at the end of the build* It's not really clear
     # if this is the best way to achieve my goal here (shared libraries, libpng, curl etc) but
     # it seems fairly reasonable all options considered. On other OSes, it's for '/usr/local'
