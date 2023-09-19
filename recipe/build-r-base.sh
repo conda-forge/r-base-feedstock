@@ -107,7 +107,12 @@ fi
 
 # Without this, dependency scanning fails (but with it CDT libuuid / Xt fails to link
 # which we hack around with config.site)
-export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
+
+if [[ "$target_platform" == "win-"* ]]; then
+  export CPPFLAGS="${CPPFLAGS} -I$PREFIX/Library/include"
+else
+  export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
+fi
 
 export TCL_CONFIG=${PREFIX}/lib/tclConfig.sh
 export TK_CONFIG=${PREFIX}/lib/tkConfig.sh
