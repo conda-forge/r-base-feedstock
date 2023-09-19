@@ -27,6 +27,7 @@ source:
     - 0015-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
     - 0016-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
     - 0017-tcltk-dylib-osx.patch
+    - 0018-Fix-path-to-TCL-TK.patch
 
 build:
   skip: True  # [not x86_64]
@@ -160,6 +161,7 @@ outputs:
         - xorg-libxt                           # [linux]
         - bwidget
         - tktable
+        - tk
         - sed                                # [linux]
         - mingw-w64-ucrt-x86_64-gcc-libs            # [win]
         - mingw-w64-ucrt-x86_64-gcc-libgfortran     # [win]

@@ -266,17 +266,7 @@ Mingw_w64_makefiles() {
 
     export CPATH=${PREFIX}/Library/include
     export LIBRARY_PATH=${PREFIX}/Library/lib
-    if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
-        TCLTK_VER=86
-    else
-        TCLTK_VER=85
-        # Linking directly to DLLs, yuck.
-        if [[ "${ARCH}" == "64" ]]; then
-            export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib/R/Tcl/bin64"
-        else
-            export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib/R/Tcl/bin"
-        fi
-    fi
+    TCLTK_VER=86
 
     # I want to use /tmp and have that mounted to Windows %TEMP% in Conda's MSYS2
     # but there's a permissions issue preventing that from working at present.
@@ -321,48 +311,6 @@ Mingw_w64_makefiles() {
     curl --insecure -C - -o ${DLCACHE}/innosetup-5.5.9-unicode.exe -SLO http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe || true
     ./innoextract.exe ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
     mv app isdir
-    if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
-        # I wanted to go for the following unusual approach here of using conda install (in copy mode)
-        # and using MSYS2's mingw-w64 tcl/tk packages, but this is something for longer-term as there
-        # is too much work to do around removing baked-in paths and logic around the ActiveState TCL.
-        # For example expectations of Tcl/{bin,lib}64 folders in src/gnuwin32/installer/JRins.R and
-        # other places I've not yet found.
-        #
-        # Plan was to install excluding the dependencies (so the necessary DLL dependencies will not
-        # be present!). This should not matter since the DLL dependencies have already been installed
-        # when r-base itself was installed and will be on the PATH already. The alternative to this
-        # is to patch R so that it doesn't look for Tcl executables in in Tcl/bin or Tcl/bin64 and
-        # instead looks in the same folder as the R executable which would be my prefered approach.
-        #
-        # The thing to is probably to make stub programs launching the right binaries in mingw-w64/bin
-        # .. perhaps launcher.c can be generalized?
-        mkdir -p "${SRC_DIR}/lib/R/Tcl"
-        CONDA_SUBDIR=$target_platform "${SYS_PYTHON}" -m conda install -c https://conda.anaconda.org/msys2 \
-                                                      --no-deps --yes --copy --prefix "${SRC_DIR}/lib/R/Tcl" \
-                                                      m2w64-{tcl,tk,bwidget,tktable}
-        mv "${SRC_DIR}"/lib/R/Tcl/Library/mingw-w64/* "${SRC_DIR}"/lib/R/Tcl/ || exit 1
-        rm -Rf "${SRC_DIR}"/lib/R/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
-        if [[ "${ARCH}" == "64" ]]; then
-            mv "${SRC_DIR}/lib/R/Tcl/bin" "${SRC_DIR}/lib/R/Tcl/bin64"
-        fi
-    else
-        #
-        # .. instead, more innoextract for now. We can probably use these archives instead:
-        # http://www.stats.ox.ac.uk/pub/Rtools/R_Tcl_8-5-8.zip
-        # http://www.stats.ox.ac.uk/pub/Rtools/R_Tcl_8-5-8.zip
-        # as noted on http://www.stats.ox.ac.uk/pub/Rtools/R215x.html.
-        #
-        # curl claims most servers do not support byte ranges, hence the || true
-        mkdir -p "${SRC_DIR}/lib/R"
-        curl --insecure -C - -o ${DLCACHE}/Rtools34.exe -SLO http://cran.r-project.org/bin/windows/Rtools/Rtools34.exe || true
-        if [[ "${ARCH}" == "64" ]]; then
-            ./innoextract.exe -I "code\$rhome64" ${DLCACHE}/Rtools34.exe
-            mv "code\$rhome64/Tcl" "${SRC_DIR}/lib/R"
-        else
-            ./innoextract.exe -I "code\$rhome" ${DLCACHE}/Rtools34.exe
-            mv "code\$rhome/Tcl" "${SRC_DIR}/lib/R"
-        fi
-    fi
 
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
