@@ -268,11 +268,7 @@ Mingw_w64_makefiles() {
     export LIBRARY_PATH=${PREFIX}/Library/lib
     TCLTK_VER=86
 
-    # I want to use /tmp and have that mounted to Windows %TEMP% in Conda's MSYS2
-    # but there's a permissions issue preventing that from working at present.
-    # DLCACHE=/tmp
-    DLCACHE=/c/Users/${USER}/Downloads
-    [[ -d $DLCACHE ]] || mkdir -p $DLCACHE
+    DLCACHE="${SRC_DIR}/win-extra-files"
     # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
     echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF = "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
@@ -308,10 +304,7 @@ Mingw_w64_makefiles() {
     echo "LOCAL_SOFT = ${PREFIX}/Library/" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
 
     # The hoops we must jump through to get innosetup installed in an unattended way.
-    curl --insecure -C - -o ${DLCACHE}/innoextract-1.6-windows.zip -SLO http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip
-    unzip -o ${DLCACHE}/innoextract-1.6-windows.zip -d ${PWD}
-    curl --insecure -C - -o ${DLCACHE}/innosetup-5.5.9-unicode.exe -SLO http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe || true
-    ./innoextract.exe ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
+    "${DLCACHE}/innoextract/innoextract.exe" ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
     mv app isdir
 
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
