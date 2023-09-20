@@ -114,6 +114,8 @@ outputs:
         - bzip2                              # [not win]
         - {{ native }}bzip2                  # [win]
         - cairo                              # [not win]
+        - gettext                            # [osx]
+        - fontconfig                         # [osx]
         - {{ native }}libjpeg-turbo          # [win]
         - libjpeg-turbo                                # [not win]
         - libiconv                           # [unix]
