@@ -296,7 +296,7 @@ Mingw_w64_makefiles() {
     echo "PTHREAD = -pthread"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "COPY_RUNTIME_DLLS = 1"                        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "TEXI2ANY = texi2any"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "TCL_VERSION = 86t"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "TCL_VERSION = 86"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_LIBCURL = YES"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "CURL_LIBS = -lcurl"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
@@ -313,7 +313,7 @@ Mingw_w64_makefiles() {
     sed -i 's|-DLZMA_API_STATIC ||g' "${SRC_DIR}/src/main/Makefile.win"
     sed -i 's|-DPCRE2_STATIC ||g' "${SRC_DIR}/src/main/Makefile.win"
     # Allow overriding TCL_VERSION
-    sed -i 's|TCL_VERSION =|TCL_VERSION ?=|g' "${SRC_DIR}/src/gnuwin32/fixed/etc/Makeconf"
+    sed -i 's|TCL_VERSION = 86|TCL_VERSION = 86t|g' "${SRC_DIR}/src/gnuwin32/fixed/etc/Makeconf"
 
     # The hoops we must jump through to get innosetup installed in an unattended way.
     "${DLCACHE}/innoextract/innoextract.exe" ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
