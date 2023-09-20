@@ -127,6 +127,7 @@ outputs:
       host:
         - freetype                           # [not win]
         - readline                           # [not win]
+        # TODO remove this next release
         - ncurses                            # [not win]
         - libcurl
         - xz
@@ -147,8 +148,11 @@ outputs:
         - zlib
         - gsl
         - libtiff
+        # TODO remove this next release
         - libxml2
+        # TODO remove this next release
         - libssh2                            # [not win]
+        # TODO remove this next release
         - krb5                               # [not win]
         - libblas                            # [not win]
         - liblapack                          # [not win]
@@ -171,7 +175,8 @@ outputs:
         - libuuid                              # [linux]
         - xorg-libxt                           # [linux]
         - bwidget
-        - tktable
+        # TODO remove win selector
+        - tktable                            # [not win]
         - tk
         - sed                                # [linux]
         - mingw-w64-ucrt-x86_64-gcc-libs            # [win]
