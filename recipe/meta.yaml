@@ -131,6 +131,7 @@ outputs:
         - libpng
         - bzip2
         - cairo
+        - fontconfig                         # [win]
         - libjpeg-turbo
         - libiconv                           # [osx or win]
         - libuuid                            # [linux]
