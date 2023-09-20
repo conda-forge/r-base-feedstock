@@ -127,8 +127,8 @@ outputs:
         - readline                           # [not win]
         - ncurses                            # [not win]
         - libcurl
-        - xz                                 # [not win]
-        - libpng                             # [not win]
+        - xz
+        - libpng
         - bzip2
         - cairo                              # [not win]
         - libjpeg-turbo
