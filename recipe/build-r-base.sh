@@ -266,6 +266,8 @@ Mingw_w64_makefiles() {
 
     export CPATH=${PREFIX}/Library/include
     export LIBRARY_PATH=${PREFIX}/Library/lib
+    # TODO: to fix this we need a different root for mingw
+    export PATH=${PREFIX}/Library/bin:${PATH}
     TCLTK_VER=86
 
     DLCACHE="${SRC_DIR}/win-extra-files"
@@ -340,8 +342,6 @@ Mingw_w64_makefiles() {
     mkdir -p "${PREFIX}"/lib
 
     cp -Rf R "${PREFIX}"/lib/
-    # Copy Tcl/Tk support files
-    cp -rf ${SRC_DIR}/lib/R/Tcl ${PREFIX}/lib/R
 
     # Remove the recommeded libraries, we package them separately as-per the other platforms now.
     rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
