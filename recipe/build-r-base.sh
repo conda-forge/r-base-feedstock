@@ -308,6 +308,7 @@ Mingw_w64_makefiles() {
     # if this is the best way to achieve my goal here (shared libraries, libpng, curl etc) but
     # it seems fairly reasonable all options considered. On other OSes, it's for '/usr/local'
     echo "LOCAL_SOFT = ${PREFIX}/Library/" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    sed -i 's|-lwebp ||g' "${SRC_DIR}/src/library/grDevices/src/Makefile.win"
 
     # The hoops we must jump through to get innosetup installed in an unattended way.
     "${DLCACHE}/innoextract/innoextract.exe" ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
