@@ -70,6 +70,8 @@ outputs:
         - {{ compiler('fortran') }}          # [not win]
         - mingw-w64-ucrt-x86_64-gcc          # [win]
         - mingw-w64-ucrt-x86_64-gcc-fortran  # [win]
+        # For gendef
+        - mingw-w64-ucrt-x86_64-tools-git    # [win]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - {{ cdt('libxrender') }}            # [linux]
         - {{ cdt('libxext') }}               # [linux]
