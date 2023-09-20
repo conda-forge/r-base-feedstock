@@ -186,9 +186,10 @@ outputs:
       commands:
         - R -h
         - R --version
-        - R -e "print(.Platform\$dynlib.ext)"
-        - R -e "library('tcltk')"            # [linux or osx]
-        - R -e \"library('tcltk')\""         # [win]
+        - R -e "print(.Platform\$dynlib.ext)"    # [not win]
+        - R -e \"print(.Platform$dynlib.ext)\"   # [win]
+        - R -e "library('tcltk')"                # [not win]
+        - R -e \"library('tcltk')\""             # [win]
         - Rscript --version
         - Rscript -e  'cat("ok\\n")'
         # Report on the optional features compiled into this build of R.
