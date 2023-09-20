@@ -267,7 +267,7 @@ Mingw_w64_makefiles() {
     export CPATH=${PREFIX}/Library/include
     export LIBRARY_PATH=${PREFIX}/Library/lib
     # TODO: to fix this we need a different root for mingw
-    export PATH=${PREFIX}/Library/bin:${PREFIX}/Library/mingw-w64/bin:${PATH}
+    export PATH=$(cygpath -u ${PREFIX})/Library/bin:${PATH}
     TCLTK_VER=86
 
     DLCACHE="${SRC_DIR}/win-extra-files"
