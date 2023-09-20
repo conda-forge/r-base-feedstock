@@ -272,7 +272,6 @@ Mingw_w64_makefiles() {
     # is mapped to /usr/bin, i.e. $PREFIX/Library/usr/bin
     # This is specific for `bin` and is not the case for `lib`.
     export PATH=$(cygpath -u ${PREFIX})/Library/bin:${PATH}
-    TCLTK_VER=86
 
     DLCACHE="${SRC_DIR}/win-extra-files"
     # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
@@ -297,7 +296,7 @@ Mingw_w64_makefiles() {
     echo "PTHREAD = -pthread"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "COPY_RUNTIME_DLLS = 1"                        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "TEXI2ANY = texi2any"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "TCL_VERSION = ${TCLTK_VER}"                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "TCL_VERSION = 86t"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_LIBCURL = YES"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "CURL_LIBS = -lcurl"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
