@@ -312,6 +312,8 @@ Mingw_w64_makefiles() {
     sed -i 's|-DLZMA_API_STATIC ||g' "${SRC_DIR}/src/library/utils/src/Makefile.win"
     sed -i 's|-DLZMA_API_STATIC ||g' "${SRC_DIR}/src/main/Makefile.win"
     sed -i 's|-DPCRE2_STATIC ||g' "${SRC_DIR}/src/main/Makefile.win"
+    # Allow overriding TCL_VERSION
+    sed -i 's|TCL_VERSION =|TCL_VERSION ?=|g' "${SRC_DIR}/src/gnuwin32/fixed/etc/Makeconf"
 
     # The hoops we must jump through to get innosetup installed in an unattended way.
     "${DLCACHE}/innoextract/innoextract.exe" ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
