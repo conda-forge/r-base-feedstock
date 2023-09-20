@@ -309,6 +309,10 @@ Mingw_w64_makefiles() {
     # it seems fairly reasonable all options considered. On other OSes, it's for '/usr/local'
     echo "LOCAL_SOFT = ${PREFIX}/Library/" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     sed -i 's|-lwebp ||g' "${SRC_DIR}/src/library/grDevices/src/Makefile.win"
+    sed -i 's|-DCURL_STATICLIB ||g' "${SRC_DIR}/src/modules/internet/Makefile.win"
+    sed -i 's|-DLZMA_API_STATIC ||g' "${SRC_DIR}/src/library/utils/src/Makefile.win"
+    sed -i 's|-DLZMA_API_STATIC ||g' "${SRC_DIR}/src/main/Makefile.win"
+    sed -i 's|-DPCRE2_STATIC ||g' "${SRC_DIR}/src/main/Makefile.win"
 
     # The hoops we must jump through to get innosetup installed in an unattended way.
     "${DLCACHE}/innoextract/innoextract.exe" ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
