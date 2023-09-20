@@ -130,7 +130,7 @@ outputs:
         - xz
         - libpng
         - bzip2
-        - cairo                              # [not win]
+        - cairo
         - libjpeg-turbo
         - libiconv                           # [osx or win]
         - libuuid                            # [linux]
