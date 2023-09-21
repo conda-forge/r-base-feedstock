@@ -16,18 +16,14 @@ source:
       - 0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
       - 0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
       - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
-      - 0007-Use-AC_SEARCH_LIBS-to-search-for-ncursesw-then-ncurs.patch
       - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
       - 0009-javareconf-Do-not-fail-on-compile-fail.patch
       - 0010-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
       - 0011-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
       #- 0012-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
-      - 0013-Add-luuid-to-X_PRE_LIBS.patch
-      - 0014-link-Xt-to-uuid.patch
       - 0015-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
       - 0016-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
       - 0017-tcltk-dylib-osx.patch
-      - 0018-Fix-path-to-TCL-TK.patch
   # The following are used for the Mingw_w64 builds, added in
   # https://github.com/conda-archive/conda-recipes/commit/959fa4bb8b14c522e5f791d1463c9bc0021059e0
   - url: http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip  # [win]
@@ -98,17 +94,14 @@ outputs:
         - automake                           # [not win]
         - make                               # [not win]
         - libcurl                            # [not win]
-        - freetype                            # [build_platform != target_platform]
         - readline                            # [build_platform != target_platform]
-        - ncurses                             # [build_platform != target_platform]
         - libcurl                             # [build_platform != target_platform]
         - xz                                  # [build_platform != target_platform]
         - libpng                              # [build_platform != target_platform]
         - bzip2                               # [build_platform != target_platform]
         - cairo                               # [build_platform != target_platform]
         - libjpeg-turbo                       # [build_platform != target_platform]
-        - libiconv                            # [osx and (build_platform != target_platform)]
-        - libuuid                             # [linux and (build_platform != target_platform)]
+        - libiconv                            # [unix and (build_platform != target_platform)]
         - glib                                # [unix and (build_platform != target_platform)]
         - bwidget                             # [build_platform != target_platform]
         - tktable                             # [build_platform != target_platform]
@@ -117,26 +110,22 @@ outputs:
         - pcre2                               # [build_platform != target_platform]
         - tk                                  # [build_platform != target_platform]
         - zlib                                # [build_platform != target_platform]
-        - gsl                                 # [build_platform != target_platform]
         - libtiff                             # [build_platform != target_platform]
-        - libxml2                             # [build_platform != target_platform]
-        - libssh2                             # [build_platform != target_platform]
-        - krb5                                # [build_platform != target_platform]
         - libblas                             # [build_platform != target_platform]
         - liblapack                           # [build_platform != target_platform]
+        - llvm-openmp                         # [osx]
+        - libgomp                             # [linux]
       host:
-        - freetype                           # [not win]
         - readline                           # [not win]
-        # TODO remove this next release
-        - ncurses                            # [not win]
         - libcurl
         - xz
         - libpng
         - bzip2
         - cairo
-        - fontconfig                         # [win]
+        - gettext                            # [osx]
+        - fontconfig                         # [osx or win]
         - libjpeg-turbo
-        - libiconv                           # [osx or win]
+        - libiconv
         - libuuid                            # [linux]
         - glib                               # [unix]
         - bwidget
@@ -148,12 +137,6 @@ outputs:
         - zlib
         - gsl
         - libtiff
-        # TODO remove this next release
-        - libxml2
-        # TODO remove this next release
-        - libssh2                            # [not win]
-        # TODO remove this next release
-        - krb5                               # [not win]
         - libblas                            # [not win]
         - liblapack                          # [not win]
         # sed is in host env because its path is recorded in R's shell wrapper
