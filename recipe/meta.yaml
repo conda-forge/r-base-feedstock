@@ -129,7 +129,7 @@ outputs:
         - libuuid                            # [linux]
         - glib                               # [unix]
         - bwidget
-        - tktable                            # [not win]
+        - tktable
         - pango                              # [not win]
         - icu
         - pcre2
@@ -158,8 +158,7 @@ outputs:
         - libuuid                              # [linux]
         - xorg-libxt                           # [linux]
         - bwidget
-        # TODO remove win selector
-        - tktable                            # [not win]
+        - tktable
         - tk
         - sed                                # [linux]
         - mingw-w64-ucrt-x86_64-gcc-libs            # [win]
