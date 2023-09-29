@@ -37,7 +37,7 @@ libblas:
 libcurl:
 - '8'
 libjpeg_turbo:
-- 2.1.5
+- '3'
 liblapack:
 - 3.9 *netlib
 libpng:
