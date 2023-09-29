@@ -27,7 +27,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 5
+  number: 6
   no_link:
     - lib/R/doc/html/packages.html
 
