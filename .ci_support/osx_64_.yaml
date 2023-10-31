@@ -5,7 +5,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '15'
+- '16'
 cairo:
 - '1'
 channel_sources:
@@ -15,7 +15,7 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '15'
+- '16'
 fontconfig:
 - '2'
 fortran_compiler:
@@ -41,7 +41,7 @@ libpng:
 libtiff:
 - '4.6'
 llvm_openmp:
-- '15'
+- '16'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 pango:
