@@ -1,7 +1,7 @@
 bzip2:
 - '1'
 cairo:
-- '1'
+- '1.16'
 channel_sources:
 - isuruf/label/m2,isuruf/label/ucrt64,conda-forge
 channel_targets:
