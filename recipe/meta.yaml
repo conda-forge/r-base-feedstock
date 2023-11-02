@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.3.1" %}
+{% set version = "4.3.2" %}
 
 package:
   name: r-base-split
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-    sha256: 8dd0bf24f1023c6f618c3b317383d291b4a494f40d73b983ac22ffea99e4ba99
+    sha256: b3f5760ac2eee8026a3f0eefcb25b47723d978038eee8e844762094c860c452a
     patches:
       - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
       - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -16,14 +16,14 @@ source:
       - 0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
       - 0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
       - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
-      - 0008-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-      - 0009-javareconf-Do-not-fail-on-compile-fail.patch
-      - 0010-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
-      - 0011-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
-      #- 0012-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
-      - 0015-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
-      - 0016-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
-      - 0017-tcltk-dylib-osx.patch
+      - 0007-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
+      - 0008-javareconf-Do-not-fail-on-compile-fail.patch
+      - 0009-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
+      - 0010-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
+      # - 0011-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
+      - 0012-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
+      - 0013-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+      - 0014-Try-forcing-.dylib.patch
   # The following are used for the Mingw_w64 builds, added in
   # https://github.com/conda-archive/conda-recipes/commit/959fa4bb8b14c522e5f791d1463c9bc0021059e0
   - url: http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip  # [win]
@@ -35,7 +35,7 @@ source:
 
 build:
   skip: True  # [not x86_64]
-  number: 5
+  number: 1
   no_link:
     - lib/R/doc/html/packages.html
 

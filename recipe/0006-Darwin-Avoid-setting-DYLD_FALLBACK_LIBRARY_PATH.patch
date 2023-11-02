@@ -1,7 +1,7 @@
-From 6343b5893b9393c59a615803257b1fd6a336e5a1 Mon Sep 17 00:00:00 2001
+From c8c3d52b5f2334b45fa7cb3cce25aac3e4ae1671 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 2 Jan 2018 15:47:26 +0000
-Subject: [PATCH 06/16] Darwin: Avoid setting DYLD_FALLBACK_LIBRARY_PATH
+Subject: [PATCH 06/14] Darwin: Avoid setting DYLD_FALLBACK_LIBRARY_PATH
 
 Since it does nothing these days (you should use -Wl,-rpath,${PREFIX}/lib instead).
 ---
@@ -10,10 +10,10 @@ Since it does nothing these days (you should use -Wl,-rpath,${PREFIX}/lib instea
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/configure b/configure
-index 30d632b..e55984a 100755
+index 218fe93979..651274f7d5 100755
 --- a/configure
 +++ b/configure
-@@ -24006,7 +24006,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
+@@ -24396,7 +24396,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
  R_LD_LIBRARY_PATH_save=${R_LD_LIBRARY_PATH}
  R_LD_LIBRARY_PATH=
  case "${host_os}" in
@@ -23,10 +23,10 @@ index 30d632b..e55984a 100755
      ## that the linker can add library's path to the binary at link time.
      ## This allows the dyld to find libraries even without xx_LIBRARY_PATH.
 diff --git a/configure.ac b/configure.ac
-index 5ef8269..200a740 100644
+index 9fcfb4a14c..4ead837198 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -808,7 +808,7 @@ AC_SUBST(LIBTOOL_DEPS)
+@@ -883,7 +883,7 @@ AC_SUBST(LIBTOOL_DEPS)
  R_LD_LIBRARY_PATH_save=${R_LD_LIBRARY_PATH}
  R_LD_LIBRARY_PATH=
  case "${host_os}" in
@@ -35,6 +35,3 @@ index 5ef8269..200a740 100644
      ## Darwin provides a full path in the ID of each library such 
      ## that the linker can add library's path to the binary at link time.
      ## This allows the dyld to find libraries even without xx_LIBRARY_PATH.
--- 
-2.34.1
-

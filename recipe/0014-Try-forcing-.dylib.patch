@@ -1,0 +1,22 @@
+From ede7ece99bb99bf0259016a66385be738dc671e3 Mon Sep 17 00:00:00 2001
+From: Devon Ryan <dpryan79@gmail.com>
+Date: Fri, 21 Jul 2023 08:35:49 +0200
+Subject: [PATCH 14/14] Try forcing .dylib
+
+---
+ src/library/tcltk/R/unix/zzz.R | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/library/tcltk/R/unix/zzz.R b/src/library/tcltk/R/unix/zzz.R
+index 658cf5c250..fb0a61726c 100644
+--- a/src/library/tcltk/R/unix/zzz.R
++++ b/src/library/tcltk/R/unix/zzz.R
+@@ -41,7 +41,7 @@
+         ## installed, and check libX11 is present since this is a
+         ## common cause of problems with CRAN binary installs reported
+         ## for Rcmdr.
+-        DSO <- file.path(libname, pkgname, "libs", .Platform$r_arch, "tcltk.so")
++        DSO <- file.path(libname, pkgname, "libs", .Platform$r_arch, "tcltk.dylib")
+         loads <- utils:::macDynLoads(DSO)
+         ind <- grep("^/.*libtk[.0-9]+[.]dylib", loads)
+         if (length(ind)) {

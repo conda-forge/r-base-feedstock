@@ -26,36 +26,24 @@ fortran_compiler:
 - gfortran
 fortran_compiler_version:
 - '10'
-freetype:
-- '2'
 glib:
 - '2'
-gsl:
-- '2.7'
 icu:
 - '73'
-krb5:
-- '1.21'
 libblas:
 - 3.9 *netlib
 libcurl:
 - '8'
+libiconv:
+- '1'
 libjpeg_turbo:
-- 2.1.5
+- '3'
 liblapack:
 - 3.9 *netlib
 libpng:
 - '1.6'
-libssh2:
-- '1'
 libtiff:
 - '4.6'
-libuuid:
-- '2'
-libxml2:
-- '2.11'
-ncurses:
-- '6'
 pango:
 - '1.50'
 pcre2:
