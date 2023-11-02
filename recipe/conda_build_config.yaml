@@ -11,3 +11,6 @@ channel_sources:
 - isuruf/label/m2,isuruf/label/ucrt64,conda-forge
 channel_targets:
 - conda-forge main
+# TODO: unpin again
+cairo:  # [win]
+- 1.16  # [win]
