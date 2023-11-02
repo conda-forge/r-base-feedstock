@@ -9,7 +9,7 @@ c_compiler_version:
 cairo:
 - '1'
 channel_sources:
-- conda-forge
+- isuruf/label/m2,isuruf/label/ucrt64,conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
@@ -24,6 +24,8 @@ fortran_compiler_version:
 - '12'
 glib:
 - '2'
+gsl:
+- '2.7'
 icu:
 - '73'
 libblas:
