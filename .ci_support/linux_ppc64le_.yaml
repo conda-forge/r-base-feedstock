@@ -43,7 +43,7 @@ libtiff:
 pango:
 - '1.50'
 pcre2:
-- '10.40'
+- '10.42'
 readline:
 - '8'
 target_platform:
