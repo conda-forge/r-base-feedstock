@@ -407,7 +407,7 @@ Mingw_w64_makefiles() {
         echo "***** R-${PACKAGE_VERSION} Build started *****"
         for _stage in all cairodevices recommended vignettes manuals; do
             echo "***** R-${PACKAGE_VERSION} Stage started: ${_stage} *****"
-            make ${_stage} -j${CPU_COUNT} || exit 1
+	    make ${_stage} -j${CPU_COUNT} || (cat $PREFIX/Library/miktex/texmfs/data/miktex/log/pdflatex.log; exit 1)
         done
     else
         echo "***** R-${PACKAGE_VERSION} Stage started: distribution *****"
