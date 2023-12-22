@@ -49,7 +49,7 @@ libtiff:
 libuuid:
 - '2'
 libxml2:
-- '2.11'
+- '2.12'
 ncurses:
 - '6'
 pango:
