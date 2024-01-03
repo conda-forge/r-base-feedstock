@@ -197,9 +197,9 @@ outputs:
         - Rscript -e "stopifnot(capabilities('jpeg'), TRUE)"
         - Rscript -e "stopifnot(capabilities('png'), TRUE)"
         - if not exist %PREFIX%\\Lib\\R\\bin\\x64\\R.lib exit 1  # [win]
-        # Verify internal-tzcode works on macOS
+        # Verify internal-tzcode works without warnings
         # See https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
-        - R -e "Sys.time()"  # [osx]
+        - R -e "options(warn=2);Sys.time()"
       files:
         - test-svg.R
 
