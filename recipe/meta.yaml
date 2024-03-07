@@ -27,7 +27,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 12
+  number: 13
 
 outputs:
   - name: r-base
