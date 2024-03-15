@@ -15,4 +15,4 @@ github:
 provider:
   linux_aarch64: native
   linux_ppc64le: native
-test_on_native_only: true
+test: native_and_emulated
