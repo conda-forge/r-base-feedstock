@@ -49,7 +49,7 @@ macos_machine:
 pango:
 - '1.50'
 pcre2:
-- '10.42'
+- '10.43'
 readline:
 - '8'
 target_platform:
