@@ -25,7 +25,7 @@ source:
     - 0013-Try-forcing-.dylib.patch
 
 build:
-  skip: true  # [win]
+  skip: true  # [not (linux64 or ppc64le)]
   number: 0
   no_link:
     - lib/R/doc/html/packages.html
