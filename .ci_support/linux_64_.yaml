@@ -34,6 +34,8 @@ libblas:
 - 3.9 *netlib
 libcurl:
 - '8'
+libdeflate:
+- '1.20'
 libiconv:
 - '1'
 libjpeg_turbo:
@@ -47,7 +49,7 @@ libtiff:
 pango:
 - '1.50'
 pcre2:
-- '10.42'
+- '10.43'
 readline:
 - '8'
 target_platform:
