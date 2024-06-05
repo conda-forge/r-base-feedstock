@@ -1,5 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
+MACOSX_SDK_VERSION:
+- '10.10'
 bzip2:
 - '1'
 c_compiler:
@@ -49,7 +51,7 @@ macos_machine:
 pango:
 - '1.50'
 pcre2:
-- '10.40'
+- '10.43'
 readline:
 - '8'
 target_platform:

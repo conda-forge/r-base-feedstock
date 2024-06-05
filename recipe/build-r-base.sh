@@ -373,11 +373,6 @@ Mingw_w64_makefiles() {
 Darwin() {
     unset JAVA_HOME
 
-    # --without-internal-tzcode to avoid warnings:
-    # unknown timezone 'Europe/London'
-    # unknown timezone 'GMT'
-    # https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
-
     # May want to strip these from Makeconf at the end.
     CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CFLAGS}
     LDFLAGS="-Wl,-dead_strip_dylibs -isysroot ${CONDA_BUILD_SYSROOT} "${LDFLAGS}
@@ -414,7 +409,6 @@ Darwin() {
                 --enable-R-shlib                    \
                 --enable-memory-profiling           \
                 --without-x                         \
-                --without-internal-tzcode           \
                 --enable-R-framework=no             \
                 --with-included-gettext=yes         \
                 --with-recommended-packages=no || (cat config.log; false)

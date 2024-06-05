@@ -6,9 +6,8 @@ cxx_compiler_version:      # [linux]
   - 10                     # [linux]
 fortran_compiler_version:  # [linux]
   - 10                     # [linux]
-
 channel_sources:
-- isuruf/label/m2,isuruf/label/ucrt64,conda-forge
+- isuruf/label/m2w64,conda-forge
 channel_targets:
 - conda-forge main
 # TODO: unpin again

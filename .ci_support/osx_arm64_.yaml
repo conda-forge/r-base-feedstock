@@ -1,31 +1,29 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '11.0'
 bzip2:
 - '1'
 c_compiler:
-- gcc
+- clang
 c_compiler_version:
-- '10'
+- '16'
 cairo:
 - '1'
-cdt_name:
-- cos6
 channel_sources:
-- isuruf/label/m2,isuruf/label/ucrt64,conda-forge
+- conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- gxx
+- clangxx
 cxx_compiler_version:
-- '10'
-docker_image:
-- quay.io/condaforge/linux-anvil-cos7-x86_64
+- '16'
+fontconfig:
+- '2'
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '10'
+- '12'
 glib:
 - '2'
-gsl:
-- '2.7'
 icu:
 - '73'
 libblas:
@@ -42,8 +40,10 @@ libpng:
 - '1.6'
 libtiff:
 - '4.6'
-libuuid:
-- '2'
+llvm_openmp:
+- '16'
+macos_machine:
+- arm64-apple-darwin20.0.0
 pango:
 - '1.50'
 pcre2:
@@ -51,7 +51,7 @@ pcre2:
 readline:
 - '8'
 target_platform:
-- linux-64
+- osx-arm64
 tk:
 - '8.6'
 xz:
