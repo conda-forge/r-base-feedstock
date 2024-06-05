@@ -3,7 +3,7 @@ bzip2:
 cairo:
 - '1.16'
 channel_sources:
-- isuruf/label/m2,isuruf/label/ucrt64,conda-forge
+- isuruf/label/m2w64,conda-forge
 channel_targets:
 - conda-forge main
 fontconfig:
@@ -23,7 +23,7 @@ libpng:
 libtiff:
 - '4.6'
 pcre2:
-- '10.40'
+- '10.43'
 target_platform:
 - win-64
 tk:
