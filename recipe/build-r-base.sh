@@ -160,7 +160,7 @@ Linux() {
     echo "ac_cv_lib_Xt_XtToolkitInitialize=yes" > config.site
     export CONFIG_SITE=${PWD}/config.site
     if [[ "${IS_MINIMAL_R_BUILD:-0}" == "1" ]]; then
-	CONFIGURE_ARGS="--without-x"
+	CONFIGURE_ARGS="--without-x --with-blas=-lblas --with-lapack=-llapack"
     else
 	CONFIGURE_ARGS="--with-x --with-blas=-lblas --with-lapack=-llapack"
     fi
