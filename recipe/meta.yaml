@@ -82,6 +82,7 @@ outputs:
         - m2-diffutils                       # [win]
         - m2-make                            # [win]
         - m2-tar                             # [win]
+        - m2-unzip                           # [win]
         - m2-texinfo-tex                     # [win]
         - m2-texinfo                         # [win]
         - m2-curl                            # [win]
