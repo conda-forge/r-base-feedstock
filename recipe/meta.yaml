@@ -61,13 +61,11 @@ outputs:
     requirements:
       build:
         - gnuconfig                          # [unix]
-        - {{ compiler('c') }}                # [not win]
-        - {{ compiler('cxx') }}              # [not win]
-        - {{ compiler('fortran') }}          # [not win]
-        - mingw-w64-ucrt-x86_64-gcc          # [win]
-        - mingw-w64-ucrt-x86_64-gcc-fortran  # [win]
-        # For gendef
-        - mingw-w64-ucrt-x86_64-tools-git    # [win]
+        - {{ stdlib('c') }}
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('fortran') }}
+        - gendef    # [win]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - {{ cdt('libxrender') }}            # [linux]
         - {{ cdt('libxext') }}               # [linux]
@@ -80,7 +78,10 @@ outputs:
         - {{ cdt('libxau') }}                # [linux]
         - {{ cdt('java-1.7.0-openjdk') }}    # [linux]
         - {{ posix }}pkg-config
-        - posix                              # [win]
+        - m2-base                            # [win]
+        - m2-diffutils                       # [win]
+        - m2-make                            # [win]
+        - m2-tar                             # [win]
         - m2-texinfo-tex                     # [win]
         - m2-texinfo                         # [win]
         - m2-curl                            # [win]
@@ -90,7 +91,7 @@ outputs:
         - texinfo                            # [unix]
         - openjdk
         - {{ posix }}autoconf
-        - {{ posix }}automake-wrapper        # [win]
+        - m2-automake-wrapper                # [win]
         - automake                           # [not win]
         - make                               # [not win]
         - libcurl                            # [not win]
@@ -141,14 +142,12 @@ outputs:
         - liblapack                          # [not win]
         # sed is in host env because its path is recorded in R's shell wrapper
         - sed                                # [linux]
-        - mingw-w64-ucrt-x86_64-gcc-libs            # [win]
-        - mingw-w64-ucrt-x86_64-gcc-libgfortran     # [win]
       run:
         - _r-mutex 1.* anacondar_1
         # Needed by R CMD javareconf
         - make                               # [not win]
-        - gcc_impl_{{ target_platform }}  >={{ c_compiler_version|default("0") }}    # [linux]
-        - gxx_impl_{{ target_platform }}  >={{ cxx_compiler_version|default("0") }}  # [linux]
+        - gcc_impl_{{ target_platform }}  >={{ c_compiler_version|default("0") }}    # [linux or win]
+        - gxx_impl_{{ target_platform }}  >={{ cxx_compiler_version|default("0") }}  # [linux or win]
         - gfortran_impl_{{ target_platform }}  # [linux]
         - {{ c_compiler|default("blah") }}_{{ target_platform }} >={{ c_compiler_version|default("0") }}      # [osx]
         - {{ cxx_compiler|default("blah") }}_{{ target_platform }} >={{ cxx_compiler_version|default("0") }}  # [osx]
@@ -161,8 +160,8 @@ outputs:
         - tktable
         - tk
         - sed                                # [linux]
-        - mingw-w64-ucrt-x86_64-gcc-libs            # [win]
-        - mingw-w64-ucrt-x86_64-gcc-libgfortran     # [win]
+        - libgcc                             # [win]
+        - libgfortran                        # [win]
 
     test:
       commands:

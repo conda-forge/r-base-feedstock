@@ -233,6 +233,7 @@ Mingw_w64_autotools() {
         export CPPFLAGS="${CPPFLAGS} -DWIN=64 -DMULTI=64"
     fi
     ./configure --prefix=${PREFIX}              \
+                --host=x86_64-w64-mingw32       \
                 --enable-shared                 \
                 --enable-R-shlib                \
                 --disable-prebuilt-html         \
