@@ -7,32 +7,32 @@ package:
   version: {{ version }}
 
 source:
-  url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: 80851231393b85bf3877ee9e39b282e750ed864c5ec60cbd68e6e139f0520330
-  patches:
-    - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
-    - 0002-Fix-trio-config.h-include-depth-issue.patch
-    - 0003-Win32-Do-not-link-static-libgcc.patch
-    - 0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
-    - 0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
-    - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
-    - 0007-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0008-javareconf-Do-not-fail-on-compile-fail.patch
-    - 0009-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
-    - 0010-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
-    # - 0011-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
-    - 0012-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
-    - 0013-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
-    - 0014-Try-forcing-.dylib.patch
-    - 0018-Fix-path-to-TCL-TK.patch
-    # The following are used for the Mingw_w64 builds, added in
-    # https://github.com/conda-archive/conda-recipes/commit/959fa4bb8b14c522e5f791d1463c9bc0021059e0
-    - url: http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip  # [win]
-      sha256: 33d61133401bb6a919b299f282b5e8f0aada67253460b0c11c85b56cdb1ea0d3                 # [win]
-      folder: win-extra-files/innoextract                                                      # [win]
-    - url: http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe                        # [win]
-      sha256: 5b51ae6977bebba937ac18e0e80c1899e37dfaa12f51ccd817978ef07ae19cb3                 # [win]
-      folder: win-extra-files                                                                  # [win]
+  - url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
+    sha256: 80851231393b85bf3877ee9e39b282e750ed864c5ec60cbd68e6e139f0520330
+    patches:
+      - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
+      - 0002-Fix-trio-config.h-include-depth-issue.patch
+      - 0003-Win32-Do-not-link-static-libgcc.patch
+      - 0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
+      - 0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
+      - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
+      - 0007-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
+      - 0008-javareconf-Do-not-fail-on-compile-fail.patch
+      - 0009-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
+      - 0010-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
+      # - 0011-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
+      - 0012-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
+      - 0013-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+      - 0014-Try-forcing-.dylib.patch
+      - 0018-Fix-path-to-TCL-TK.patch
+  # The following are used for the Mingw_w64 builds, added in
+  # https://github.com/conda-archive/conda-recipes/commit/959fa4bb8b14c522e5f791d1463c9bc0021059e0
+  - url: http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip  # [win]
+    sha256: 33d61133401bb6a919b299f282b5e8f0aada67253460b0c11c85b56cdb1ea0d3                 # [win]
+    folder: win-extra-files/innoextract                                                      # [win]
+  - url: http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe                        # [win]
+    sha256: 5b51ae6977bebba937ac18e0e80c1899e37dfaa12f51ccd817978ef07ae19cb3                 # [win]
+    folder: win-extra-files                                                                  # [win]
 
 build:
   number: 1
