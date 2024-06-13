@@ -24,6 +24,7 @@ source:
     - 0012-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
     - 0013-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
     - 0014-Try-forcing-.dylib.patch
+    - 0018-Fix-path-to-TCL-TK.patch
     # The following are used for the Mingw_w64 builds, added in
     # https://github.com/conda-archive/conda-recipes/commit/959fa4bb8b14c522e5f791d1463c9bc0021059e0
     - url: http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip  # [win]
