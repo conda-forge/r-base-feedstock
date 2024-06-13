@@ -34,7 +34,6 @@ source:
       folder: win-extra-files                                                                  # [win]
 
 build:
-  skip: True  # [not x86_64]
   number: 1
   no_link:
     - lib/R/doc/html/packages.html
