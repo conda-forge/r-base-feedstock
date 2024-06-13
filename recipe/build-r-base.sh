@@ -261,8 +261,10 @@ Mingw_w64_makefiles() {
     # support, and don't set any
     if [[ "${ARCH}" == "64" ]]; then
         CPU="x86-64"
+        HOST="x86_64-w64-mingw32"
     else
         CPU="i686"
+        HOST="i686-w64-mingw32"
     fi
 
     export CPATH=${PREFIX}/Library/include
@@ -277,8 +279,8 @@ Mingw_w64_makefiles() {
     DLCACHE="${SRC_DIR}/win-extra-files"
     # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
     echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BINPREF = "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BINPREF64 = "                                 >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BINPREF = ${HOST}-"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BINPREF64 = ${HOST}-"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ATLAS = NO"                               >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ATLAS_PATH = ${PREFIX}/Library/lib"           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "MULTI =   "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
