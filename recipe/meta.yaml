@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.3.3" %}
+{% set version = "4.4.0" %}
 
 package:
   name: r-base-split
@@ -8,22 +8,21 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: 80851231393b85bf3877ee9e39b282e750ed864c5ec60cbd68e6e139f0520330
+  sha256: ace4125f9b976d2c53bcc5fca30c75e30d4edc401584859cbadb080e72b5f030
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
     - 0003-Win32-Do-not-link-static-libgcc.patch
-    - 0004-Win32-Extend-sqrt-NA_real_-hack-to-all-GCC-versions.patch
-    - 0005-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
-    - 0006-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
-    - 0007-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0008-javareconf-Do-not-fail-on-compile-fail.patch
-    - 0009-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
-    - 0010-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
-    # - 0011-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
-    - 0012-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
-    - 0013-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
-    - 0014-Try-forcing-.dylib.patch
+    - 0004-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
+    - 0005-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
+    - 0006-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
+    - 0007-javareconf-Do-not-fail-on-compile-fail.patch
+    - 0008-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
+    - 0009-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
+    # - 0010-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
+    - 0011-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
+    - 0012-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+    - 0013-Try-forcing-.dylib.patch
 
 build:
   skip: true  # [win]
@@ -54,10 +53,12 @@ outputs:
       build:
         - gnuconfig  # [unix]
         - {{ compiler('c') }}                # [not win]
+        - {{ stdlib("c") }}                  # [not win]
         - {{ compiler('cxx') }}              # [not win]
         - {{ compiler('fortran') }}          # [not win]
         - gfortran_impl_{{ build_platform }} {{ fortran_compiler_version }}  # [(build_platform != target_platform) and linux]
         - {{ compiler('m2w64_c') }}          # [win]
+        - {{ stdlib("m2w64_c") }}            # [win]
         - {{ compiler('m2w64_cxx') }}        # [win]
         - {{ compiler('m2w64_fortran') }}     # [win]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
@@ -104,6 +105,7 @@ outputs:
         - libtiff                             # [build_platform != target_platform]
         - libblas                             # [build_platform != target_platform]
         - liblapack                           # [build_platform != target_platform]
+        - libdeflate                          # [build_platform != target_platform]
         - llvm-openmp                         # [osx]
         - libgomp                             # [linux]
       host:
@@ -117,7 +119,8 @@ outputs:
         - gettext                            # [osx]
         - fontconfig                         # [osx]
         - {{ native }}libjpeg-turbo          # [win]
-        - libjpeg-turbo                                # [not win]
+        - libjpeg-turbo                      # [not win]
+        - libdeflate                         # [not win]
         - libiconv                           # [unix]
         - {{ native }}libiconv               # [win]
         - {{ native }}gmp                    # [win]

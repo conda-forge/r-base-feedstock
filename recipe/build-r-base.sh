@@ -21,8 +21,10 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     export r_cv_prog_fc_char_len_t=size_t
     if [[ "${target_platform}" == linux-* ]]; then
       export r_cv_kern_usrstack=no
+      export r_cv_search_xdr='none required'
     else
       export r_cv_kern_usrstack=yes
+      export r_cv_search_xdr=no
     fi
     export ac_cv_lib_icucore_ucol_open=yes
     export ac_cv_func_mmap_fixed_mapped=yes
