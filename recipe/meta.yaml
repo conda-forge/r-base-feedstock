@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.3.3" %}
+{% set version = "4.4.1" %}
 
 package:
   name: r-base-split
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: 80851231393b85bf3877ee9e39b282e750ed864c5ec60cbd68e6e139f0520330
+  sha256: b4cb675deaaeb7299d3b265d218cde43f192951ce5b89b7bb1a5148a36b2d94d
   patches:
     - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
     - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -27,7 +27,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 1
+  number: 0
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -54,10 +54,12 @@ outputs:
       build:
         - gnuconfig  # [unix]
         - {{ compiler('c') }}                # [not win]
+        - {{ stdlib("c") }}                  # [not win]
         - {{ compiler('cxx') }}              # [not win]
         - {{ compiler('fortran') }}          # [not win]
         - gfortran_impl_{{ build_platform }} {{ fortran_compiler_version }}  # [(build_platform != target_platform) and linux]
         - {{ compiler('m2w64_c') }}          # [win]
+        - {{ stdlib("m2w64_c") }}            # [win]
         - {{ compiler('m2w64_cxx') }}        # [win]
         - {{ compiler('m2w64_fortran') }}     # [win]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]

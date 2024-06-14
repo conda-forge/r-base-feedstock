@@ -8,3 +8,4 @@ fortran_compiler_version:  # [linux]
   - 10                     # [linux]
 MACOSX_SDK_VERSION:        # [osx and not arm64]
   - '10.10'                # [osx and not arm64]
+
