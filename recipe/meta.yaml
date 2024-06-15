@@ -149,7 +149,7 @@ outputs:
         - make                               # [not win]
         - gcc_impl_{{ target_platform }}  >={{ c_compiler_version|default("0") }}    # [linux or win]
         - gxx_impl_{{ target_platform }}  >={{ cxx_compiler_version|default("0") }}  # [linux or win]
-        - gfortran_impl_{{ target_platform }}  # [linux]
+        - gfortran_impl_{{ target_platform }}  # [linux or win]
         - {{ c_compiler|default("blah") }}_{{ target_platform }} >={{ c_compiler_version|default("0") }}      # [osx]
         - {{ cxx_compiler|default("blah") }}_{{ target_platform }} >={{ cxx_compiler_version|default("0") }}  # [osx]
         - {{ compiler('fortran') }}  # [osx]
@@ -160,9 +160,7 @@ outputs:
         - bwidget
         - tktable
         - tk
-        - sed                                # [linux]
-        - libgcc                             # [win]
-        - libgfortran                        # [win]
+        - sed                                  # [linux]
 
     test:
       commands:
