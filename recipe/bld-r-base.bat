@@ -6,7 +6,7 @@
 @rem that it doesn't block the terminal, but we also can't get the return
 @rem value for the conda build tests.
 
-gcc -DGUI=0 -O -s -o launcher.exe "%RECIPE_DIR%\launcher.c"
+x86_64-w64-mingw32-gcc -DGUI=0 -O -s -o launcher.exe "%RECIPE_DIR%\launcher.c"
 if errorlevel 1 exit 1
 
 @rem Install the launcher
@@ -51,6 +51,6 @@ if errorlevel 1 exit 1
 cd "%PREFIX%\lib\R\bin\x64"
 gendef R.dll
 if errorlevel 1 exit 1
-dlltool -d R.def -l R.lib
+x86_64-w64-mingw32-dlltool -d R.def -l R.lib
 if errorlevel 1 exit 1
 exit 0
