@@ -39,7 +39,7 @@ libpng:
 libtiff:
 - '4.6'
 pcre2:
-- '10.43'
+- '10.44'
 target_platform:
 - win-64
 tk:
