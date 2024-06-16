@@ -55,7 +55,7 @@ libuuid:
 pango:
 - '1.50'
 pcre2:
-- '10.43'
+- '10.44'
 readline:
 - '8'
 target_platform:
