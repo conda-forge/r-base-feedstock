@@ -6,6 +6,10 @@
 @rem that it doesn't block the terminal, but we also can't get the return
 @rem value for the conda build tests.
 
+REM try a fix for cygpath issue
+echo >> %LIBRARY_PREFIX%\etc\fstab
+echo %LIBRARY_PREFIX:\=/%/bin /conda_bin ntfs auto >> %LIBRARY_PREFIX%\etc\fstab
+
 x86_64-w64-mingw32-gcc -DGUI=0 -O -s -o launcher.exe "%RECIPE_DIR%\launcher.c"
 if errorlevel 1 exit 1
 

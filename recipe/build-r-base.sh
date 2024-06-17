@@ -269,12 +269,6 @@ Mingw_w64_makefiles() {
 
     export CPATH=${PREFIX}/Library/include
     export LIBRARY_PATH=${PREFIX}/Library/lib
-    # TODO: to fix this we need a different root for mingw
-    # currently $PREFIX/Library/bin -> /bin -> $PREFIX/Library/usr/bin
-    # because of cygpath's strange behaviour. It seems like /bin
-    # is mapped to /usr/bin, i.e. $PREFIX/Library/usr/bin
-    # This is specific for `bin` and is not the case for `lib`.
-    export PATH=$(cygpath -u ${PREFIX})/Library/bin:${PATH}
 
     DLCACHE="${SRC_DIR}/win-extra-files"
     # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
