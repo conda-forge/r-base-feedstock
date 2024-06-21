@@ -22,6 +22,3 @@ c_stdlib:                  # [win]
   - m2w64-sysroot          # [win]
 c_stdlib_version:          # [win]
   - 12                     # [win]
-# TODO: unpin again
-cairo:  # [win]
-- 1.16  # [win]
