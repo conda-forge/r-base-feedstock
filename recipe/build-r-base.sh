@@ -345,7 +345,7 @@ Mingw_w64_makefiles() {
     # echo "Running make check-all (up to 3 times, there is some flakiness in p-r-random-tests.R), this will take some time ..."
     # make check-all -j1 > make-check.log 2>&1 || make check-all -j1 > make-check.2.log 2>&1 || make check-all -j1 > make-check.3.log 2>&1
     cd installer
-    R_PKGS_RECOMMENDED= make imagedir
+    make R_PKGS_RECOMMENDED= imagedir
     cp -Rf R-${PKG_VERSION} R
     # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
     mkdir -p "${PREFIX}"/lib
