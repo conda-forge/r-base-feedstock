@@ -327,6 +327,8 @@ Mingw_w64_makefiles() {
         echo "***** R-${PACKAGE_VERSION} Build started *****"
         for _stage in all cairodevices vignettes manuals; do
             echo "***** R-${PACKAGE_VERSION} Stage started: ${_stage} *****"
+            # NOTE: As of now (r-base=4.3.3, miktex=24.4) there are random(?) pdflatex failures.
+            #       This has not been thoroughly investigated; try restarting build if it fails.
             make R_PKGS_RECOMMENDED= ${_stage} -j${CPU_COUNT} || exit 1
         done
     else
