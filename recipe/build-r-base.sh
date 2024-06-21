@@ -296,7 +296,7 @@ Mingw_w64_makefiles() {
     echo "TCL_VERSION = 86"                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_CAIRO = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "CAIRO_LIBS = \"-l:cairo.lib -lfontconfig\""   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "CAIRO_LIBS = \"-lcairo -lfontconfig\""        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_LIBCURL = YES"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "CURL_LIBS = -lcurl"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ICU = YES"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
