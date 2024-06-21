@@ -325,7 +325,7 @@ Mingw_w64_makefiles() {
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         # rinstaller and crandir would come after manuals (if it worked with MSYS2/mingw-w64-{tcl,tk}, in which case we'd just use make distribution anyway)
         echo "***** R-${PACKAGE_VERSION} Build started *****"
-        for _stage in all cairodevices recommended vignettes manuals; do
+        for _stage in all cairodevices vignettes manuals; do
             echo "***** R-${PACKAGE_VERSION} Stage started: ${_stage} *****"
             make ${_stage} -j${CPU_COUNT} || exit 1
         done
