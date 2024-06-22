@@ -25,14 +25,6 @@ source:
       - 0013-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
       - 0014-Try-forcing-.dylib.patch
       - 0018-Fix-path-to-TCL-TK.patch
-  # The following are used for the Mingw_w64 builds, added in
-  # https://github.com/conda-archive/conda-recipes/commit/959fa4bb8b14c522e5f791d1463c9bc0021059e0
-  - url: http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip  # [win]
-    sha256: 33d61133401bb6a919b299f282b5e8f0aada67253460b0c11c85b56cdb1ea0d3                 # [win]
-    folder: win-extra-files/innoextract                                                      # [win]
-  - url: http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe                        # [win]
-    sha256: 5b51ae6977bebba937ac18e0e80c1899e37dfaa12f51ccd817978ef07ae19cb3                 # [win]
-    folder: win-extra-files                                                                  # [win]
 
 build:
   number: 3

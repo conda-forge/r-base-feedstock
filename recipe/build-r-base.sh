@@ -270,7 +270,6 @@ Mingw_w64_makefiles() {
     export CPATH=${PREFIX}/Library/include
     export LIBRARY_PATH=${PREFIX}/Library/lib
 
-    DLCACHE="${SRC_DIR}/win-extra-files"
     # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
     echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF = ${HOST}-"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
@@ -295,7 +294,6 @@ Mingw_w64_makefiles() {
     echo "COPY_RUNTIME_DLLS = 1"                        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "TEXI2ANY = texi2any"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "TCL_VERSION = 86"                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_CAIRO = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "CAIRO_LIBS = \"-lcairo -lfontconfig\""        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_LIBCURL = YES"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
@@ -315,10 +313,6 @@ Mingw_w64_makefiles() {
     # Allow overriding TCL_VERSION
     sed -i 's|TCL_VERSION = 86|TCL_VERSION = 86t|g' "${SRC_DIR}/src/gnuwin32/fixed/etc/Makeconf"
 
-    # The hoops we must jump through to get innosetup installed in an unattended way.
-    "${DLCACHE}/innoextract/innoextract.exe" ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
-    mv app isdir
-
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
     export MSYS2_ARG_CONV_EXCL="R_ARCH"
@@ -334,6 +328,9 @@ Mingw_w64_makefiles() {
         done
     else
         echo "***** R-${PACKAGE_VERSION} Stage started: distribution *****"
+        # NOTE: If you want to build the "distribution" target, you have to handle Inno Setup.
+        #       I.e., either patch out Inno Setup usage generally or, if that is not possible,
+        #       reintroduce Inno Setup download, set ISDIR etc. as done in r-base=4.1.3 builds.
         make distribution -j${CPU_COUNT} || exit 1
     fi
     # The flakiness mentioned below can be seen if the values are hacked to:
