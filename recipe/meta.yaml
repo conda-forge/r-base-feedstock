@@ -171,10 +171,11 @@ outputs:
         - R --version
         - R -e 'print(.Platform$dynlib.ext)' | grep -F -- "${SHLIB_EXT}"  # [not win]
         - R -e "print(.Platform$dynlib.ext)" | findstr "/C:%SHLIB_EXT%"   # [win]
-        - R -e "library('tcltk')"
         - Rscript --version
         - Rscript -e 'cat("ok\n")' | grep -xF ok         # [not win]
         - Rscript -e "cat('ok\n')" | findstr /X "/C:ok"  # [win]
+        - xvfb-run Rscript -e "library('tcltk');quit(status=is.logical(tclRequire('Tktable')))"  # [linux]
+        - Rscript -e "library('tcltk');quit(status=is.logical(tclRequire('Tktable')))"           # [not linux]
         # Report on the optional features compiled into this build of R.
         - R -e "capabilities()"
         # Show third-party graphics software available
