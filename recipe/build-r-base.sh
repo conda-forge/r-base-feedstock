@@ -361,6 +361,7 @@ Mingw_w64_makefiles() {
     for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
         # For SystemDependencies the host prefix is good.
         sed -i 's|LOCAL_SOFT = |LOCAL_SOFT = \$(R_HOME)/../../Library/mingw-w64|g' ${_makeconf}
+        sed -i 's|R_INSTALLER_BUILD = yes|R_INSTALLER_BUILD = no|g' ${_makeconf}
     done
 
     # We use "merge_build_host: true" => remove the portable MiKTeX installation to not
