@@ -166,20 +166,19 @@ outputs:
 
     test:
       commands:
+        - echo on  # [win]
         - R -h
         - R --version
-        - R -e "print(.Platform\$dynlib.ext)"    # [not win]
-        - R -e \"print(.Platform$dynlib.ext)\"   # [win]
-        - R -e "library('tcltk')"                # [not win]
-        - R -e \"library('tcltk')\""             # [win]
+        - R -e 'print(.Platform$dynlib.ext)' | grep -F -- "${SHLIB_EXT}"  # [not win]
+        - R -e "print(.Platform$dynlib.ext)" | findstr "/C:%SHLIB_EXT%"   # [win]
+        - R -e "library('tcltk')"
         - Rscript --version
-        - Rscript -e  'cat("ok\\n")'
+        - Rscript -e 'cat("ok\n")' | grep -xF ok         # [not win]
+        - Rscript -e "cat('ok\n')" | findstr /X "/C:ok"  # [win]
         # Report on the optional features compiled into this build of R.
-        - R -e "capabilities()"              # [not win]
-        - R -e \"capabilities()\""           # [win]
+        - R -e "capabilities()"
         # Show third-party graphics software available
-        - R -e "grSoftVersion()"             # [not win]
-        - R -e \"grSoftVersion()\""          # [win]
+        - R -e "grSoftVersion()"
         # TODO does not work on windows, because winCairo.dll is missing
         - Rscript test-svg.R                 # [not win]
         - open                               # [win]
