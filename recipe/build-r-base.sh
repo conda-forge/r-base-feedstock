@@ -360,7 +360,7 @@ Mingw_w64_makefiles() {
     # R will append lib/$(R_ARCH) to this in various Makefiles. So long as we set build/merge_build_host then they will get found automatically)
     for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
         # For SystemDependencies the host prefix is good.
-        sed -i 's|LOCAL_SOFT = |LOCAL_SOFT = \$(R_HOME)/../../Library/mingw-w64|g' ${_makeconf}
+        sed -i 's|LOCAL_SOFT = |LOCAL_SOFT = \$(R_HOME)/../../Library|g' ${_makeconf}
         sed -i 's|R_INSTALLER_BUILD = yes|R_INSTALLER_BUILD = no|g' ${_makeconf}
     done
 
