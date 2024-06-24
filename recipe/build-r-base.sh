@@ -350,8 +350,6 @@ Mingw_w64_makefiles() {
 
     cp -Rf R "${PREFIX}"/lib/
 
-    # Remove the recommeded libraries, we package them separately as-per the other platforms now.
-    rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
     # We are not using rtools
     for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
         sed -i 's|R_INSTALLER_BUILD = yes|R_INSTALLER_BUILD = no|g' ${_makeconf}
