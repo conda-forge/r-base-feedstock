@@ -362,11 +362,6 @@ Mingw_w64_makefiles() {
         sed -i 's|R_INSTALLER_BUILD = yes|R_INSTALLER_BUILD = no|g' ${_makeconf}
     done
 
-    # We use "merge_build_host: true" => remove the portable MiKTeX installation to not
-    # include added/changed files from it in the r-base package.
-    # TODO: Consider replacing this with "outputs[0]/files/exclude: ..." in conda-build>=24.7.
-    rm -R "${PREFIX}/Library/miktex"
-
     return 0
 }
 

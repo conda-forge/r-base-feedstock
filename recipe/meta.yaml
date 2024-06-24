@@ -44,7 +44,6 @@ outputs:
     script: build-r-base.sh  # [not win]
     script: bld-r-base.bat  # [win]
     build:
-      merge_build_host: true  # [win]
       rpaths:
         - lib/R/lib/
         - lib/
