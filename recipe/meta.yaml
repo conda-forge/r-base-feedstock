@@ -77,8 +77,6 @@ outputs:
         - m2-texinfo                         # [win]
         - m2-curl                            # [win]
         - m2-p7zip                           # [win]
-        # NOTE: As of now (r-base=4.3.3, miktex=24.4) there are random(?) pdflatex failures.
-        #       This has not been thoroughly investigated; try restarting build if it fails.
         - miktex                             # [win]
         #- texlive-core                       # [unix]
         - texinfo                            # [unix]
