@@ -28,12 +28,16 @@ gsl:
 - '2.7'
 icu:
 - '73'
+libblas:
+- 3.9 *netlib
 libcurl:
 - '8'
 libiconv:
 - '1'
 libjpeg_turbo:
 - '3'
+liblapack:
+- 3.9 *netlib
 libpng:
 - '1.6'
 libtiff:

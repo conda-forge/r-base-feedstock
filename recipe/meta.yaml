@@ -65,7 +65,6 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('fortran') }}
-        - gendef    # [win]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - {{ cdt('libxrender') }}            # [linux]
         - {{ cdt('libxext') }}               # [linux]
@@ -141,8 +140,8 @@ outputs:
         - zlib
         - gsl
         - libtiff
-        - libblas                            # [not win]
-        - liblapack                          # [not win]
+        - libblas
+        - liblapack
         # sed is in host env because its path is recorded in R's shell wrapper
         - sed                                # [linux]
       run:

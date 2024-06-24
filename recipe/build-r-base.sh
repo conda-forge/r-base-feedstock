@@ -275,8 +275,9 @@ Mingw_w64_makefiles() {
     echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF = ${HOST}-"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF64 = ${HOST}-"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "USE_ATLAS = NO"                               >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "USE_ATLAS = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ATLAS_PATH = ${PREFIX}/Library/lib"           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    sed -i.bak 's|-lf77blas -latlas|-llapack -lblas|g' src/extra/blas/Makefile.win
     echo "MULTI =   "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # BUILD_HTML causes filenames with special characters to be created, see
     #   https://github.com/conda-forge/r-base-feedstock/pull/177#issuecomment-845279175
