@@ -8,6 +8,10 @@ c_compiler:
 - clang
 c_compiler_version:
 - '16'
+c_stdlib:
+- macosx_deployment_target
+c_stdlib_version:
+- '11.0'
 cairo:
 - '1'
 channel_sources:
@@ -26,6 +30,8 @@ fortran_compiler_version:
 - '12'
 glib:
 - '2'
+gsl:
+- '2.7'
 icu:
 - '73'
 libblas:

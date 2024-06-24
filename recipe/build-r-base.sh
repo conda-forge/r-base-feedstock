@@ -107,7 +107,12 @@ fi
 
 # Without this, dependency scanning fails (but with it CDT libuuid / Xt fails to link
 # which we hack around with config.site)
-export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
+
+if [[ "$target_platform" == "win-"* ]]; then
+  export CPPFLAGS="${CPPFLAGS} -I$PREFIX/Library/include"
+else
+  export CPPFLAGS="${CPPFLAGS} -I$PREFIX/include"
+fi
 
 export TCL_CONFIG=${PREFIX}/lib/tclConfig.sh
 export TK_CONFIG=${PREFIX}/lib/tkConfig.sh
@@ -155,7 +160,7 @@ Linux() {
     echo "ac_cv_lib_Xt_XtToolkitInitialize=yes" > config.site
     export CONFIG_SITE=${PWD}/config.site
     if [[ "${IS_MINIMAL_R_BUILD:-0}" == "1" ]]; then
-	CONFIGURE_ARGS="--without-x"
+	CONFIGURE_ARGS="--without-x --with-blas=-lblas --with-lapack=-llapack"
     else
 	CONFIGURE_ARGS="--with-x --with-blas=-lblas --with-lapack=-llapack"
     fi
@@ -228,6 +233,7 @@ Mingw_w64_autotools() {
         export CPPFLAGS="${CPPFLAGS} -DWIN=64 -DMULTI=64"
     fi
     ./configure --prefix=${PREFIX}              \
+                --host=x86_64-w64-mingw32       \
                 --enable-shared                 \
                 --enable-R-shlib                \
                 --disable-prebuilt-html         \
@@ -235,8 +241,6 @@ Mingw_w64_autotools() {
                 --with-tk-config=$TK_CONFIG     \
                 --with-tcl-config=$TCL_CONFIG   \
                 --with-x=no                     \
-                --with-blas=-lblas              \
-                --with-lapack=-llapack          \
                 --with-readline=no              \
                 --with-recommended-packages=no  \
                 LIBnn=lib
@@ -250,7 +254,6 @@ Mingw_w64_autotools() {
 # Use the hand-crafted makefiles.
 Mingw_w64_makefiles() {
     local _use_msys2_mingw_w64_tcltk=yes
-    local _use_w32tex=no
     local _debug=no
 
     # Instead of copying a MkRules.dist file to MkRules.local
@@ -258,35 +261,23 @@ Mingw_w64_makefiles() {
     # support, and don't set any
     if [[ "${ARCH}" == "64" ]]; then
         CPU="x86-64"
+        HOST="x86_64-w64-mingw32"
     else
         CPU="i686"
+        HOST="i686-w64-mingw32"
     fi
 
-    if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
-        TCLTK_VER=86
-    else
-        TCLTK_VER=85
-        # Linking directly to DLLs, yuck.
-        if [[ "${ARCH}" == "64" ]]; then
-            export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib/R/Tcl/bin64"
-        else
-            export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib/R/Tcl/bin"
-        fi
-    fi
+    export CPATH=${PREFIX}/Library/include
+    export LIBRARY_PATH=${PREFIX}/Library/lib
 
-    # I want to use /tmp and have that mounted to Windows %TEMP% in Conda's MSYS2
-    # but there's a permissions issue preventing that from working at present.
-    # DLCACHE=/tmp
-    DLCACHE=/c/Users/${USER}/Downloads
-    [[ -d $DLCACHE ]] || mkdir -p $DLCACHE
+    DLCACHE="${SRC_DIR}/win-extra-files"
     # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
     echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BINPREF = "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "BINPREF64 = "                                 >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BINPREF = ${HOST}-"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "BINPREF64 = ${HOST}-"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ATLAS = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ATLAS_PATH = ${PREFIX}/Library/lib"           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     sed -i.bak 's|-lf77blas -latlas|-llapack -lblas|g' src/extra/blas/Makefile.win
-    rm src/extra/blas/Makefile.win.bak
     echo "MULTI =   "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # BUILD_HTML causes filenames with special characters to be created, see
     #   https://github.com/conda-forge/r-base-feedstock/pull/177#issuecomment-845279175
@@ -303,141 +294,43 @@ Mingw_w64_makefiles() {
     echo "PTHREAD = -pthread"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "COPY_RUNTIME_DLLS = 1"                        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "TEXI2ANY = texi2any"                          >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "TCL_VERSION = ${TCLTK_VER}"                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "TCL_VERSION = 86"                             >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "ISDIR = ${PWD}/isdir"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "USE_CAIRO = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "CAIRO_LIBS = \"-lcairo -lfontconfig\""        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "USE_LIBCURL = YES"                            >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "CURL_LIBS = -lcurl"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "USE_ICU = YES"                                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "ICU_PATH = \$(R_HOME)/../Library/mingw-w64"   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ICU_PATH = ${PREFIX}/Library/"                >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    echo "ICU_LIBS = -licuin -licuuc -licudt -L\"${PREFIX}/Library/lib\""        >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # This won't take and we'll force the issue at the end of the build* It's not really clear
     # if this is the best way to achieve my goal here (shared libraries, libpng, curl etc) but
     # it seems fairly reasonable all options considered. On other OSes, it's for '/usr/local'
-    echo "LOCAL_SOFT = \$(R_HOME)/../Library/mingw-w64" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-
-    # The build process copies this across if it finds it and rummaging about on
-    # the website I found a file, so why not, eh?
-    curl --insecure -C - -o "${SRC_DIR}/etc/curl-ca-bundle.crt" -SLO http://www.stats.ox.ac.uk/pub/Rtools/goodies/multilib/curl-ca-bundle.crt
+    echo "LOCAL_SOFT = ${PREFIX}/Library/" >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
+    sed -i 's|-lwebp ||g' "${SRC_DIR}/src/library/grDevices/src/Makefile.win"
+    sed -i 's|-DCURL_STATICLIB ||g' "${SRC_DIR}/src/modules/internet/Makefile.win"
+    sed -i 's|-DLZMA_API_STATIC ||g' "${SRC_DIR}/src/library/utils/src/Makefile.win"
+    sed -i 's|-DLZMA_API_STATIC ||g' "${SRC_DIR}/src/main/Makefile.win"
+    sed -i 's|-DPCRE2_STATIC ||g' "${SRC_DIR}/src/main/Makefile.win"
+    # Allow overriding TCL_VERSION
+    sed -i 's|TCL_VERSION = 86|TCL_VERSION = 86t|g' "${SRC_DIR}/src/gnuwin32/fixed/etc/Makeconf"
 
     # The hoops we must jump through to get innosetup installed in an unattended way.
-    curl --insecure -C - -o ${DLCACHE}/innoextract-1.6-windows.zip -SLO http://constexpr.org/innoextract/files/innoextract-1.6/innoextract-1.6-windows.zip
-    unzip -o ${DLCACHE}/innoextract-1.6-windows.zip -d ${PWD}
-    curl --insecure -C - -o ${DLCACHE}/innosetup-5.5.9-unicode.exe -SLO http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe || true
-    ./innoextract.exe ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
+    "${DLCACHE}/innoextract/innoextract.exe" ${DLCACHE}/innosetup-5.5.9-unicode.exe 2>&1
     mv app isdir
-    if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
-        # I wanted to go for the following unusual approach here of using conda install (in copy mode)
-        # and using MSYS2's mingw-w64 tcl/tk packages, but this is something for longer-term as there
-        # is too much work to do around removing baked-in paths and logic around the ActiveState TCL.
-        # For example expectations of Tcl/{bin,lib}64 folders in src/gnuwin32/installer/JRins.R and
-        # other places I've not yet found.
-        #
-        # Plan was to install excluding the dependencies (so the necessary DLL dependencies will not
-        # be present!). This should not matter since the DLL dependencies have already been installed
-        # when r-base itself was installed and will be on the PATH already. The alternative to this
-        # is to patch R so that it doesn't look for Tcl executables in in Tcl/bin or Tcl/bin64 and
-        # instead looks in the same folder as the R executable which would be my prefered approach.
-        #
-        # The thing to is probably to make stub programs launching the right binaries in mingw-w64/bin
-        # .. perhaps launcher.c can be generalized?
-        mkdir -p "${SRC_DIR}/lib/R/Tcl"
-        CONDA_SUBDIR=$target_platform "${SYS_PYTHON}" -m conda install -c https://conda.anaconda.org/msys2 \
-                                                      --no-deps --yes --copy --prefix "${SRC_DIR}/lib/R/Tcl" \
-                                                      m2w64-{tcl,tk,bwidget,tktable}
-        mv "${SRC_DIR}"/lib/R/Tcl/Library/mingw-w64/* "${SRC_DIR}"/lib/R/Tcl/ || exit 1
-        rm -Rf "${SRC_DIR}"/lib/R/Tcl/{Library,conda-meta,.BUILDINFO,.MTREE,.PKGINFO}
-        if [[ "${ARCH}" == "64" ]]; then
-            mv "${SRC_DIR}/lib/R/Tcl/bin" "${SRC_DIR}/lib/R/Tcl/bin64"
-        fi
-    else
-        #
-        # .. instead, more innoextract for now. We can probably use these archives instead:
-        # http://www.stats.ox.ac.uk/pub/Rtools/R_Tcl_8-5-8.zip
-        # http://www.stats.ox.ac.uk/pub/Rtools/R_Tcl_8-5-8.zip
-        # as noted on http://www.stats.ox.ac.uk/pub/Rtools/R215x.html.
-        #
-        # curl claims most servers do not support byte ranges, hence the || true
-        mkdir -p "${SRC_DIR}/lib/R"
-        curl --insecure -C - -o ${DLCACHE}/Rtools34.exe -SLO http://cran.r-project.org/bin/windows/Rtools/Rtools34.exe || true
-        if [[ "${ARCH}" == "64" ]]; then
-            ./innoextract.exe -I "code\$rhome64" ${DLCACHE}/Rtools34.exe
-            mv "code\$rhome64/Tcl" "${SRC_DIR}/lib/R"
-        else
-            ./innoextract.exe -I "code\$rhome" ${DLCACHE}/Rtools34.exe
-            mv "code\$rhome/Tcl" "${SRC_DIR}/lib/R"
-        fi
-    fi
-
-    # Horrible. We need MiKTeX or something like it (for pdflatex.exe. Building from source
-    # may be possible but requires CLisp and I've not got time for that at present).  w32tex
-    # looks a little less horrible than MiKTex (just read their build instructions and cry:
-    # For  example:
-    # Cygwin
-    # Hint: install all packages, or be prepared to install missing packages later, when
-    #       CMake fails to find them...
-    # So, let's try with standard w32tex instead: http://w32tex.org/
-
-    # W32TeX doesn't have inconsolata.sty which is
-    # needed for R 3.2.4 (later Rs have switched to zi4
-    # instead), I've switched to miktex instead.
-    if [[ "${_use_w32tex}" == "yes" ]]; then
-      mkdir w32tex || true
-        pushd w32tex
-        curl --insecure -C - -o ${DLCACHE}/texinst2016.zip -SLO http://ctan.ijs.si/mirror/w32tex/current/texinst2016.zip
-        unzip -o ${DLCACHE}/texinst2016.zip
-        mkdir archives || true
-          pushd archives
-            for _file in latex mftools platex pdftex-w32 ptex-w32 web2c-lib web2c-w32 \
-                         datetime2 dvipdfm-w32 dvipsk-w32 jtex-w32 ltxpkgs luatexja \
-                         luatex-w32 makeindex-w32 manual newtxpx-boondoxfonts pgfcontrib \
-                         t1fonts tex-gyre timesnew ttf2pk-w32 txpx-pazofonts vf-a2bk \
-                         xetex-w32 xindy-w32 xypic; do
-              curl --insecure -C - -o ${DLCACHE}/${_file}.tar.xz -SLO http://ctan.ijs.si/mirror/w32tex/current/${_file}.tar.xz
-            done
-          popd
-        ./texinst2016.exe ${PWD}/archives
-        ls -l ./texinst2016.exe
-        mount
-        PATH=${PWD}/bin:${PATH}
-      popd
-    else
-      mkdir miktex || true
-      pushd miktex
-      # Fetch e.g.:
-      # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/url.tar.lzma
-      # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/mptopdf.tar.lzma
-      # http://ctan.mines-albi.fr/systems/win32/miktex/tm/packages/inconsolata.tar.lzma
-        # FIXME: Newer MiKTeX installer does not finish on AppVeyor and Azure, somehow.
-        #   MIKTEX_VER=2.9.7100
-        #   curl --insecure -C - -o ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe -SL https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/basic-miktex-${MIKTEX_VER}.exe || true
-        #   echo "Extracting basic-miktex-${MIKTEX_VER}.exe, this will take some time ..."
-        #   ${DLCACHE}/basic-miktex-${MIKTEX_VER}.exe --portable=${PWD} --unattended --no-registry || exit 1
-        # FIXME: Temporary workaround! Fix the above as soon as possible, please.
-        #        Downloading this archived version may not comply with the ToS of archive.org!
-        curl --insecure -C - -o ${DLCACHE}/miktex-portable-2.9.6942.exe -SL https://web.archive.org/web/20190325114245/https://mirrors.rit.edu/CTAN/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6942.exe || true
-        echo "Extracting miktex-portable-2.9.6942.exe, this will take some time ..."
-        7za x -y ${DLCACHE}/miktex-portable-2.9.6942.exe > /dev/null || exit 1
-        # We also need the url, incolsolata and mptopdf packages and
-        # do not want a GUI to prompt us about installing these.
-        # sed -i 's|AutoInstall=2|AutoInstall=1|g' miktex/config/miktex.ini
-        #see also: http://tex.stackexchange.com/q/302679
-        PATH=${PWD}/texmfs/install/miktex/bin:${PATH}
-        initexmf.exe --set-config-value [MPM]AutoInstall=1
-        initexmf.exe --update-fndb
-        cat texmfs/config/miktex/config/miktex.ini
-      popd
-    fi
 
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
     export MSYS2_ARG_CONV_EXCL="R_ARCH"
-    # Following dlls are not found in the current place. Copy them for now and remove later
-    cp ${PREFIX}/Library/bin/libblas.dll   ${PREFIX}/Library/mingw-w64/bin/libblas.dll
-    cp ${PREFIX}/Library/bin/liblapack.dll ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
     cd "${SRC_DIR}/src/gnuwin32"
     if [[ "${_use_msys2_mingw_w64_tcltk}" == "yes" ]]; then
         # rinstaller and crandir would come after manuals (if it worked with MSYS2/mingw-w64-{tcl,tk}, in which case we'd just use make distribution anyway)
         echo "***** R-${PACKAGE_VERSION} Build started *****"
-        for _stage in all cairodevices recommended vignettes manuals; do
+        for _stage in all cairodevices vignettes manuals; do
             echo "***** R-${PACKAGE_VERSION} Stage started: ${_stage} *****"
-            make ${_stage} -j${CPU_COUNT} || exit 1
+            # NOTE: As of now (r-base=4.3.3, miktex=24.4) there are random(?) pdflatex failures.
+            #       This has not been thoroughly investigated; try restarting build if it fails.
+            make R_PKGS_RECOMMENDED= ${_stage} -j${CPU_COUNT} || exit 1
         done
     else
         echo "***** R-${PACKAGE_VERSION} Stage started: distribution *****"
@@ -455,29 +348,19 @@ Mingw_w64_makefiles() {
     # echo "Running make check-all (up to 3 times, there is some flakiness in p-r-random-tests.R), this will take some time ..."
     # make check-all -j1 > make-check.log 2>&1 || make check-all -j1 > make-check.2.log 2>&1 || make check-all -j1 > make-check.3.log 2>&1
     cd installer
-    make imagedir
+    make R_PKGS_RECOMMENDED= imagedir
     cp -Rf R-${PKG_VERSION} R
     # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
     mkdir -p "${PREFIX}"/lib
 
     cp -Rf R "${PREFIX}"/lib/
-    # Copy Tcl/Tk support files
-    cp -rf ${SRC_DIR}/lib/R/Tcl ${PREFIX}/lib/R
 
     # Remove the recommeded libraries, we package them separately as-per the other platforms now.
     rm -Rf "${PREFIX}"/lib/R/library/{MASS,lattice,Matrix,nlme,survival,boot,cluster,codetools,foreign,KernSmooth,rpart,class,nnet,spatial,mgcv}
-    # * Here we force our MSYS2/mingw-w64 sysroot to be looked in for LOCAL_SOFT during r-packages builds (but actually this will not work since
-    # R will append lib/$(R_ARCH) to this in various Makefiles. So long as we set build/merge_build_host then they will get found automatically)
+    # We are not using rtools
     for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
-        # For SystemDependencies the host prefix is good.
-        sed -i 's|LOCAL_SOFT = |LOCAL_SOFT = \$(R_HOME)/../../Library/mingw-w64|g' ${_makeconf}
-        sed -i 's|^BINPREF ?= .*$|BINPREF ?= \$(R_HOME)/../../Library/mingw-w64/bin/|g' ${_makeconf}
-        # For compilers it is not, since they're put in the build prefix.
-        sed -i 's| = \$(BINPREF)| = |g' ${_makeconf}
+        sed -i 's|R_INSTALLER_BUILD = yes|R_INSTALLER_BUILD = no|g' ${_makeconf}
     done
-    # Remove previously copied file
-    rm ${PREFIX}/Library/mingw-w64/bin/libblas.dll
-    rm ${PREFIX}/Library/mingw-w64/bin/liblapack.dll
 
     return 0
 }
