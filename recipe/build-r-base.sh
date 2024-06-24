@@ -344,11 +344,10 @@ Mingw_w64_makefiles() {
     # make check-all -j1 > make-check.log 2>&1 || make check-all -j1 > make-check.2.log 2>&1 || make check-all -j1 > make-check.3.log 2>&1
     cd installer
     make R_PKGS_RECOMMENDED= imagedir
-    cp -Rf R-${PKG_VERSION} R
+
     # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
     mkdir -p "${PREFIX}"/lib
-
-    cp -Rf R "${PREFIX}"/lib/
+    cp -Rf R-${PKG_VERSION}/. "${PREFIX}"/lib/R
 
     # We are not using rtools
     for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
