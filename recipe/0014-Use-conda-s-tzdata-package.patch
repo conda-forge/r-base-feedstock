@@ -1,12 +1,12 @@
-From 71951a875d0c006770816bd14bf5f6fc9043f8e1 Mon Sep 17 00:00:00 2001
+From 94f107cf7c6def507ee4065135bd7ca5735deb98 Mon Sep 17 00:00:00 2001
 From: Isuru Fernando <isuruf@gmail.com>
 Date: Tue, 25 Jun 2024 13:06:14 -0500
 Subject: [PATCH] Use conda's tzdata package
 
 ---
  src/extra/tzone/localtime.c   | 6 +-----
- src/library/base/R/datetime.R | 3 ++-
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ src/library/base/R/datetime.R | 9 +++++----
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
 diff --git a/src/extra/tzone/localtime.c b/src/extra/tzone/localtime.c
 index da2a99cac0..6a2bbae08a 100644
@@ -26,7 +26,7 @@ index da2a99cac0..6a2bbae08a 100644
  		p = buf;
  	    }
 diff --git a/src/library/base/R/datetime.R b/src/library/base/R/datetime.R
-index f870e95a96..360232487e 100644
+index f870e95a96..597379bfc6 100644
 --- a/src/library/base/R/datetime.R
 +++ b/src/library/base/R/datetime.R
 @@ -81,7 +81,8 @@ Sys.timezone <- function(location = TRUE)
@@ -39,6 +39,28 @@ index f870e95a96..360232487e 100644
             dir.exists(tzdir <- "/share/zoneinfo") ||
             dir.exists(tzdir <- "/usr/share/lib/zoneinfo") ||
             dir.exists(tzdir <- "/usr/lib/zoneinfo") ||
+@@ -1450,10 +1451,10 @@ OlsonNames <- function(tzdir = NULL)
+ {
+     if (is.null(tzdir)) {
+         if(.Platform$OS.type == "windows")
+-            tzdir <- Sys.getenv("TZDIR", file.path(R.home("share"), "zoneinfo"))
++            tzdir <- Sys.getenv("TZDIR", file.path(R.home(), "..", "..", "share", "zoneinfo"))
+         else {
+             if(Sys.getenv("TZDIR") == "internal")
+-                tzdir <- file.path(R.home("share"), "zoneinfo")
++                tzdir <- file.path(R.home(), "..", "..", "share", "zoneinfo")
+             else if (grepl("darwin", R.Version()$os) &&
+                      Sys.getenv("TZDIR") == "macOS") {
+                 tzdir <- "/var/db/timezone/zoneinfo"
+@@ -1465,7 +1466,7 @@ OlsonNames <- function(tzdir = NULL)
+                 ## We assume that if the second exists that the system was
+                 ## configured with --with-internal-tzcode
+                 tzdirs <- c(Sys.getenv("TZDIR"), # defaults to ""
+-                            file.path(R.home("share"), "zoneinfo"),
++                            file.path(R.home(), "..", "..", "share", "zoneinfo"),
+                             "/usr/share/zoneinfo", # Linux, macOS, FreeBSD
+                             "/share/zoneinfo", # in musl's search
+                             "/usr/share/lib/zoneinfo", # Solaris, AIX
 -- 
 2.44.0
 
