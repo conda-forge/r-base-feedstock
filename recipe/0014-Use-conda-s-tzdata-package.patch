@@ -3,6 +3,10 @@ From: Isuru Fernando <isuruf@gmail.com>
 Date: Tue, 25 Jun 2024 13:06:14 -0500
 Subject: [PATCH] Use conda's tzdata package
 
+  There's another instance where R.home("share") is used in macOS
+  specific code, but that is dead code anyway since the conda tzdata
+  package does not have a VERSION file. 
+
 ---
  src/extra/tzone/localtime.c   | 6 +-----
  src/library/base/R/datetime.R | 9 +++++----
