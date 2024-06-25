@@ -7,26 +7,26 @@ package:
   version: {{ version }}
 
 source:
-  url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-  sha256: b4cb675deaaeb7299d3b265d218cde43f192951ce5b89b7bb1a5148a36b2d94d
-  patches:
-    - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
-    - 0002-Fix-trio-config.h-include-depth-issue.patch
-    - 0003-Win32-Do-not-link-static-libgcc.patch
-    - 0004-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
-    - 0005-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
-    - 0006-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
-    - 0007-javareconf-Do-not-fail-on-compile-fail.patch
-    - 0008-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
-    - 0009-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
-    # - 0010-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
-    - 0011-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
-    - 0012-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
-    - 0013-Try-forcing-.dylib.patch
+  - url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
+    sha256: b4cb675deaaeb7299d3b265d218cde43f192951ce5b89b7bb1a5148a36b2d94d
+    patches:
+      - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
+      - 0002-Fix-trio-config.h-include-depth-issue.patch
+      - 0003-Win32-Do-not-link-static-libgcc.patch
+      - 0004-Win32-Prevent-conversion-of-R_ARCH-to-abs-Windows-pa.patch
+      - 0005-Darwin-Avoid-setting-DYLD_FALLBACK_LIBRARY_PATH.patch
+      - 0006-Linux-Do-not-modify-LD_LIBRARY_PATH.patch
+      - 0007-javareconf-Do-not-fail-on-compile-fail.patch
+      - 0008-Revert-part-of-9b818c6dc00143ff18775a4015a3f43b5196f.patch
+      - 0009-javareconf-macOS-Continue-to-allow-system-Java-lt-9-.patch
+      # - 0010-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
+      - 0011-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
+      - 0012-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
+      - 0013-Try-forcing-.dylib.patch
+      - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  skip: true  # [win]
-  number: 0
+  number: 1
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -35,7 +35,6 @@ outputs:
     script: build-r-base.sh  # [not win]
     script: bld-r-base.bat  # [win]
     build:
-      merge_build_host: true  # [win]
       rpaths:
         - lib/R/lib/
         - lib/
@@ -51,16 +50,12 @@ outputs:
       detect_binary_files_with_prefix: true
     requirements:
       build:
-        - gnuconfig  # [unix]
-        - {{ compiler('c') }}                # [not win]
-        - {{ stdlib("c") }}                  # [not win]
-        - {{ compiler('cxx') }}              # [not win]
-        - {{ compiler('fortran') }}          # [not win]
+        - gnuconfig                          # [unix]
+        - {{ stdlib('c') }}
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('fortran') }}
         - gfortran_impl_{{ build_platform }} {{ fortran_compiler_version }}  # [(build_platform != target_platform) and linux]
-        - {{ compiler('m2w64_c') }}          # [win]
-        - {{ stdlib("m2w64_c") }}            # [win]
-        - {{ compiler('m2w64_cxx') }}        # [win]
-        - {{ compiler('m2w64_fortran') }}     # [win]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - {{ cdt('libxrender') }}            # [linux]
         - {{ cdt('libxext') }}               # [linux]
@@ -73,17 +68,22 @@ outputs:
         - {{ cdt('libxau') }}                # [linux]
         - {{ cdt('java-1.7.0-openjdk') }}    # [linux]
         - {{ posix }}pkg-config
-        - posix                              # [win]
+        - m2-base                            # [win]
+        - m2-diffutils                       # [win]
+        - m2-make                            # [win]
+        - m2-tar                             # [win]
+        - m2-unzip                           # [win]
         - m2-texinfo-tex                     # [win]
         - m2-texinfo                         # [win]
         - m2-curl                            # [win]
         - m2-p7zip                           # [win]
+        - miktex                             # [win]
         #- texlive-core                       # [unix]
         - texinfo                            # [unix]
         - openjdk
         - {{ posix }}autoconf
-        - {{ posix }}automake-wrapper        # [win]
-        - {{ posix }}automake                # [not win]
+        - m2-automake-wrapper                # [win]
+        - automake                           # [not win]
         - make                               # [not win]
         - libcurl                            # [not win]
         - readline                            # [build_platform != target_platform]
@@ -110,39 +110,27 @@ outputs:
         - libgomp                             # [linux]
       host:
         - readline                           # [not win]
-        - libcurl                            # [not win]
-        - xz                                 # [not win]
-        - libpng                             # [not win]
-        - bzip2                              # [not win]
-        - {{ native }}bzip2                  # [win]
-        - cairo                              # [not win]
+        - libcurl
+        - xz
+        - libpng
+        - bzip2
+        - cairo
         - gettext                            # [osx]
-        - fontconfig                         # [osx]
-        - {{ native }}libjpeg-turbo          # [win]
-        - libjpeg-turbo                      # [not win]
-        - libdeflate                         # [not win]
-        - libiconv                           # [unix]
-        - {{ native }}libiconv               # [win]
-        - {{ native }}gmp                    # [win]
+        - fontconfig                         # [osx or win]
+        - libjpeg-turbo
+        - libdeflate
+        - libiconv
+        - libuuid                            # [linux]
         - glib                               # [unix]
-        - {{ native }}fftw                   # [win]
-        - {{ native }}xz                     # [win]
-        - {{ native }}mpfr                   # [win]
-        - {{ native }}libsndfile             # [win]
-        - {{ native }}bwidget
-        - {{ native }}tktable
-        - {{ native }}libpng                 # [win]
+        - bwidget
+        - tktable
         - pango                              # [not win]
-        - {{ native }}icu                    # [win]
-        - icu                                # [not win]
-        - pcre2                              # [not win]
-        - {{ native }}pcre2                  # [win]
-        - tk                                 # [not win]
-        - {{ native }}tk                     # [win]
-        - {{ native }}zlib                   # [win]
-        - zlib                               # [not win]
-        - {{ native }}libtiff                # [win]
-        - libtiff                            # [not win]
+        - icu
+        - pcre2
+        - tk
+        - zlib
+        - gsl
+        - libtiff
         - libblas
         - liblapack
         # sed is in host env because its path is recorded in R's shell wrapper
@@ -151,46 +139,37 @@ outputs:
         - _r-mutex 1.* anacondar_1
         # Needed by R CMD javareconf
         - make                               # [not win]
-        - gcc_impl_{{ target_platform }}  >={{ c_compiler_version|default("0") }}    # [linux]
-        - gxx_impl_{{ target_platform }}  >={{ cxx_compiler_version|default("0") }}  # [linux]
-        - gfortran_impl_{{ target_platform }}  # [linux]
+        - gcc_impl_{{ target_platform }}  >={{ c_compiler_version|default("0") }}    # [linux or win]
+        - gxx_impl_{{ target_platform }}  >={{ cxx_compiler_version|default("0") }}  # [linux or win]
+        - gfortran_impl_{{ target_platform }}  # [linux or win]
         - {{ c_compiler|default("blah") }}_{{ target_platform }} >={{ c_compiler_version|default("0") }}      # [osx]
         - {{ cxx_compiler|default("blah") }}_{{ target_platform }} >={{ cxx_compiler_version|default("0") }}  # [osx]
         - {{ compiler('fortran') }}  # [osx]
-        - curl                                 # [not win]
-        - {{ native }}bzip2                    # [win]
-        - {{ native }}libjpeg-turbo            # [win]
-        - {{ native }}libiconv                 # [win]
+        - {{ pin_compatible('llvm-openmp', max_pin=None) }}      # [osx]
+        - curl
+        - libuuid                              # [linux]
         - xorg-libxt                           # [linux]
-        - {{ native }}gmp                      # [win]
-        - {{ native }}fftw                     # [win]
-        - {{ native }}xz                       # [win]
-        - {{ native }}mpfr                     # [win]
-        - {{ native }}libsndfile               # [win]
-        - {{ native }}bwidget
-        - {{ native }}tktable
-        - {{ native }}libpng                   # [win]
-        - {{ native }}pcre2                    # [win]
-        - {{ native }}tk                       # [win]
-        - {{ native }}zlib                     # [win]
-        - {{ native }}libtiff                  # [win]
-        - sed                                # [linux]
+        - bwidget
+        - tktable
+        - tk
+        - sed                                  # [linux]
 
     test:
       commands:
+        - echo on  # [win]
         - R -h
         - R --version
-        - R -e "print(.Platform\$dynlib.ext)"
-        - R -e "library('tcltk')"            # [linux or osx]
-        - R -e \"library('tcltk')\""         # [win]
+        - R -e 'print(.Platform$dynlib.ext)' | grep -F -- "${SHLIB_EXT}"  # [not win]
+        - R -e "print(.Platform$dynlib.ext)" | findstr "/C:%SHLIB_EXT%"   # [win]
         - Rscript --version
-        - Rscript -e  'cat("ok\\n")'
+        - Rscript -e 'cat("ok\n")' | grep -xF ok         # [not win]
+        - Rscript -e "cat('ok\n')" | findstr /X "/C:ok"  # [win]
+        - xvfb-run Rscript -e "library('tcltk');quit(status=is.logical(tclRequire('Tktable')))"  # [linux]
+        - Rscript -e "library('tcltk');quit(status=is.logical(tclRequire('Tktable')))"           # [not linux]
         # Report on the optional features compiled into this build of R.
-        - R -e "capabilities()"              # [not win]
-        - R -e \"capabilities()\""           # [win]
+        - R -e "capabilities()"
         # Show third-party graphics software available
-        - R -e "grSoftVersion()"             # [not win]
-        - R -e \"grSoftVersion()\""          # [win]
+        - R -e "grSoftVersion()"
         # TODO does not work on windows, because winCairo.dll is missing
         - Rscript test-svg.R                 # [not win]
         - open                               # [win]

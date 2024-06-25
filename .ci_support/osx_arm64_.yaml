@@ -30,6 +30,8 @@ fortran_compiler_version:
 - '12'
 glib:
 - '2'
+gsl:
+- '2.7'
 icu:
 - '73'
 libblas:
@@ -55,7 +57,7 @@ macos_machine:
 pango:
 - '1.50'
 pcre2:
-- '10.43'
+- '10.44'
 readline:
 - '8'
 target_platform:
