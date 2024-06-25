@@ -361,6 +361,7 @@ Mingw_w64_makefiles() {
 
 Darwin() {
     unset JAVA_HOME
+    unset SHLIB_EXT
 
     # May want to strip these from Makeconf at the end.
     CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} "${CFLAGS}
