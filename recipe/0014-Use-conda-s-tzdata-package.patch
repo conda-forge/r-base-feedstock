@@ -1,0 +1,44 @@
+From 71951a875d0c006770816bd14bf5f6fc9043f8e1 Mon Sep 17 00:00:00 2001
+From: Isuru Fernando <isuruf@gmail.com>
+Date: Tue, 25 Jun 2024 13:06:14 -0500
+Subject: [PATCH] Use conda's tzdata package
+
+---
+ src/extra/tzone/localtime.c   | 6 +-----
+ src/library/base/R/datetime.R | 3 ++-
+ 2 files changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/src/extra/tzone/localtime.c b/src/extra/tzone/localtime.c
+index da2a99cac0..6a2bbae08a 100644
+--- a/src/extra/tzone/localtime.c
++++ b/src/extra/tzone/localtime.c
+@@ -472,11 +472,7 @@ tzload(const char * name, struct state * const sp, const int doextend)
+ 		p = "/var/db/timezone/zoneinfo";
+ #endif
+ 	    if (p == NULL || !strcmp(p, "internal")) {
+-		p = getenv("R_SHARE_DIR");
+-		if(p)
+-		    snprintf(buf, 1000, "%s/zoneinfo", p);
+-		else
+-		    snprintf(buf, 1000, "%s/share/zoneinfo", getenv("R_HOME"));
++		snprintf(buf, 1000, "%s/../../share/zoneinfo", getenv("R_HOME"));
+ 		buf[999] = '\0';
+ 		p = buf;
+ 	    }
+diff --git a/src/library/base/R/datetime.R b/src/library/base/R/datetime.R
+index f870e95a96..360232487e 100644
+--- a/src/library/base/R/datetime.R
++++ b/src/library/base/R/datetime.R
+@@ -81,7 +81,8 @@ Sys.timezone <- function(location = TRUE)
+     tzdir <- Sys.getenv("TZDIR")
+     if(nzchar(tzdir) && !dir.exists(tzdir)) tzdir <- ""
+     if(!nzchar(tzdir)) { ## See comments in OlsonNames
+-        if(dir.exists(tzdir <- "/usr/share/zoneinfo") ||
++        if(dir.exists(tzdir <- file.path(R.home(), "..", "..", "share", "zoneinfo")) ||
++           dir.exists(tzdir <- "/usr/share/zoneinfo") ||
+            dir.exists(tzdir <- "/share/zoneinfo") ||
+            dir.exists(tzdir <- "/usr/share/lib/zoneinfo") ||
+            dir.exists(tzdir <- "/usr/lib/zoneinfo") ||
+-- 
+2.44.0
+
