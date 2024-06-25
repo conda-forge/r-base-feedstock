@@ -32,6 +32,8 @@ libblas:
 - 3.9 *netlib
 libcurl:
 - '8'
+libdeflate:
+- '1.20'
 libiconv:
 - '1'
 libjpeg_turbo:
