@@ -155,7 +155,7 @@ outputs:
 
     test:
       requires:
-        - shellcheck  # [ppc64le]
+        - shellcheck  # [not (win or ppc64le)]
       commands:
         - echo on  # [win]
         - R -h
