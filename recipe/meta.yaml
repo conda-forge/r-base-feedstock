@@ -158,6 +158,8 @@ outputs:
         - echo on  # [win]
         - R -h
         - R --version
+        # Ensure the shared library extension on macOS is also .so
+        # for better compatibility with pre-compiled binary macOS packages (similar to wheels in python).
         - R -e 'print(.Platform$dynlib.ext)' | grep -F -- ".so"  # [not win]
         - R -e "print(.Platform$dynlib.ext)" | findstr "/C:%SHLIB_EXT%"   # [win]
         - Rscript --version
