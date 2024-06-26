@@ -22,11 +22,10 @@ source:
       # - 0010-Allow-rpath-in-tcltk-dylib-LC_LOAD_DYLIB-command.patch
       - 0011-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
       - 0012-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
-      - 0013-Try-forcing-.dylib.patch
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 1
+  number: 2
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -159,7 +158,9 @@ outputs:
         - echo on  # [win]
         - R -h
         - R --version
-        - R -e 'print(.Platform$dynlib.ext)' | grep -F -- "${SHLIB_EXT}"  # [not win]
+        # Ensure the shared library extension on macOS is also .so
+        # for better compatibility with pre-compiled binary macOS packages (similar to wheels in python).
+        - R -e 'print(.Platform$dynlib.ext)' | grep -F -- ".so"  # [not win]
         - R -e "print(.Platform$dynlib.ext)" | findstr "/C:%SHLIB_EXT%"   # [win]
         - Rscript --version
         - Rscript -e 'cat("ok\n")' | grep -xF ok         # [not win]
