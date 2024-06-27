@@ -28,7 +28,7 @@ source:
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 5
+  number: 6
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -50,6 +50,11 @@ outputs:
         - lib/R/etc/x64/ldpaths
         - lib/R/etc/x64/javaconf
       detect_binary_files_with_prefix: true
+      run_exports:
+        weak:
+          - {{ pin_subpackage("r-base", min_pin="x.x", max_pin="x.x") }}
+        noarch:
+          - {{ pin_subpackage("r-base", min_pin="x.x", max_pin="x.x") }}
     requirements:
       build:
         - gnuconfig                          # [unix]
