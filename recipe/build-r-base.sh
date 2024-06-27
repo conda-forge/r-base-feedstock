@@ -193,6 +193,7 @@ Linux() {
                 --with-readline                  \
                 --with-recommended-packages=no   \
                 --without-libintl-prefix         \
+                --without-internal-tzcode        \
 		${CONFIGURE_ARGS}                \
 		LIBnn=lib || (cat config.log; exit 1)
 
@@ -369,6 +370,8 @@ Mingw_w64_makefiles() {
         sed -i 's|R_INSTALLER_BUILD = yes|R_INSTALLER_BUILD = no|g' ${_makeconf}
     done
 
+    rm -rf ${PREFIX}/lib/R/share/zoneinfo
+
     return 0
 }
 
@@ -416,6 +419,7 @@ Darwin() {
                 --without-x                         \
                 --enable-R-framework=no             \
                 --with-included-gettext=yes         \
+                --without-internal-tzcode           \
                 --with-recommended-packages=no || (cat config.log; false)
 
     # Horrendous hack to make up for what seems to be bugs (or over-cautiousness?) in ld64's -dead_strip_dylibs (and/or -no_implicit_dylibs)
@@ -456,6 +460,9 @@ Darwin() {
       chmod g+w Makeconf ldpaths
     popd
 }
+
+# Need this for running R in build directory without installing
+export TZDIR=$PREFIX/share/zoneinfo
 
 case "${target_platform}" in
   osx-* )
