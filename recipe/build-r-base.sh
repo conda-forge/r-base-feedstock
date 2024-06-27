@@ -444,22 +444,30 @@ Darwin() {
     popd
 }
 
-if [[ $target_platform =~ .*osx.* ]]; then
-  Darwin
-  mkdir -p ${PREFIX}/etc/conda/activate.d
-  cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
-  mkdir -p ${PREFIX}/etc/conda/deactivate.d
-  cp "${RECIPE_DIR}"/deactivate-${PKG_NAME}.sh ${PREFIX}/etc/conda/deactivate.d/deactivate-${PKG_NAME}.sh
-elif [[ $target_platform =~ .*linux.* ]]; then
-  Linux
-  mkdir -p ${PREFIX}/etc/conda/activate.d
-  cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
-  mkdir -p ${PREFIX}/etc/conda/deactivate.d
-  cp "${RECIPE_DIR}"/deactivate-${PKG_NAME}.sh ${PREFIX}/etc/conda/deactivate.d/deactivate-${PKG_NAME}.sh
-elif [[ $target_platform =~ .*win.* ]]; then
-  # Mingw_w64_autotools
-  Mingw_w64_makefiles
-fi
+case "${target_platform}" in
+  osx-* )
+    Darwin
+    ;;
+  linux-* )
+    Linux
+    ;;
+  win-* )
+    # Mingw_w64_autotools
+    Mingw_w64_makefiles
+    ;;
+esac
+case "${target_platform}" in
+  osx-* | linux-* )
+    for action in activate deactivate; do
+      if [[ "${build_platform}" != linux-ppc64le ]] ; then
+        shellcheck --shell=sh --severity=style --enable=check-unassigned-uppercase \
+          "${RECIPE_DIR}/${action}-${PKG_NAME}.sh"
+      fi
+      mkdir -p "${PREFIX}/etc/conda/${action}.d"
+      cp "${RECIPE_DIR}/${action}-${PKG_NAME}.sh" "${PREFIX}/etc/conda/${action}.d/"
+    done
+    ;;
+esac
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
   pushd $BUILD_PREFIX/lib/R

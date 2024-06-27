@@ -84,6 +84,8 @@ outputs:
         - m2-automake-wrapper                # [win]
         - automake                           # [not win]
         - make                               # [not win]
+        # shellcheck is used to check activation scripts; it is not yet built for linux-ppc64le.
+        - shellcheck                         # [unix and build_platform != "linux-ppc64le"]
         - libcurl                            # [not win]
         - readline                            # [build_platform != target_platform]
         - libcurl                             # [build_platform != target_platform]
@@ -154,8 +156,6 @@ outputs:
         - sed                                  # [linux]
 
     test:
-      requires:
-        - shellcheck  # [not (win or ppc64le)]
       commands:
         - echo on  # [win]
         - R -h
@@ -188,10 +188,6 @@ outputs:
         # Verify internal-tzcode works without warnings
         # See https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
         - R -e "options(warn=2);Sys.time()"
-        - >                                                                           # [not (win or ppc64le)]
-          shellcheck --shell=sh --severity=style --enable=check-unassigned-uppercase  # [not (win or ppc64le)]
-          "${PREFIX}/etc/conda/activate.d/activate-r-base.sh"                         # [not (win or ppc64le)]
-          "${PREFIX}/etc/conda/deactivate.d/deactivate-r-base.sh"                     # [not (win or ppc64le)]
       files:
         - test-svg.R
 
@@ -201,16 +197,14 @@ outputs:
       skip: true  # [win]
     script: install-cross-activate.sh
     requirements:
+      build:
+        # shellcheck is used to check activation scripts; it is not yet built for linux-ppc64le.
+        - shellcheck  # [build_platform != "linux-ppc64le"]
       run:
         - {{ pin_subpackage("r-base", exact=True) }}
         - rsync
     test:
-      requires:
-        - shellcheck  # [not ppc64le]
       commands:
-        - >                                                                           # [not ppc64le]
-          shellcheck --shell=sh --severity=style --enable=check-unassigned-uppercase  # [not ppc64le]
-          "${PREFIX}/etc/conda/activate.d/activate-cross-r-base.sh"                   # [not ppc64le]
         - test -f $PREFIX/etc/conda/activate.d/activate-cross-r-base.sh
 
 about:
