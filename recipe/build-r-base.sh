@@ -30,6 +30,19 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     export r_cv_func_ctanh_works=yes
     export r_cv_prog_fc_cc_compat_complex=yes
     export r_cv_zdotu_is_usable=yes
+
+    if [[ "${target_platform}" == "osx-arm64" ]]; then
+      export r_cv_func_calloc_works=yes
+      export r_cv_func_isfinite_works=yes
+      export r_cv_func_log1p_works=yes
+      export r_cv_func_sigaction_works=yes
+      export r_cv_icu=yes
+      export r_cv_openmp_simdred=yes
+      export r_cv_putenv_unset2=no
+      export r_cv_putenv_unset=no
+      export r_cv_working_ftell=yes
+    fi
+
     # Need to check for openmp simd...
     mkdir -p doc
     (
