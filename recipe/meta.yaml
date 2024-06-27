@@ -25,7 +25,7 @@ source:
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 3
+  number: 4
   no_link:
     - lib/R/doc/html/packages.html
 
