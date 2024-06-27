@@ -153,7 +153,8 @@ outputs:
         - bwidget
         - tktable
         - tk
-        - {{ pin_compatible("tzdata", max_pin=None) }}
+        # Update the lower bound with the version used in the internal tzdata
+        - tzdata >=2024a
         - sed                                  # [linux]
 
     test:
