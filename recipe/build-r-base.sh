@@ -425,8 +425,11 @@ Darwin() {
 
     if [[ "$target_platform" == "osx-arm64" ]]; then
       # For backwards compatibility
-      ln -sf ${PREFIX}/lib/libblas.dylib ${PREFIX}/lib/R/lib/libRblas.dylib
-      ln -sf ${PREFIX}/lib/liblapack.dylib ${PREFIX}/lib/R/lib/libRlapack.dylib
+      ln -sf ${PREFIX}/lib/libblas.3.dylib ${PREFIX}/lib/R/lib/libRblas.dylib
+      ln -sf ${PREFIX}/lib/liblapack.3.dylib ${PREFIX}/lib/R/lib/libRlapack.dylib
+      # prevent conda-build from using realpath
+      rm ${PREFIX}/lib/libblas.3.dylib
+      rm ${PREFIX}/lib/liblapack.3.dylib
     fi
 
     pushd ${PREFIX}/lib/R/etc
