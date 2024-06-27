@@ -153,7 +153,7 @@ outputs:
         - bwidget
         - tktable
         - tk
-        - tzdata
+        - {{ pin_compatible("tzdata", max_pin=None) }}
         - sed                                  # [linux]
 
     test:
