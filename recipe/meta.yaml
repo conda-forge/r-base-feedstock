@@ -26,6 +26,7 @@ source:
 
 build:
   number: 3
+  skip: True  # [not (aarch64 or ppc64le)]
   no_link:
     - lib/R/doc/html/packages.html
 

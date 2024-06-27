@@ -44,57 +44,20 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
       export r_cv_putenv_unset=no
       export r_cv_working_ftell=yes
     fi
-
-    # Need to check for openmp simd...
-    mkdir -p doc
-    (
-      export CFLAGS=""
-
-      export CXXFLAGS=""
-      export CC=$CC_FOR_BUILD
-      export CXX=$CXX_FOR_BUILD
-      export AR=$($CC_FOR_BUILD -print-prog-name=ar)
-      export F77=${F77//$HOST/$BUILD}
-      export F90=${F90//$HOST/$BUILD}
-      export F95=${F95//$HOST/$BUILD}
-      export FC=${FC//$HOST/$BUILD}
-      export GFORTRAN=${FC//$HOST/$BUILD}
-      export LD=${LD//$HOST/$BUILD}
-      export FFLAGS=${FFLAGS//$PREFIX/$BUILD_PREFIX}
-      export FORTRANFLAGS=${FORTRANFLAGS//$PREFIX/$BUILD_PREFIX}
-      # Filter out -march=.* from F*FLAGS
-      re='\-march\=[^[:space:]]*(.*)'
-      if [[ "${FFLAGS}" =~ $re ]]; then
-        export FFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
-      fi
-      re='\-march\=[^[:space:]]*(.*)'
-      if [[ "${FORTRANFLAGS}" =~ $re ]]; then
-        export FORTRANFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
-      fi
-      # Filter out -mtune=.* from F*FLAGS
-      re='\-mtune\=[^[:space:]]*(.*)'
-      if [[ "${FFLAGS}" =~ $re ]]; then
-        export FFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
-      fi
-      re='\-mtune\=[^[:space:]]*(.*)'
-      if [[ "${FORTRANFLAGS}" =~ $re ]]; then
-        export FORTRANFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
-      fi
-      export LDFLAGS=${LDFLAGS//$PREFIX/$BUILD_PREFIX}
-      export CPPFLAGS=${CPPFLAGS//$PREFIX/$BUILD_PREFIX}
-      export NM=$($CC_FOR_BUILD -print-prog-name=nm)
-      export PKG_CONFIG_PATH=${BUILD_PREFIX}/lib/pkgconfig
-      export CONDA_BUILD_CROSS_COMPILATION=0
-      export HOST=$BUILD
-      export PREFIX=$BUILD_PREFIX
-      export IS_MINIMAL_R_BUILD=1
-      # Use the original script without the prepended activation commands.
-      /bin/bash ${RECIPE_DIR}/build-r-base.sh
-    )
 fi
 
 aclocal -I m4
 autoconf
+
+echo 'echo ${r_cv_func_calloc_works}' >> configure
+echo 'echo ${r_cv_func_isfinite_works}' >> configure
+echo 'echo ${r_cv_func_log1p_works}' >> configure
+echo 'echo ${r_cv_func_sigaction_works}' >> configure
+echo 'echo ${r_cv_icu}' >> configure
+echo 'echo ${r_cv_openmp_simdred}' >> configure
+echo 'echo ${r_cv_putenv_unset2}' >> configure
+echo 'echo ${r_cv_putenv_unset}' >> configure
+echo 'echo ${r_cv_working_ftell}' >> configure
 
 # Filter out -std=.* from CXXFLAGS as it disrupts checks for C++ language levels.
 re='(.*[[:space:]])\-std\=[^[:space:]]*(.*)'
@@ -195,6 +158,8 @@ Linux() {
                 --without-libintl-prefix         \
 		${CONFIGURE_ARGS}                \
 		LIBnn=lib || (cat config.log; exit 1)
+
+    exit 1
 
     if cat src/include/config.h | grep "undef HAVE_PANGOCAIRO"; then
         echo "Did not find pangocairo, refusing to continue"
