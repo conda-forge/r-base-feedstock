@@ -85,6 +85,8 @@ outputs:
         - m2-automake-wrapper                # [win]
         - automake                           # [not win]
         - make                               # [not win]
+        # shellcheck is used to check activation scripts; it is not yet built for linux-ppc64le.
+        - shellcheck                         # [unix and build_platform != "linux-ppc64le"]
         - libcurl                            # [not win]
         - readline                            # [build_platform != target_platform]
         - libcurl                             # [build_platform != target_platform]
@@ -192,6 +194,9 @@ outputs:
       skip: true  # [win]
     script: install-cross-activate.sh
     requirements:
+      build:
+        # shellcheck is used to check activation scripts; it is not yet built for linux-ppc64le.
+        - shellcheck  # [build_platform != "linux-ppc64le"]
       run:
         - {{ pin_subpackage("r-base", exact=True) }}
         - rsync
