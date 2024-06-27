@@ -461,6 +461,9 @@ Darwin() {
     popd
 }
 
+# Need this for running R in build directory without installing
+export TZDIR=$PREFIX/share/zoneinfo
+
 case "${target_platform}" in
   osx-* )
     Darwin
