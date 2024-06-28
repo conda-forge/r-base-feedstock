@@ -30,7 +30,30 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     export r_cv_func_ctanh_works=yes
     export r_cv_prog_fc_cc_compat_complex=yes
     export r_cv_zdotu_is_usable=yes
-    # Need to check for openmp simd...
+
+    if [[ "${target_platform}" == "osx-arm64" || "${target_platform}" == "linux-aarch64" || "${target_platform}" == "linux-ppc64le" ]]; then
+      export r_cv_func_calloc_works=yes
+      export r_cv_func_isfinite_works=yes
+      export r_cv_func_log1p_works=yes
+      export r_cv_func_sigaction_works=yes
+      export r_cv_icu=yes
+      export r_cv_openmp_simdred=yes
+      export r_cv_putenv_unset2=no
+      export r_cv_working_ftell=yes
+    else
+      echo "Unknown cross compiling architecture"
+      exit 1
+    fi
+
+    if [[ "${target_platform}" == "osx-arm64"  ]]; then
+      export r_cv_putenv_unset=no
+    elif [[ "${target_platform}" == "linux-aarch64" || "${target_platform}" == "linux-ppc64le" ]]; then
+      export r_cv_putenv_unset=yes
+    else
+      echo "Unknown cross compiling architecture"
+      exit 1
+    fi
+
     mkdir -p doc
     (
       export CFLAGS=""
@@ -178,6 +201,7 @@ Linux() {
                 --with-readline                  \
                 --with-recommended-packages=no   \
                 --without-libintl-prefix         \
+                --without-internal-tzcode        \
 		${CONFIGURE_ARGS}                \
 		LIBnn=lib || (cat config.log; exit 1)
 
@@ -354,6 +378,8 @@ Mingw_w64_makefiles() {
         sed -i 's|R_INSTALLER_BUILD = yes|R_INSTALLER_BUILD = no|g' ${_makeconf}
     done
 
+    rm -rf ${PREFIX}/lib/R/share/zoneinfo
+
     return 0
 }
 
@@ -398,6 +424,7 @@ Darwin() {
                 --without-x                         \
                 --enable-R-framework=no             \
                 --with-included-gettext=yes         \
+                --without-internal-tzcode           \
                 --with-recommended-packages=no || (cat config.log; false)
 
     # Horrendous hack to make up for what seems to be bugs (or over-cautiousness?) in ld64's -dead_strip_dylibs (and/or -no_implicit_dylibs)
@@ -442,22 +469,33 @@ Darwin() {
     popd
 }
 
-if [[ $target_platform =~ .*osx.* ]]; then
-  Darwin
-  mkdir -p ${PREFIX}/etc/conda/activate.d
-  cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
-  mkdir -p ${PREFIX}/etc/conda/deactivate.d
-  cp "${RECIPE_DIR}"/deactivate-${PKG_NAME}.sh ${PREFIX}/etc/conda/deactivate.d/deactivate-${PKG_NAME}.sh
-elif [[ $target_platform =~ .*linux.* ]]; then
-  Linux
-  mkdir -p ${PREFIX}/etc/conda/activate.d
-  cp "${RECIPE_DIR}"/activate-${PKG_NAME}.sh ${PREFIX}/etc/conda/activate.d/activate-${PKG_NAME}.sh
-  mkdir -p ${PREFIX}/etc/conda/deactivate.d
-  cp "${RECIPE_DIR}"/deactivate-${PKG_NAME}.sh ${PREFIX}/etc/conda/deactivate.d/deactivate-${PKG_NAME}.sh
-elif [[ $target_platform =~ .*win.* ]]; then
-  # Mingw_w64_autotools
-  Mingw_w64_makefiles
-fi
+# Need this for running R in build directory without installing
+export TZDIR=$PREFIX/share/zoneinfo
+
+case "${target_platform}" in
+  osx-* )
+    Darwin
+    ;;
+  linux-* )
+    Linux
+    ;;
+  win-* )
+    # Mingw_w64_autotools
+    Mingw_w64_makefiles
+    ;;
+esac
+case "${target_platform}" in
+  osx-* | linux-* )
+    for action in activate deactivate; do
+      if [[ "${build_platform}" != linux-ppc64le ]] ; then
+        shellcheck --shell=sh --severity=style --enable=check-unassigned-uppercase \
+          "${RECIPE_DIR}/${action}-${PKG_NAME}.sh"
+      fi
+      mkdir -p "${PREFIX}/etc/conda/${action}.d"
+      cp "${RECIPE_DIR}/${action}-${PKG_NAME}.sh" "${PREFIX}/etc/conda/${action}.d/"
+    done
+    ;;
+esac
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
   pushd $BUILD_PREFIX/lib/R

@@ -24,10 +24,11 @@ source:
       - 0012-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
       - 0013-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
       - 0014-Try-forcing-.dylib.patch
+      - 0014-Use-conda-s-tzdata-package.patch
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 4
+  number: 6
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -49,6 +50,11 @@ outputs:
         - lib/R/etc/x64/ldpaths
         - lib/R/etc/x64/javaconf
       detect_binary_files_with_prefix: true
+      run_exports:
+        weak:
+          - {{ pin_subpackage("r-base", min_pin="x.x", max_pin="x.x") }}
+        noarch:
+          - {{ pin_subpackage("r-base", min_pin="x.x", max_pin="x.x") }}
     requirements:
       build:
         - gnuconfig                          # [unix]
@@ -85,6 +91,8 @@ outputs:
         - m2-automake-wrapper                # [win]
         - automake                           # [not win]
         - make                               # [not win]
+        # shellcheck is used to check activation scripts; it is not yet built for linux-ppc64le.
+        - shellcheck                         # [unix and build_platform != "linux-ppc64le"]
         - libcurl                            # [not win]
         - readline                            # [build_platform != target_platform]
         - libcurl                             # [build_platform != target_platform]
@@ -131,6 +139,7 @@ outputs:
         - libtiff
         - libblas
         - liblapack
+        - tzdata
         # sed is in host env because its path is recorded in R's shell wrapper
         - sed                                # [linux]
       run:
@@ -150,6 +159,8 @@ outputs:
         - bwidget
         - tktable
         - tk
+        # Update the lower bound with the version used in the internal tzdata
+        - tzdata >=2024a
         - sed                                  # [linux]
 
     test:
@@ -183,6 +194,8 @@ outputs:
         # Verify internal-tzcode works without warnings
         # See https://stat.ethz.ch/pipermail/r-devel/2014-April/068745.html
         - R -e "options(warn=2);Sys.time()"
+        # check that tzdata version is at least 2024
+        - R -e "stopifnot(strtoi(substr(attr(OlsonNames(), 'Version'), 1, 4)) >= 2024)"
       files:
         - test-svg.R
 
@@ -192,6 +205,9 @@ outputs:
       skip: true  # [win]
     script: install-cross-activate.sh
     requirements:
+      build:
+        # shellcheck is used to check activation scripts; it is not yet built for linux-ppc64le.
+        - shellcheck  # [build_platform != "linux-ppc64le"]
       run:
         - {{ pin_subpackage("r-base", exact=True) }}
         - rsync
