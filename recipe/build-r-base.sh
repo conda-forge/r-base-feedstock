@@ -455,12 +455,6 @@ Darwin() {
       exit 1
     fi
 
-    if [[ "$target_platform" == "osx-arm64" ]]; then
-      # For backwards compatibility
-      ln -sf ${PREFIX}/lib/libblas.dylib ${PREFIX}/lib/R/lib/libRblas.dylib
-      ln -sf ${PREFIX}/lib/liblapack.dylib ${PREFIX}/lib/R/lib/libRlapack.dylib
-    fi
-
     pushd ${PREFIX}/lib/R/etc
       sed -i'.bak' -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
       sed -i'.bak' -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf
