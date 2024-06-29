@@ -455,15 +455,6 @@ Darwin() {
       exit 1
     fi
 
-    if [[ "$target_platform" == "osx-arm64" ]]; then
-      # For backwards compatibility
-      for lib in libblas.3 liblapack.3; do
-        # Use explicit relative path to prevent conda-build from using realpath
-        ln -sfn "../../${lib}.dylib" "${PREFIX}/lib/R/lib/${lib%.*}.dylib"
-        test -f "${PREFIX}/lib/R/lib/${lib}.dylib"
-      done
-    fi
-
     pushd ${PREFIX}/lib/R/etc
       sed -i'.bak' -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
       sed -i'.bak' -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf
