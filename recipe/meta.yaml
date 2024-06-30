@@ -23,10 +23,11 @@ source:
       - 0011-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
       - 0012-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
       - 0014-Use-conda-s-tzdata-package.patch
+      - 0015-Win32-Fix-COMPILED_BY-for-custom-GCC-pkgversion.patch
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 7
+  number: 8
   no_link:
     - lib/R/doc/html/packages.html
 
