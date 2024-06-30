@@ -1,0 +1,24 @@
+From 1bb4f73babfe04c01a811d8230e4733ba398da92 Mon Sep 17 00:00:00 2001
+From: Marcel Bargull <marcel.bargull@udo.edu>
+Date: Sun, 30 Jun 2024 22:57:23 +0200
+Subject: [PATCH] Win32: Fix COMPILED_BY for custom GCC pkgversion
+
+Signed-off-by: Marcel Bargull <marcel.bargull@udo.edu>
+---
+ src/gnuwin32/MkRules.rules | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/gnuwin32/MkRules.rules b/src/gnuwin32/MkRules.rules
+index 46bdb0b821..69b3318b50 100644
+--- a/src/gnuwin32/MkRules.rules
++++ b/src/gnuwin32/MkRules.rules
+@@ -11,7 +11,8 @@ ATLAS_PATH ?=
+ TOOL_PATH ?=
+ BINPREF64 ?= 
+ CCBASE = $(if $(USE_LLVM),clang,gcc)
+-COMPILED_BY ?= $(CCBASE)-$(shell $(CC) --version | grep -E -o "([0-9]{1,}\.){2,}[0-9]{1,}")
++# tail -n1 to skip matches in "gcc (CUSTOM) X.Y.Z" for GCC configured --with-pkgversion=CUSTOM
++COMPILED_BY ?= $(CCBASE)-$(shell $(CC) --version | head -n1 | grep -E -o "([0-9]{1,}\.){2,}[0-9]{1,}" | tail -n1)
+ M_ARCH ?=
+ AS_ARCH ?=
+ RC_ARCH ?=
