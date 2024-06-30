@@ -185,6 +185,8 @@ outputs:
         # Show environment variables set by R wrapper
         - env | R -s -e "env <- Sys.getenv(names=TRUE); writeLines(setdiff(paste(names(env), env, sep='='), readLines(file('stdin'))))"  # [not win]
         - set | R -s -e "env <- Sys.getenv(names=TRUE); writeLines(setdiff(paste(names(env), env, sep='='), readLines(file('stdin'))))"  # [win]
+        # Show configure variables
+        - R CMD config --all
         # TODO does not work on windows, because winCairo.dll is missing
         - Rscript test-svg.R                 # [not win]
         - open                               # [win]
