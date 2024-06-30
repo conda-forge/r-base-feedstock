@@ -25,10 +25,11 @@ source:
       - 0013-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
       - 0014-Try-forcing-.dylib.patch
       - 0014-Use-conda-s-tzdata-package.patch
+      - 0015-Win32-Fix-COMPILED_BY-for-custom-GCC-pkgversion.patch
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 6
+  number: 7
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -179,6 +180,11 @@ outputs:
         - R -e "capabilities()"
         # Show third-party graphics software available
         - R -e "grSoftVersion()"
+        # Show environment variables set by R wrapper
+        - env | R -s -e "env <- Sys.getenv(names=TRUE); writeLines(setdiff(paste(names(env), env, sep='='), readLines(file('stdin'))))"  # [not win]
+        - set | R -s -e "env <- Sys.getenv(names=TRUE); writeLines(setdiff(paste(names(env), env, sep='='), readLines(file('stdin'))))"  # [win]
+        # Show configure variables
+        - R CMD config --all
         # TODO does not work on windows, because winCairo.dll is missing
         - Rscript test-svg.R                 # [not win]
         - open                               # [win]
