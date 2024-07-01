@@ -29,7 +29,7 @@ source:
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 7
+  number: 8
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -117,6 +117,8 @@ outputs:
         - llvm-openmp                         # [osx]
         - libgomp                             # [linux]
       host:
+        - llvm-openmp                         # [osx]
+        - libgomp                             # [linux]
         - readline                           # [not win]
         - libcurl
         - xz
