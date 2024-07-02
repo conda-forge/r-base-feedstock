@@ -340,7 +340,7 @@ Mingw_w64_makefiles() {
     sed -i 's|TCL_VERSION = 86|TCL_VERSION = 86t|g' "${SRC_DIR}/src/gnuwin32/fixed/etc/Makeconf"
 
     # We are not using rtools
-    find ${SRC_DIR}/src -type f -print0 | xargs -0 sed -i 's/# INSTALLER-BUILD/# INSTALLER-BUILD2/g'
+    sed -i 's|# INSTALLER-BUILD|# INSTALLER-BUILD2|g' "${SRC_DIR}/src/gnuwin32/installer/Makefile"
 
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
