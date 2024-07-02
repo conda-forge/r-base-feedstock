@@ -339,6 +339,9 @@ Mingw_w64_makefiles() {
     # Allow overriding TCL_VERSION
     sed -i 's|TCL_VERSION = 86|TCL_VERSION = 86t|g' "${SRC_DIR}/src/gnuwin32/fixed/etc/Makeconf"
 
+    # We are not using rtools
+    sed -i 's|# INSTALLER-BUILD|# INSTALLER-BUILD2|g' "${SRC_DIR}/src/gnuwin32/installer/Makefile"
+
     # R_ARCH looks like an absolute path (e.g. "/x64"), so MSYS2 will convert it.
     # We need to prevent that from happening.
     export MSYS2_ARG_CONV_EXCL="R_ARCH"
@@ -374,11 +377,6 @@ Mingw_w64_makefiles() {
     # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
     mkdir -p "${PREFIX}"/lib
     cp -Rf R-${PKG_VERSION}/. "${PREFIX}"/lib/R
-
-    # We are not using rtools
-    for _makeconf in $(find "${PREFIX}"/lib/R -name Makeconf); do
-        sed -i 's|R_INSTALLER_BUILD = yes|R_INSTALLER_BUILD = no|g' ${_makeconf}
-    done
 
     rm -rf ${PREFIX}/lib/R/share/zoneinfo
 
