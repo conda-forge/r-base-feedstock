@@ -378,6 +378,11 @@ Mingw_w64_makefiles() {
     mkdir -p "${PREFIX}"/lib
     cp -Rf R-${PKG_VERSION}/. "${PREFIX}"/lib/R
 
+    PREFIX_WIN=$(cygpath -w ${PREFIX})
+
+    sed -i "s|-lgfortran |$($FC --print-file libgfortran.dll.a) |g" "${PREFIX}"/lib/R/etc/${R_ARCH}/Makeconf
+    cat "${PREFIX}"/lib/R/etc/${R_ARCH}/Makeconf
+
     rm -rf ${PREFIX}/lib/R/share/zoneinfo
 
     return 0
