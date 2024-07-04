@@ -288,6 +288,7 @@ Mingw_w64_makefiles() {
     if [[ "${ARCH}" == "64" ]]; then
         CPU="x86-64"
         HOST="x86_64-w64-mingw32"
+        R_ARCH="x64"
     else
         CPU="i686"
         HOST="i686-w64-mingw32"
