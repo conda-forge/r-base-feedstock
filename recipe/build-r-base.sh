@@ -286,6 +286,7 @@ Mingw_w64_makefiles() {
     if [[ "${ARCH}" == "64" ]]; then
         CPU="x86-64"
         HOST="x86_64-w64-mingw32"
+        R_ARCH="x64"
     else
         CPU="i686"
         HOST="i686-w64-mingw32"
@@ -375,6 +376,11 @@ Mingw_w64_makefiles() {
     # Copied to ${PREFIX}/lib to mirror the unix layout so we can use "noarch: generic" packages for any that do not require compilation.
     mkdir -p "${PREFIX}"/lib
     cp -Rf R-${PKG_VERSION}/. "${PREFIX}"/lib/R
+
+    PREFIX_WIN=$(cygpath -w ${PREFIX})
+
+    sed -i "s|-lgfortran |$($FC --print-file libgfortran.dll.a) |g" "${PREFIX}"/lib/R/etc/${R_ARCH}/Makeconf
+    cat "${PREFIX}"/lib/R/etc/${R_ARCH}/Makeconf
 
     rm -rf ${PREFIX}/lib/R/share/zoneinfo
 
