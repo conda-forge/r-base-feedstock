@@ -207,6 +207,8 @@ outputs:
         - R -e "options(warn=2);Sys.time()"
         # check that tzdata version is at least 2024
         - R -e "stopifnot(strtoi(substr(attr(OlsonNames(), 'Version'), 1, 4)) >= 2024)"
+        - Rscript -e "cat('test', file = bzfile('test.bz2'))"
+        - Rscript -e "quit(status = readChar(gzfile('test.bz2'), 4) != 'test')"
       files:
         - test-svg.R
 
