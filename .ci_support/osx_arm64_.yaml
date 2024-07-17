@@ -33,7 +33,7 @@ glib:
 gsl:
 - '2.7'
 icu:
-- '73'
+- '75'
 libblas:
 - 3.9 *netlib
 libcurl:
@@ -53,7 +53,7 @@ llvm_openmp:
 macos_machine:
 - arm64-apple-darwin20.0.0
 pango:
-- '1.50'
+- '1'
 pcre2:
 - '10.44'
 readline:

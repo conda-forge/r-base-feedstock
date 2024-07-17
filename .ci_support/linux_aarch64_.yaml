@@ -35,7 +35,7 @@ glib:
 gsl:
 - '2.7'
 icu:
-- '73'
+- '75'
 libblas:
 - 3.9 *netlib
 libcurl:
@@ -53,7 +53,7 @@ libtiff:
 libuuid:
 - '2'
 pango:
-- '1.50'
+- '1'
 pcre2:
 - '10.44'
 readline:
