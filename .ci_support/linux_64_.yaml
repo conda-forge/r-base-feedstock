@@ -7,7 +7,7 @@ c_compiler_version:
 cairo:
 - '1'
 cdt_name:
-- cos6
+- cos7
 channel_sources:
 - conda-forge
 channel_targets:
@@ -25,7 +25,7 @@ fortran_compiler_version:
 glib:
 - '2'
 icu:
-- '73'
+- '75'
 libblas:
 - 3.9 *netlib
 libcurl:
@@ -41,7 +41,7 @@ libpng:
 libtiff:
 - '4.6'
 pango:
-- '1.50'
+- '1'
 pcre2:
 - '10.44'
 readline:
