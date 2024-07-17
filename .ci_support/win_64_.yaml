@@ -8,6 +8,8 @@ liblapack:
 - 3.9 *netlib
 m2w64_c_compiler:
 - m2w64-toolchain
+m2w64_c_stdlib:
+- m2w64-toolchain
 m2w64_cxx_compiler:
 - m2w64-toolchain
 m2w64_fortran_compiler:
