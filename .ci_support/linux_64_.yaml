@@ -7,11 +7,11 @@ c_compiler_version:
 c_stdlib:
 - sysroot
 c_stdlib_version:
-- '2.12'
+- '2.17'
 cairo:
 - '1'
 cdt_name:
-- cos6
+- cos7
 channel_sources:
 - conda-forge
 channel_targets:
@@ -31,7 +31,7 @@ glib:
 gsl:
 - '2.7'
 icu:
-- '73'
+- '75'
 libblas:
 - 3.9 *netlib
 libcurl:
@@ -51,7 +51,7 @@ libtiff:
 libuuid:
 - '2'
 pango:
-- '1.50'
+- '1'
 pcre2:
 - '10.44'
 readline:

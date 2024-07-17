@@ -27,7 +27,7 @@ fortran_compiler_version:
 gsl:
 - '2.7'
 icu:
-- '73'
+- '75'
 libblas:
 - 3.9 *netlib
 libcurl:
