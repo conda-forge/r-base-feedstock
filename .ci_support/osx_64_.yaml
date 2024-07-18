@@ -8,6 +8,10 @@ c_compiler:
 - clang
 c_compiler_version:
 - '16'
+c_stdlib:
+- macosx_deployment_target
+c_stdlib_version:
+- '10.13'
 cairo:
 - '1'
 channel_sources:
@@ -27,7 +31,7 @@ fortran_compiler_version:
 glib:
 - '2'
 icu:
-- '73'
+- '75'
 libblas:
 - 3.9 *netlib
 libcurl:
@@ -47,7 +51,7 @@ llvm_openmp:
 macos_machine:
 - x86_64-apple-darwin13.4.0
 pango:
-- '1.50'
+- '1'
 pcre2:
 - '10.44'
 readline:
