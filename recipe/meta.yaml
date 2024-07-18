@@ -24,10 +24,11 @@ source:
     - 0015-Check-for-changes-then-forcibly-mv-in-javareconf.in.patch
     - 0016-Use-LAPACK_LDFLAGS-in-Rlapack_la_LIBADD.patch
     - 0017-allow-libcurl-8-as-its-API-ABI-is-said-to-be-unchang.patch
+    - 0018-CVE-2024-27322.patch
 
 build:
   skip: true  # [win]
-  number: 15
+  number: 16
 
 outputs:
   - name: r-base
