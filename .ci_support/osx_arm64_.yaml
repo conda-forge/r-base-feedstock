@@ -1,11 +1,17 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '11.0'
+MACOSX_SDK_VERSION:
+- '11.0'
 bzip2:
 - '1'
 c_compiler:
 - clang
 c_compiler_version:
-- '15'
+- '16'
+c_stdlib:
+- macosx_deployment_target
+c_stdlib_version:
+- '11.0'
 cairo:
 - '1'
 channel_sources:
@@ -15,7 +21,7 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '15'
+- '16'
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
@@ -27,7 +33,7 @@ glib:
 gsl:
 - '2.7'
 icu:
-- '73'
+- '75'
 krb5:
 - '1.21'
 libblas:
@@ -47,17 +53,17 @@ libssh2:
 libtiff:
 - '4.6'
 libxml2:
-- '2.11'
+- '2'
 llvm_openmp:
-- '15'
+- '16'
 macos_machine:
 - arm64-apple-darwin20.0.0
 ncurses:
 - '6'
 pango:
-- '1.50'
+- '1'
 pcre2:
-- '10.40'
+- '10.44'
 readline:
 - '8'
 target_platform:
@@ -71,4 +77,4 @@ zip_keys:
   - cxx_compiler_version
   - fortran_compiler_version
 zlib:
-- '1.2'
+- '1'

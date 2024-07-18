@@ -4,10 +4,14 @@ c_compiler:
 - gcc
 c_compiler_version:
 - '12'
+c_stdlib:
+- sysroot
+c_stdlib_version:
+- '2.17'
 cairo:
 - '1'
 cdt_name:
-- cos6
+- cos7
 channel_sources:
 - conda-forge
 channel_targets:
@@ -29,7 +33,7 @@ glib:
 gsl:
 - '2.7'
 icu:
-- '73'
+- '75'
 krb5:
 - '1.21'
 libblas:
@@ -49,13 +53,13 @@ libtiff:
 libuuid:
 - '2'
 libxml2:
-- '2.11'
+- '2'
 ncurses:
 - '6'
 pango:
-- '1.50'
+- '1'
 pcre2:
-- '10.40'
+- '10.44'
 readline:
 - '8'
 target_platform:
@@ -68,5 +72,7 @@ zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
   - fortran_compiler_version
+- - c_stdlib_version
+  - cdt_name
 zlib:
-- '1.2'
+- '1'
