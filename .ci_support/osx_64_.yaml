@@ -7,7 +7,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '16'
+- '17'
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
@@ -21,13 +21,13 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '16'
+- '17'
 fontconfig:
 - '2'
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '12'
+- '13'
 glib:
 - '2'
 gsl:
@@ -47,9 +47,9 @@ liblapack:
 libpng:
 - '1.6'
 libtiff:
-- '4.6'
+- '4.7'
 llvm_openmp:
-- '16'
+- '17'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 pango:
