@@ -41,7 +41,7 @@ liblapack:
 libpng:
 - '1.6'
 libtiff:
-- '4.6'
+- '4.7'
 pcre2:
 - '10.44'
 target_platform:
