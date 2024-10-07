@@ -41,7 +41,7 @@ libblas:
 libcurl:
 - '8'
 libdeflate:
-- '1.21'
+- '1.22'
 libiconv:
 - '1'
 libjpeg_turbo:
@@ -51,7 +51,7 @@ liblapack:
 libpng:
 - '1.6'
 libtiff:
-- '4.6'
+- '4.7'
 libuuid:
 - '2'
 pango:
