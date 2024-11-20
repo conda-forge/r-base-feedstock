@@ -105,6 +105,7 @@ outputs:
         - glib                                # [unix and (build_platform != target_platform)]
         - bwidget                             # [build_platform != target_platform]
         - tktable                             # [build_platform != target_platform]
+        - expat                               # [build_platform != target_platform]
         - pango                               # [build_platform != target_platform]
         - icu                                 # [build_platform != target_platform]
         - pcre2                               # [build_platform != target_platform]
@@ -134,6 +135,7 @@ outputs:
         - glib                               # [unix]
         - bwidget
         - tktable
+        - expat                              # [not win]
         - pango                              # [not win]
         - icu
         - pcre2
