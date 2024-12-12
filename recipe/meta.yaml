@@ -28,7 +28,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 17
+  number: 18
 
 outputs:
   - name: r-base
@@ -88,7 +88,7 @@ outputs:
         - libcurl                            # [not win]
         - readline                            # [build_platform != target_platform]
         - libcurl                             # [build_platform != target_platform]
-        - xz                                  # [build_platform != target_platform]
+        - liblzma-devel                                  # [build_platform != target_platform]
         - libpng                              # [build_platform != target_platform]
         - bzip2                               # [build_platform != target_platform]
         - cairo                               # [build_platform != target_platform]
@@ -110,7 +110,7 @@ outputs:
       host:
         - readline                           # [not win]
         - libcurl                            # [not win]
-        - xz                                 # [not win]
+        - liblzma-devel                                 # [not win]
         - libpng                             # [not win]
         - bzip2                              # [not win]
         - {{ native }}bzip2                  # [win]
