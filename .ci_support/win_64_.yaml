@@ -18,6 +18,8 @@ cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '13'
+expat:
+- '2'
 fontconfig:
 - '2'
 fortran_compiler:
