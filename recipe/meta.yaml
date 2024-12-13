@@ -98,7 +98,7 @@ outputs:
         - libcurl                            # [not win]
         - readline                            # [build_platform != target_platform]
         - libcurl                             # [build_platform != target_platform]
-        - liblzma-devel                                  # [build_platform != target_platform]
+        - liblzma-devel                       # [build_platform != target_platform]
         - libpng                              # [build_platform != target_platform]
         - bzip2                               # [build_platform != target_platform]
         - expat                               # [build_platform != target_platform]
