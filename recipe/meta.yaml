@@ -110,6 +110,7 @@ outputs:
         - bwidget                             # [build_platform != target_platform]
         - tktable                             # [build_platform != target_platform]
         - pango                               # [build_platform != target_platform]
+        - xorg-xproto                         # [build_platform != target_platform]
         - icu                                 # [build_platform != target_platform]
         - pcre2                               # [build_platform != target_platform]
         - tk                                  # [build_platform != target_platform]
