@@ -31,7 +31,6 @@ source:
 
 build:
   number: 16
-  skip: true  # [not aarch64]
   no_link:
     - lib/R/doc/html/packages.html
 
