@@ -96,6 +96,10 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
       export HOST=$BUILD
       export PREFIX=$BUILD_PREFIX
       export IS_MINIMAL_R_BUILD=1
+
+      pkg-config --debug --print-errors=1 pango
+      pkg-config --debug --print-errors=1 cairo
+
       # Use the original script without the prepended activation commands.
       /bin/bash ${RECIPE_DIR}/build-r-base.sh
     )
