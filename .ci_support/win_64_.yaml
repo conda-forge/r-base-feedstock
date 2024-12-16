@@ -40,6 +40,8 @@ libjpeg_turbo:
 - '3'
 liblapack:
 - 3.9 *netlib
+liblzma_devel:
+- '5'
 libpng:
 - '1.6'
 libtiff:
@@ -50,7 +52,5 @@ target_platform:
 - win-64
 tk:
 - '8.6'
-xz:
-- '5'
 zlib:
 - '1'

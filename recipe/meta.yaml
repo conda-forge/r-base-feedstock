@@ -27,7 +27,7 @@ source:
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 0
+  number: 1
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -96,7 +96,7 @@ outputs:
         - libcurl                            # [not win]
         - readline                            # [build_platform != target_platform]
         - libcurl                             # [build_platform != target_platform]
-        - xz                                  # [build_platform != target_platform]
+        - liblzma-devel                                  # [build_platform != target_platform]
         - libpng                              # [build_platform != target_platform]
         - bzip2                               # [build_platform != target_platform]
         - cairo                               # [build_platform != target_platform]
@@ -107,6 +107,10 @@ outputs:
         - tktable                             # [build_platform != target_platform]
         - expat                               # [build_platform != target_platform]
         - pango                               # [build_platform != target_platform]
+        - xorg-xproto                         # [build_platform != target_platform]
+        - xorg-kbproto                        # [build_platform != target_platform]
+        - xorg-xextproto                      # [build_platform != target_platform]
+        - xorg-renderproto                    # [build_platform != target_platform]
         - icu                                 # [build_platform != target_platform]
         - pcre2                               # [build_platform != target_platform]
         - tk                                  # [build_platform != target_platform]
@@ -122,7 +126,7 @@ outputs:
         - libgomp                             # [linux]
         - readline                           # [not win]
         - libcurl
-        - xz
+        - liblzma-devel
         - libpng
         - bzip2
         - cairo
