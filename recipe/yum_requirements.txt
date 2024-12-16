@@ -5,4 +5,4 @@ libX11-devel
 libXt-devel
 libXrender-devel
 libXext-devel
-libXdmcp-devel
+libXdmcp
