@@ -5,5 +5,5 @@ libX11-devel
 libXt-devel
 libXrender-devel
 libXext-devel
-libXdmcp-devel
+libXdmcp
 xorg-x11-server-Xvfb
