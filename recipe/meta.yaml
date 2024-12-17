@@ -28,7 +28,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 17
+  number: 18
 
 outputs:
   - name: r-base
@@ -88,7 +88,7 @@ outputs:
         - libcurl                            # [not win]
         - readline                            # [build_platform != target_platform]
         - libcurl                             # [build_platform != target_platform]
-        - xz                                  # [build_platform != target_platform]
+        - liblzma-devel                       # [build_platform != target_platform]
         - libpng                              # [build_platform != target_platform]
         - bzip2                               # [build_platform != target_platform]
         - cairo                               # [build_platform != target_platform]
@@ -98,6 +98,10 @@ outputs:
         - bwidget                             # [build_platform != target_platform]
         - tktable                             # [build_platform != target_platform]
         - pango                               # [build_platform != target_platform]
+        - xorg-xproto                         # [build_platform != target_platform]
+        - xorg-kbproto                        # [build_platform != target_platform]
+        - xorg-xextproto                      # [build_platform != target_platform]
+        - xorg-renderproto                    # [build_platform != target_platform]
         - icu                                 # [build_platform != target_platform]
         - pcre2                               # [build_platform != target_platform]
         - tk                                  # [build_platform != target_platform]
@@ -110,11 +114,12 @@ outputs:
       host:
         - readline                           # [not win]
         - libcurl                            # [not win]
-        - xz                                 # [not win]
+        - liblzma-devel                                 # [not win]
         - libpng                             # [not win]
         - bzip2                              # [not win]
         - {{ native }}bzip2                  # [win]
         - cairo                              # [not win]
+        - expat                              # [not win]
         - gettext                            # [osx]
         - fontconfig                         # [osx]
         - {{ native }}libjpeg-turbo          # [win]
@@ -124,7 +129,7 @@ outputs:
         - {{ native }}gmp                    # [win]
         - glib                               # [unix]
         - {{ native }}fftw                   # [win]
-        - {{ native }}xz                     # [win]
+        - m2w64-xz                           # [win]
         - {{ native }}mpfr                   # [win]
         - {{ native }}libsndfile             # [win]
         - {{ native }}bwidget
