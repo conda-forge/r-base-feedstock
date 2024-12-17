@@ -41,7 +41,7 @@ source:
     folder: win-extra-files                                                                  # [win]
 
 build:
-  number: 16
+  number: 17
 
 outputs:
   - name: r-base
