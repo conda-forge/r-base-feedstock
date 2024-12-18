@@ -7,7 +7,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '17'
+- '18'
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
@@ -21,7 +21,9 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '17'
+- '18'
+expat:
+- '2'
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
@@ -46,6 +48,8 @@ libjpeg_turbo:
 - '3'
 liblapack:
 - 3.9 *netlib
+liblzma_devel:
+- '5'
 libpng:
 - '1.6'
 libssh2:
@@ -55,7 +59,7 @@ libtiff:
 libxml2:
 - '2'
 llvm_openmp:
-- '17'
+- '18'
 macos_machine:
 - arm64-apple-darwin20.0.0
 ncurses:
@@ -70,8 +74,6 @@ target_platform:
 - osx-arm64
 tk:
 - '8.6'
-xz:
-- '5'
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
