@@ -232,6 +232,20 @@ outputs:
       commands:
         - test -f $PREFIX/etc/conda/activate.d/activate-cross-r-base.sh
 
+    - name: rmath
+      
+      script: |
+        configure
+        pushd src/nmath/standalone
+        make
+      build:
+        - {{ compiler('c') }}
+      host:
+        - liblzma-devel
+        - bzip2
+        - pcre2
+        - zlib
+
 about:
   home: http://www.r-project.org/
   license: GPL-2.0-or-later
