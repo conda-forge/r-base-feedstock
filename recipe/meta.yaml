@@ -301,10 +301,35 @@ outputs:
         - llvm-openmp                         # [osx]
         - libgomp                             # [linux]
       host:
+        - llvm-openmp                         # [osx]
+        - libgomp                             # [linux]
+        - readline                           # [not win]
+        - libcurl
         - liblzma-devel
+        - libpng
         - bzip2
+        - cairo
+        - gettext                            # [osx]
+        - fontconfig                         # [osx or win]
+        - libjpeg-turbo
+        - libdeflate
+        - libiconv
+        - libuuid                            # [linux]
+        - glib                               # [unix]
+        - bwidget
+        - tktable
+        - expat                              # [not win]
+        - pango                              # [not win]
+        - icu
         - pcre2
+        - tk
         - zlib
+        - gsl
+        - libtiff
+        - libblas
+        - liblapack
+        - tzdata
+        - sed                                # [linux]
 
 about:
   home: http://www.r-project.org/
