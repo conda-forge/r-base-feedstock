@@ -233,8 +233,6 @@ outputs:
 
   - name: rmath
     script: build-rmath.sh
-    files:
-      - move-rmath.sh
     requirements:
       build:
         - gnuconfig                          # [unix]
