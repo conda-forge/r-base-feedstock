@@ -233,8 +233,8 @@ outputs:
 
   - name: rmath
     script: |
-      configure
-      pushd src/nmath/standalone
+      ./configure --prefix=${PREFIX}
+      cd src/nmath/standalone
       make
     requirements:
       build:
