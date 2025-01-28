@@ -232,10 +232,7 @@ outputs:
         - test -f $PREFIX/etc/conda/activate.d/activate-cross-r-base.sh
 
   - name: rmath
-    script: |
-      ./configure --prefix=${PREFIX}
-      cd src/nmath/standalone
-      make
+    script: build-rmath.sh
     requirements:
       build:
         - {{ compiler('c') }}
