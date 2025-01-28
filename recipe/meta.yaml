@@ -27,7 +27,7 @@ source:
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 2
+  number: 0
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -233,7 +233,7 @@ outputs:
         - test -f $PREFIX/etc/conda/activate.d/activate-cross-r-base.sh
 
     - name: rmath
-      
+
       script: |
         configure
         pushd src/nmath/standalone
