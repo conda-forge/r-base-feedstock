@@ -1,3 +1,5 @@
 ./configure --prefix=${PREFIX}
-cd src/nmath/standalone
+cd src/nmath
+make
+cd standalone
 make
