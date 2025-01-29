@@ -233,6 +233,8 @@ outputs:
 
   - name: rmath
     script: build-rmath.sh
+    build:
+      skip: true  # [not linux]
     requirements:
       build:
         - gnuconfig
