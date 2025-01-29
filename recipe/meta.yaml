@@ -243,10 +243,11 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler('fortran') }}
         - {{ posix }}pkg-config
-        - texinfo
         - {{ posix }}autoconf
         - automake
         - make
+      host:
+        - texinfo
         - liblzma-devel
         - bzip2
         - expat
@@ -267,6 +268,29 @@ outputs:
         - tzdata
         - sed
         - pcre2
+      ignore_run_exports_from:
+        - texinfo
+        - liblzma-devel
+        - bzip2
+        - expat
+        - libgomp
+        - llvm-openmp
+        - readline
+        - libcurl
+        - gettext
+        - fontconfig
+        - libdeflate
+        - libiconv
+        - libuuid
+        - glib
+        - zlib
+        - gsl
+        - libblas
+        - liblapack
+        - tzdata
+        - sed
+        - pcre2
+
 
 about:
   home: http://www.r-project.org/
