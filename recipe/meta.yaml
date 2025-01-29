@@ -244,17 +244,12 @@ outputs:
         - {{ compiler('fortran') }}
         - {{ posix }}pkg-config
         - texinfo
-        - openjdk
         - {{ posix }}autoconf
         - automake
         - make
         - liblzma-devel
-        - libpng
         - bzip2
-        - libiconv
-        - glib
         - expat
-        - pango
         - libgomp
         - llvm-openmp
         - readline
@@ -265,8 +260,6 @@ outputs:
         - libiconv
         - libuuid
         - glib
-        - icu
-        - tk
         - zlib
         - gsl
         - libblas
@@ -274,6 +267,8 @@ outputs:
         - tzdata
         - sed
         - pcre2
+      host:
+        - zlib
 
 about:
   home: http://www.r-project.org/
