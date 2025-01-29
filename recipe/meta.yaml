@@ -300,7 +300,6 @@ outputs:
         - libdeflate                          # [build_platform != target_platform]
         - llvm-openmp                         # [osx]
         - libgomp                             # [linux]
-      host:
         - llvm-openmp                         # [osx]
         - libgomp                             # [linux]
         - readline                           # [not win]
