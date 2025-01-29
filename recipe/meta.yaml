@@ -267,8 +267,6 @@ outputs:
         - tzdata
         - sed
         - pcre2
-      host:
-        - zlib
 
 about:
   home: http://www.r-project.org/
