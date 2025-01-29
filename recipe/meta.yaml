@@ -242,14 +242,6 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('fortran') }}
-        - {{ cdt('libsm-devel') }}
-        - {{ cdt('libice-devel') }}
-        - {{ cdt('libx11-devel') }}
-        - {{ cdt('libxt') }}
-        - {{ cdt('libxt-devel') }}
-        - {{ cdt('libxcb') }}
-        - {{ cdt('libxau') }}
-        - {{ cdt('java-1.7.0-openjdk') }}
         - {{ posix }}pkg-config
         - texinfo
         - openjdk
@@ -259,8 +251,6 @@ outputs:
         - liblzma-devel
         - libpng
         - bzip2
-        - cairo
-        - libjpeg-turbo
         - libiconv
         - glib
         - expat
@@ -269,28 +259,21 @@ outputs:
         - llvm-openmp
         - readline
         - libcurl
-        - liblzma-devel
-        - libpng
-        - bzip2
-        - cairo
         - gettext
         - fontconfig
-        - libjpeg-turbo
         - libdeflate
         - libiconv
         - libuuid
         - glib
-        - bwidget
         - icu
-        - pcre2
         - tk
         - zlib
         - gsl
-        - libtiff
         - libblas
         - liblapack
         - tzdata
         - sed
+        - pcre2
 
 about:
   home: http://www.r-project.org/
