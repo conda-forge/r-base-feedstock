@@ -31,7 +31,7 @@ gsl:
 icu:
 - '75'
 libblas:
-- 3.9 *netlib
+- 3.9.* *netlib
 libcurl:
 - '8'
 libiconv:
@@ -39,7 +39,7 @@ libiconv:
 libjpeg_turbo:
 - '3'
 liblapack:
-- 3.9 *netlib
+- 3.9.* *netlib
 liblzma_devel:
 - '5'
 libpng:
@@ -47,7 +47,7 @@ libpng:
 libtiff:
 - '4.7'
 pcre2:
-- '10.44'
+- '10.45'
 target_platform:
 - win-64
 tk:
