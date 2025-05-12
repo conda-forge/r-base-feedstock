@@ -1,6 +1,6 @@
 {% set native = 'm2w64-' if win else '' %}
 {% set posix = 'm2-' if win else '' %}
-{% set version = "4.4.3" %}
+{% set version = "4.5.0" %}
 
 package:
   name: r-base-split
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: https://cran.r-project.org/src/base/R-4/R-{{ version }}.tar.gz
-    sha256: 0d93d224442dea253c2b086f088db6d0d3cfd9b592cd5496e8cb2143e90fc9e8
+    sha256: 3b33ea113e0d1ddc9793874d5949cec2c7386f66e4abfb1cef9aec22846c3ce1
     patches:
       - 0001-Darwin-Remove-unicode-elipsis-character-from-grDevic.patch
       - 0002-Fix-trio-config.h-include-depth-issue.patch
@@ -25,9 +25,10 @@ source:
       - 0014-Use-conda-s-tzdata-package.patch
       - 0015-Win32-Fix-COMPILED_BY-for-custom-GCC-pkgversion.patch
       - 0018-Fix-path-to-TCL-TK.patch
+      - 0019-Copy-dz-gemmtr.f-from-lapack-to-Rblas.patch  # [win]
 
 build:
-  number: 2
+  number: 0
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -87,7 +88,8 @@ outputs:
         #- texlive-core                       # [unix]
         - texinfo                            # [unix]
         - openjdk
-        - {{ posix }}autoconf 2.71
+        - autoconf >=2.72                    # [unix]
+        - m2-autoconf2.72                    # [win] 2.71
         - m2-automake-wrapper                # [win]
         - automake                           # [not win]
         - make                               # [not win]
