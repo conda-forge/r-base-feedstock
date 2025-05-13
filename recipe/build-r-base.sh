@@ -103,6 +103,8 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     )
 fi
 
+which m4
+m4 --version
 aclocal -I m4
 autoconf
 
