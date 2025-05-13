@@ -105,7 +105,7 @@ fi
 
 which m4
 m4 --version
-aclocal -I m4
+aclocal -I m4 --verbose
 autoconf
 
 # Filter out -std=.* from CXXFLAGS as it disrupts checks for C++ language levels.
