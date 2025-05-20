@@ -103,9 +103,6 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     )
 fi
 
-# Bug in autoconf https://github.com/conda-forge/autoconf-feedstock/issues/41
-export M4=$(which m4)
-
 aclocal -I m4
 autoconf
 
