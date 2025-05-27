@@ -28,6 +28,7 @@ source:
 
 build:
   number: 0
+  skip: true  # [unix]
   no_link:
     - lib/R/doc/html/packages.html
 
