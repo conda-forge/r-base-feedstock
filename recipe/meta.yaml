@@ -87,7 +87,8 @@ outputs:
         #- texlive-core                       # [unix]
         - texinfo                            # [unix]
         - openjdk
-        - {{ posix }}autoconf >=2.72
+        - autoconf >=2.72                    # [unix]
+        - m2-autoconf2.72                    # [win]
         - m2-automake-wrapper                # [win]
         - automake                           # [not win]
         - make                               # [not win]
