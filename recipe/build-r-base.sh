@@ -4,8 +4,10 @@ set -exo pipefail
 
 if [[ ! $target_platform =~ .*win.* ]]; then
     cp $BUILD_PREFIX/share/gnuconfig/config.* ./tools
+    export AUTOCONF=autoconf
 else
     export AUTOM4TE=autom4te-2.72
+    export AUTOCONF=autoconf-2.72
 fi
 
 export
@@ -106,7 +108,7 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
 fi
 
 aclocal -I m4
-autoconf
+${AUTOCONF}
 
 # Filter out -std=.* from CXXFLAGS as it disrupts checks for C++ language levels.
 re='(.*[[:space:]])\-std\=[^[:space:]]*(.*)'
