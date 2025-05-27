@@ -4,6 +4,7 @@ set -exo pipefail
 
 if [[ ! $target_platform =~ .*win.* ]]; then
     cp $BUILD_PREFIX/share/gnuconfig/config.* ./tools
+else
     export AUTOM4TE=autom4te-2.72
 fi
 
