@@ -27,6 +27,41 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
+              <td>linux_64</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=984&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/r-base-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_aarch64</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=984&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/r-base-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_ppc64le</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=984&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/r-base-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=984&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/r-base-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=984&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/r-base-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
               <td>win_64</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=984&branchName=main">
@@ -46,6 +81,7 @@ Current release info
 
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-cross--r--base-green.svg)](https://anaconda.org/conda-forge/cross-r-base) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cross-r-base.svg)](https://anaconda.org/conda-forge/cross-r-base) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cross-r-base.svg)](https://anaconda.org/conda-forge/cross-r-base) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cross-r-base.svg)](https://anaconda.org/conda-forge/cross-r-base) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-r--base-green.svg)](https://anaconda.org/conda-forge/r-base) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/r-base.svg)](https://anaconda.org/conda-forge/r-base) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/r-base.svg)](https://anaconda.org/conda-forge/r-base) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/r-base.svg)](https://anaconda.org/conda-forge/r-base) |
 
 Installing r-base
@@ -58,41 +94,41 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `r-base` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `cross-r-base, r-base` can be installed with `conda`:
 
 ```
-conda install r-base
-```
-
-or with `mamba`:
-
-```
-mamba install r-base
-```
-
-It is possible to list all of the versions of `r-base` available on your platform with `conda`:
-
-```
-conda search r-base --channel conda-forge
+conda install cross-r-base r-base
 ```
 
 or with `mamba`:
 
 ```
-mamba search r-base --channel conda-forge
+mamba install cross-r-base r-base
+```
+
+It is possible to list all of the versions of `cross-r-base` available on your platform with `conda`:
+
+```
+conda search cross-r-base --channel conda-forge
+```
+
+or with `mamba`:
+
+```
+mamba search cross-r-base --channel conda-forge
 ```
 
 Alternatively, `mamba repoquery` may provide more information:
 
 ```
 # Search all versions available on your platform:
-mamba repoquery search r-base --channel conda-forge
+mamba repoquery search cross-r-base --channel conda-forge
 
-# List packages depending on `r-base`:
-mamba repoquery whoneeds r-base --channel conda-forge
+# List packages depending on `cross-r-base`:
+mamba repoquery whoneeds cross-r-base --channel conda-forge
 
-# List dependencies of `r-base`:
-mamba repoquery depends r-base --channel conda-forge
+# List dependencies of `cross-r-base`:
+mamba repoquery depends cross-r-base --channel conda-forge
 ```
 
 
