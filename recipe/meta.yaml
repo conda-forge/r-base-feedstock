@@ -118,8 +118,8 @@ outputs:
         - tk                                  # [build_platform != target_platform]
         - zlib                                # [build_platform != target_platform]
         - libtiff                             # [build_platform != target_platform]
-        - libblas                             # [not win and build_platform != target_platform]
-        - liblapack                           # [not win and build_platform != target_platform]
+        - libblas                             # [build_platform != target_platform]
+        - liblapack                           # [build_platform != target_platform]
         - libdeflate                          # [build_platform != target_platform]
         - llvm-openmp                         # [osx]
         - libgomp                             # [linux]
@@ -149,8 +149,8 @@ outputs:
         - zlib
         - gsl
         - libtiff
-        - libblas                            # [not win]
-        - liblapack                          # [not win]
+        - libblas
+        - liblapack
         - tzdata
         # sed is in host env because its path is recorded in R's shell wrapper
         - sed                                # [linux]
