@@ -25,7 +25,7 @@ source:
       - 0014-Use-conda-s-tzdata-package.patch
       - 0015-Win32-Fix-COMPILED_BY-for-custom-GCC-pkgversion.patch
       - 0018-Fix-path-to-TCL-TK.patch
-      - 0019-Copy-dz-gemmtr.f-from-lapack-to-Rblas.patch # [win]
+      - 0019-Copy-dz-gemmtr.f-from-lapack-to-Rblas.patch  # [win]
 
 build:
   number: 0
