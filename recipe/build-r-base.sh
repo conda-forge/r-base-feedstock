@@ -301,8 +301,6 @@ Mingw_w64_makefiles() {
     export CPATH=${PREFIX}/Library/include
     export LIBRARY_PATH=${PREFIX}/Library/lib
 
-    # Support older BLAS implementations (pre-2025)
-    sed -i '/^LIBSOURCES =/ s/$/ dgemmtr.f zgemmtr.f/' src/modules/lapack/Makefile.win
     # Some hints from https://www.r-bloggers.com/an-openblas-based-rblas-for-windows-64-step-by-step/
     echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF = ${HOST}-"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
