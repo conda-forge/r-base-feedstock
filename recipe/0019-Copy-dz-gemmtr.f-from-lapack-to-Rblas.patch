@@ -1,0 +1,43 @@
+From 8e5073ecbdaaee3e6c20012ab964879268964719 Mon Sep 17 00:00:00 2001
+From: Isabel Paredes <isabel.paredes@quantstack.net>
+Date: Wed, 4 Jun 2025 14:24:42 +0200
+Subject: [PATCH] Copy [dz]gemmtr.f from lapack to Rblas
+
+---
+ src/extra/blas/Makefile.win | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/extra/blas/Makefile.win b/src/extra/blas/Makefile.win
+index 7a60c0c7f1..1d1cfedb81 100644
+--- a/src/extra/blas/Makefile.win
++++ b/src/extra/blas/Makefile.win
+@@ -8,7 +8,7 @@ all: ../../../$(BINDIR)/Rblas.dll
+ ## So to use latter, copy [dz]gemmtr.f from ../../modules/lapack
+ ## and add dgemmtr.o zgemmtr.o to the dependencies.
+ ifeq "$(USE_ATLAS)" "YES"
+-../../../$(BINDIR)/Rblas.dll: ../../gnuwin32/dllversion.o
++../../../$(BINDIR)/Rblas.dll: ../../gnuwin32/dllversion.o dgemmtr.o zgemmtr.o
+ 	@$(ECHO) -------- Building $@ --------
+ 	$(DLL) -s -shared $(DLLFLAGS) -o $@ $^ Rblas.def \
+ 	   -L../../../$(IMPDIR) -lR  -L"$(ATLAS_PATH)" -lf77blas -latlas
+@@ -18,7 +18,7 @@ else ifeq "$(USE_OPENBLAS)" "YES"
+ 	$(DLL) -s -shared $(DLLFLAGS) -o $@ $^ Rblas.def \
+ 	    -L../../../$(IMPDIR) -lR  $(shell $(PKG_CONFIG) --libs openblas)
+ else
+-../../../$(BINDIR)/Rblas.dll: blas.o blas2.o cmplxblas.o cmplxblas2.o ../../gnuwin32/dllversion.o
++../../../$(BINDIR)/Rblas.dll: blas.o blas2.o cmplxblas.o cmplxblas2.o dgemmtr.o zgemmtr.o ../../gnuwin32/dllversion.o
+ 	@$(ECHO) -------- Building $@ --------
+ 	$(DLL) -s -shared $(DLLFLAGS) -o $@ $^ Rblas.def -L../../../$(IMPDIR) -lR $(FLIBS)
+ endif
+@@ -26,3 +26,11 @@ endif
+ distclean clean:
+ 	@$(RM) ../../../$(BINDIR)/Rblas.dll *~ blas.o cmplxblas.o
+ 
++
++dgemmtr.o:
++	cp ../../modules/lapack/dgemmtr.f .
++	$(FC) $(FFLAGS) -c dgemmtr.f -o $@
++
++zgemmtr.o:
++	cp ../../modules/lapack/zgemmtr.f .
++	$(FC) $(FFLAGS) -c zgemmtr.f -o $@
