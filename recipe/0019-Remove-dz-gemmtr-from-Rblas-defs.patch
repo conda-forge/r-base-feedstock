@@ -1,0 +1,29 @@
+From 93a8eb8832904114ef0484b597eb4804d780d8fa Mon Sep 17 00:00:00 2001
+From: Isabel Paredes <isabel.paredes@quantstack.net>
+Date: Mon, 23 Jun 2025 12:00:06 +0200
+Subject: [PATCH] Remove dz-gemmtr from Rblas defs
+
+---
+ src/extra/blas/Rblas.def | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/src/extra/blas/Rblas.def b/src/extra/blas/Rblas.def
+index b2eb43a82f..06ec1d8e1c 100644
+--- a/src/extra/blas/Rblas.def
++++ b/src/extra/blas/Rblas.def
+@@ -7,7 +7,6 @@ EXPORTS
+  ddot_
+  dgbmv_
+  dgemm_
+- dgemmtr_
+  dgemv_
+  dger_
+  dnrm2_
+@@ -48,7 +47,6 @@ EXPORTS
+  zdscal_
+  zgbmv_
+  zgemm_
+- zgemmtr_
+  zgemv_
+  zgerc_
+  zgeru_
