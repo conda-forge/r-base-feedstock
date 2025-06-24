@@ -1,12 +1,12 @@
-From 0310920aed7e2736e61a41b282e8c7fabc3ec384 Mon Sep 17 00:00:00 2001
+From 7482ec6fb15d281a8d02a6095fa8220444f24f03 Mon Sep 17 00:00:00 2001
 From: Isabel Paredes <isabel.paredes@quantstack.net>
-Date: Tue, 24 Jun 2025 13:29:43 +0200
+Date: Tue, 24 Jun 2025 14:03:00 +0200
 Subject: [PATCH] Remove dgemmtr and zgemmtr
 
 ---
  src/extra/blas/Rblas.def        | 2 --
- src/modules/lapack/Makefile.win | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ src/modules/lapack/Makefile.win | 4 ++--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/src/extra/blas/Rblas.def b/src/extra/blas/Rblas.def
 index b2eb43a82f..06ec1d8e1c 100644
@@ -29,11 +29,15 @@ index b2eb43a82f..06ec1d8e1c 100644
   zgerc_
   zgeru_
 diff --git a/src/modules/lapack/Makefile.win b/src/modules/lapack/Makefile.win
-index 7a051718f9..d7e9786d7a 100644
+index 7a051718f9..56f5498d95 100644
 --- a/src/modules/lapack/Makefile.win
 +++ b/src/modules/lapack/Makefile.win
-@@ -13,7 +13,7 @@ endif
- CSOURCES = Lapack.c
+@@ -10,10 +10,10 @@ ifdef USE_IMPLIBS
+ endif
+ 	@$(MAKE) --no-print-directory -f Makefile.win install
+ 
+-CSOURCES = Lapack.c
++CSOURCES =
  # flexiblas not supported on Windows
  OBJS=$(CSOURCES:.c=.o) dllversion.o
 -LIBSOURCES = dlamch.f dlapack.f cmplx.f
