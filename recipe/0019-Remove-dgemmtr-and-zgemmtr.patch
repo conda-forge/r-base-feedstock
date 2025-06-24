@@ -1,13 +1,12 @@
-From a91465b04bdf9ca401f78ef063303f0425100ef7 Mon Sep 17 00:00:00 2001
+From 0310920aed7e2736e61a41b282e8c7fabc3ec384 Mon Sep 17 00:00:00 2001
 From: Isabel Paredes <isabel.paredes@quantstack.net>
-Date: Mon, 23 Jun 2025 14:04:27 +0200
+Date: Tue, 24 Jun 2025 13:29:43 +0200
 Subject: [PATCH] Remove dgemmtr and zgemmtr
 
 ---
- src/extra/blas/Rblas.def     |   2 -
- src/modules/lapack/cmplx.f   | 100 +++++++++++++++++++++++++++++------
- src/modules/lapack/dlapack.f |  47 +++++++++++++---
- 3 files changed, 124 insertions(+), 25 deletions(-)
+ src/extra/blas/Rblas.def        | 2 --
+ src/modules/lapack/Makefile.win | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/src/extra/blas/Rblas.def b/src/extra/blas/Rblas.def
 index b2eb43a82f..06ec1d8e1c 100644
@@ -29,224 +28,16 @@ index b2eb43a82f..06ec1d8e1c 100644
   zgemv_
   zgerc_
   zgeru_
-diff --git a/src/modules/lapack/cmplx.f b/src/modules/lapack/cmplx.f
-index 3bb15052ae..948d600a53 100644
---- a/src/modules/lapack/cmplx.f
-+++ b/src/modules/lapack/cmplx.f
-@@ -35308,7 +35308,7 @@
-       EXTERNAL           LSAME, IZAMAX
- *     ..
- *     .. External Subroutines ..
--      EXTERNAL           ZCOPY, ZDSCAL, ZGEMMTR, ZGEMV, ZLACGV,
-+      EXTERNAL           ZCOPY, ZDSCAL, ZGEMV, ZLACGV,
-      $                   ZSWAP
- *     ..
- *     .. Intrinsic Functions ..
-@@ -35647,12 +35647,29 @@
- *        Update the upper triangle of A11 (= A(1:k,1:k)) as
- *
- *        A11 := A11 - U12*D*U12**H = A11 - U12*W**H
-+**
-+*        computing blocks of NB columns at a time (note that conjg(W) is
-+*        actually stored)
- *
--*        (note that conjg(W) is actually stored)
-+         DO 50 J = ( ( K-1 ) / NB )*NB + 1, 1, -NB
-+            JB = MIN( NB, K-J+1 )
- *
--         CALL ZGEMMTR( 'Upper', 'No transpose', 'Transpose', K, N-K,
--     $                 -CONE, A( 1, K+1 ), LDA, W( 1, KW+1 ), LDW,
--     $                 CONE, A( 1, 1 ), LDA )
-+*           Update the upper triangle of the diagonal block
-+*
-+            DO 40 JJ = J, J + JB - 1
-+               A( JJ, JJ ) = DBLE( A( JJ, JJ ) )
-+               CALL ZGEMV( 'No transpose', JJ-J+1, N-K, -CONE,
-+     $                     A( J, K+1 ), LDA, W( JJ, KW+1 ), LDW, CONE,
-+     $                     A( J, JJ ), 1 )
-+               A( JJ, JJ ) = DBLE( A( JJ, JJ ) )
-+   40       CONTINUE
-+*
-+*           Update the rectangular superdiagonal block
-+*
-+            CALL ZGEMM( 'No transpose', 'Transpose', J-1, JB, N-K,
-+     $                  -CONE, A( 1, K+1 ), LDA, W( J, KW+1 ), LDW,
-+     $                  CONE, A( 1, J ), LDA )
-+   50    CONTINUE
- *
- *        Put U12 in standard form by partially undoing the interchanges
- *        in columns k+1:n looping backwards from k+1 to n
-@@ -35995,11 +36012,29 @@
- *
- *        A22 := A22 - L21*D*L21**H = A22 - L21*W**H
- *
--*        (note that conjg(W) is actually stored)
-+*        computing blocks of NB columns at a time (note that conjg(W) is
-+*        actually stored)
-+*
-+         DO 110 J = K, N, NB
-+            JB = MIN( NB, N-J+1 )
-+*
-+*           Update the lower triangle of the diagonal block
-+*
-+            DO 100 JJ = J, J + JB - 1
-+               A( JJ, JJ ) = DBLE( A( JJ, JJ ) )
-+               CALL ZGEMV( 'No transpose', J+JB-JJ, K-1, -CONE,
-+     $                     A( JJ, 1 ), LDA, W( JJ, 1 ), LDW, CONE,
-+     $                     A( JJ, JJ ), 1 )
-+               A( JJ, JJ ) = DBLE( A( JJ, JJ ) )
-+  100       CONTINUE
-+*
-+*           Update the rectangular subdiagonal block
- *
--         CALL ZGEMMTR( 'Lower', 'No transpose', 'Transpose', N-K+1,
--     $                 K-1, -CONE, A( K, 1 ), LDA, W( K, 1 ), LDW,
--     $                 CONE, A( K, K ), LDA )
-+            IF( J+JB.LE.N )
-+     $         CALL ZGEMM( 'No transpose', 'Transpose', N-J-JB+1, JB,
-+     $                     K-1, -CONE, A( J+JB, 1 ), LDA, W( J, 1 ),
-+     $                     LDW, CONE, A( J+JB, J ), LDA )
-+  110    CONTINUE
- *
- *        Put L21 in standard form by partially undoing the interchanges
- *        of rows in columns 1:k-1 looping backwards from k-1 to 1
-@@ -51658,7 +51693,7 @@
-       EXTERNAL           LSAME, IZAMAX
- *     ..
- *     .. External Subroutines ..
--      EXTERNAL           ZCOPY, ZGEMMTR, ZGEMV, ZSCAL, ZSWAP
-+      EXTERNAL           ZCOPY, ZGEMV, ZSCAL, ZSWAP
- *     ..
- *     .. Intrinsic Functions ..
-       INTRINSIC          ABS, DBLE, DIMAG, MAX, MIN, SQRT
-@@ -51928,9 +51963,25 @@
- *
- *        A11 := A11 - U12*D*U12**T = A11 - U12*W**T
- *
--         CALL ZGEMMTR( 'Upper', 'No transpose', 'Transpose', K, N-K,
--     $                 -CONE, A( 1, K+1 ), LDA, W( 1, KW+1 ), LDW,
--     $                 CONE, A( 1, 1 ), LDA )
-+*        computing blocks of NB columns at a time
-+*
-+         DO 50 J = ( ( K-1 ) / NB )*NB + 1, 1, -NB
-+            JB = MIN( NB, K-J+1 )
-+*
-+*           Update the upper triangle of the diagonal block
-+*
-+            DO 40 JJ = J, J + JB - 1
-+               CALL ZGEMV( 'No transpose', JJ-J+1, N-K, -CONE,
-+     $                     A( J, K+1 ), LDA, W( JJ, KW+1 ), LDW, CONE,
-+     $                     A( J, JJ ), 1 )
-+   40       CONTINUE
-+*
-+*           Update the rectangular superdiagonal block
-+*
-+            CALL ZGEMM( 'No transpose', 'Transpose', J-1, JB, N-K,
-+     $                  -CONE, A( 1, K+1 ), LDA, W( J, KW+1 ), LDW,
-+     $                  CONE, A( 1, J ), LDA )
-+   50    CONTINUE
- *
- *        Put U12 in standard form by partially undoing the interchanges
- *        in columns k+1:n looping backwards from k+1 to n
-@@ -52207,9 +52258,26 @@
- *
- *        A22 := A22 - L21*D*L21**T = A22 - L21*W**T
- *
--         CALL ZGEMMTR( 'Lower', 'No transpose', 'Transpose', N-K+1,
--     $                 K-1, -CONE, A( K, 1 ), LDA, W( K, 1 ), LDW,
--     $                 CONE, A( K, K ), LDA )
-+*        computing blocks of NB columns at a time
-+*
-+         DO 110 J = K, N, NB
-+            JB = MIN( NB, N-J+1 )
-+*
-+*           Update the lower triangle of the diagonal block
-+*
-+            DO 100 JJ = J, J + JB - 1
-+               CALL ZGEMV( 'No transpose', J+JB-JJ, K-1, -CONE,
-+     $                     A( JJ, 1 ), LDA, W( JJ, 1 ), LDW, CONE,
-+     $                     A( JJ, JJ ), 1 )
-+  100       CONTINUE
-+*
-+*           Update the rectangular subdiagonal block
-+*
-+            IF( J+JB.LE.N )
-+     $         CALL ZGEMM( 'No transpose', 'Transpose', N-J-JB+1, JB,
-+     $                     K-1, -CONE, A( J+JB, 1 ), LDA, W( J, 1 ),
-+     $                     LDW, CONE, A( J+JB, J ), LDA )
-+  110    CONTINUE
- *
- *        Put L21 in standard form by partially undoing the interchanges
- *        of rows in columns 1:k-1 looping backwards from k-1 to 1
-diff --git a/src/modules/lapack/dlapack.f b/src/modules/lapack/dlapack.f
-index 284657d6b9..1c0a3f1fbb 100644
---- a/src/modules/lapack/dlapack.f
-+++ b/src/modules/lapack/dlapack.f
-@@ -92173,7 +92173,7 @@
-       EXTERNAL           LSAME, IDAMAX
- *     ..
- *     .. External Subroutines ..
--      EXTERNAL           DCOPY, DGEMMTR, DGEMV, DSCAL, DSWAP
-+      EXTERNAL           DCOPY, DGEMV, DSCAL, DSWAP
- *     ..
- *     .. Intrinsic Functions ..
-       INTRINSIC          ABS, MAX, MIN, SQRT
-@@ -92439,9 +92439,25 @@
- *
- *        A11 := A11 - U12*D*U12**T = A11 - U12*W**T
- *
--         CALL DGEMMTR( 'Upper', 'No transpose', 'Transpose', K, N-K,
--     $                 -ONE, A( 1, K+1 ), LDA, W( 1, KW+1 ), LDW,
--     $                 ONE, A( 1, 1 ), LDA )
-+*        computing blocks of NB columns at a time
-+*
-+         DO 50 J = ( ( K-1 ) / NB )*NB + 1, 1, -NB
-+            JB = MIN( NB, K-J+1 )
-+*
-+*           Update the upper triangle of the diagonal block
-+*
-+            DO 40 JJ = J, J + JB - 1
-+               CALL DGEMV( 'No transpose', JJ-J+1, N-K, -ONE,
-+     $                     A( J, K+1 ), LDA, W( JJ, KW+1 ), LDW, ONE,
-+     $                     A( J, JJ ), 1 )
-+   40       CONTINUE
-+*
-+*           Update the rectangular superdiagonal block
-+*
-+            CALL DGEMM( 'No transpose', 'Transpose', J-1, JB, N-K, -ONE,
-+     $                  A( 1, K+1 ), LDA, W( J, KW+1 ), LDW, ONE,
-+     $                  A( 1, J ), LDA )
-+   50    CONTINUE
- *
- *        Put U12 in standard form by partially undoing the interchanges
- *        in columns k+1:n looping backwards from k+1 to n
-@@ -92718,9 +92734,26 @@
- *
- *        A22 := A22 - L21*D*L21**T = A22 - L21*W**T
- *
--         CALL DGEMMTR( 'Lower', 'No transpose', 'Transpose', N-K+1,
--     $                 K-1, -ONE, A( K, 1 ), LDA, W( K, 1 ), LDW,
--     $                 ONE, A( K, K ), LDA )
-+*        computing blocks of NB columns at a time
-+*
-+         DO 110 J = K, N, NB
-+            JB = MIN( NB, N-J+1 )
-+*
-+*           Update the lower triangle of the diagonal block
-+*
-+            DO 100 JJ = J, J + JB - 1
-+               CALL DGEMV( 'No transpose', J+JB-JJ, K-1, -ONE,
-+     $                     A( JJ, 1 ), LDA, W( JJ, 1 ), LDW, ONE,
-+     $                     A( JJ, JJ ), 1 )
-+  100       CONTINUE
-+*
-+*           Update the rectangular subdiagonal block
-+*
-+            IF( J+JB.LE.N )
-+     $         CALL DGEMM( 'No transpose', 'Transpose', N-J-JB+1, JB,
-+     $                     K-1, -ONE, A( J+JB, 1 ), LDA, W( J, 1 ), LDW,
-+     $                     ONE, A( J+JB, J ), LDA )
-+  110    CONTINUE
- *
- *        Put L21 in standard form by partially undoing the interchanges
- *        of rows in columns 1:k-1 looping backwards from k-1 to 1
+diff --git a/src/modules/lapack/Makefile.win b/src/modules/lapack/Makefile.win
+index 7a051718f9..d7e9786d7a 100644
+--- a/src/modules/lapack/Makefile.win
++++ b/src/modules/lapack/Makefile.win
+@@ -13,7 +13,7 @@ endif
+ CSOURCES = Lapack.c
+ # flexiblas not supported on Windows
+ OBJS=$(CSOURCES:.c=.o) dllversion.o
+-LIBSOURCES = dlamch.f dlapack.f cmplx.f
++LIBSOURCES = dlamch.f
+ LIBSOURCES90 = dlartg.f90 dlassq.f90 la_constants.f90 la_xisnan.f90 \
+   zlartg.f90 zlassq.f90
+ LIBOBJECTS = $(LIBSOURCES:.f=.o) $(LIBSOURCES90:.f90=.o) init_win.o Rlapackrc.o
