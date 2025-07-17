@@ -1,12 +1,13 @@
-From 7482ec6fb15d281a8d02a6095fa8220444f24f03 Mon Sep 17 00:00:00 2001
+From 025a7ea822ebff6a9d1fb1484c2de7acc8bc938e Mon Sep 17 00:00:00 2001
 From: Isabel Paredes <isabel.paredes@quantstack.net>
-Date: Tue, 24 Jun 2025 14:03:00 +0200
+Date: Thu, 17 Jul 2025 18:59:06 +0200
 Subject: [PATCH] Remove dgemmtr and zgemmtr
 
 ---
- src/extra/blas/Rblas.def        | 2 --
- src/modules/lapack/Makefile.win | 4 ++--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ src/extra/blas/Rblas.def     |  2 --
+ src/modules/lapack/cmplx.f   | 28 ++++++++++++++--------------
+ src/modules/lapack/dlapack.f | 14 +++++++-------
+ 3 files changed, 21 insertions(+), 23 deletions(-)
 
 diff --git a/src/extra/blas/Rblas.def b/src/extra/blas/Rblas.def
 index b2eb43a82f..06ec1d8e1c 100644
@@ -28,20 +29,116 @@ index b2eb43a82f..06ec1d8e1c 100644
   zgemv_
   zgerc_
   zgeru_
-diff --git a/src/modules/lapack/Makefile.win b/src/modules/lapack/Makefile.win
-index 7a051718f9..56f5498d95 100644
---- a/src/modules/lapack/Makefile.win
-+++ b/src/modules/lapack/Makefile.win
-@@ -10,10 +10,10 @@ ifdef USE_IMPLIBS
- endif
- 	@$(MAKE) --no-print-directory -f Makefile.win install
- 
--CSOURCES = Lapack.c
-+CSOURCES =
- # flexiblas not supported on Windows
- OBJS=$(CSOURCES:.c=.o) dllversion.o
--LIBSOURCES = dlamch.f dlapack.f cmplx.f
-+LIBSOURCES = dlamch.f
- LIBSOURCES90 = dlartg.f90 dlassq.f90 la_constants.f90 la_xisnan.f90 \
-   zlartg.f90 zlassq.f90
- LIBOBJECTS = $(LIBSOURCES:.f=.o) $(LIBSOURCES90:.f90=.o) init_win.o Rlapackrc.o
+diff --git a/src/modules/lapack/cmplx.f b/src/modules/lapack/cmplx.f
+index 3bb15052ae..5d44e48f5d 100644
+--- a/src/modules/lapack/cmplx.f
++++ b/src/modules/lapack/cmplx.f
+@@ -35308,7 +35308,7 @@
+       EXTERNAL           LSAME, IZAMAX
+ *     ..
+ *     .. External Subroutines ..
+-      EXTERNAL           ZCOPY, ZDSCAL, ZGEMMTR, ZGEMV, ZLACGV,
++      EXTERNAL           ZCOPY, ZDSCAL, ZGEMV, ZLACGV,
+      $                   ZSWAP
+ *     ..
+ *     .. Intrinsic Functions ..
+@@ -35650,9 +35650,9 @@
+ *
+ *        (note that conjg(W) is actually stored)
+ *
+-         CALL ZGEMMTR( 'Upper', 'No transpose', 'Transpose', K, N-K,
+-     $                 -CONE, A( 1, K+1 ), LDA, W( 1, KW+1 ), LDW,
+-     $                 CONE, A( 1, 1 ), LDA )
++*        ZGEMMTR not implemented
++         INFO = -1
++         RETURN
+ *
+ *        Put U12 in standard form by partially undoing the interchanges
+ *        in columns k+1:n looping backwards from k+1 to n
+@@ -35997,9 +35997,9 @@
+ *
+ *        (note that conjg(W) is actually stored)
+ *
+-         CALL ZGEMMTR( 'Lower', 'No transpose', 'Transpose', N-K+1,
+-     $                 K-1, -CONE, A( K, 1 ), LDA, W( K, 1 ), LDW,
+-     $                 CONE, A( K, K ), LDA )
++*        ZGEMMTR not implemented
++         INFO = -1
++         RETURN
+ *
+ *        Put L21 in standard form by partially undoing the interchanges
+ *        of rows in columns 1:k-1 looping backwards from k-1 to 1
+@@ -51658,7 +51658,7 @@
+       EXTERNAL           LSAME, IZAMAX
+ *     ..
+ *     .. External Subroutines ..
+-      EXTERNAL           ZCOPY, ZGEMMTR, ZGEMV, ZSCAL, ZSWAP
++      EXTERNAL           ZCOPY, ZGEMV, ZSCAL, ZSWAP
+ *     ..
+ *     .. Intrinsic Functions ..
+       INTRINSIC          ABS, DBLE, DIMAG, MAX, MIN, SQRT
+@@ -51928,9 +51928,9 @@
+ *
+ *        A11 := A11 - U12*D*U12**T = A11 - U12*W**T
+ *
+-         CALL ZGEMMTR( 'Upper', 'No transpose', 'Transpose', K, N-K,
+-     $                 -CONE, A( 1, K+1 ), LDA, W( 1, KW+1 ), LDW,
+-     $                 CONE, A( 1, 1 ), LDA )
++*        ZGEMMTR not implemented
++         INFO = -1
++         RETURN
+ *
+ *        Put U12 in standard form by partially undoing the interchanges
+ *        in columns k+1:n looping backwards from k+1 to n
+@@ -52207,9 +52207,9 @@
+ *
+ *        A22 := A22 - L21*D*L21**T = A22 - L21*W**T
+ *
+-         CALL ZGEMMTR( 'Lower', 'No transpose', 'Transpose', N-K+1,
+-     $                 K-1, -CONE, A( K, 1 ), LDA, W( K, 1 ), LDW,
+-     $                 CONE, A( K, K ), LDA )
++*        ZGEMMTR not implemented
++         INFO = -1
++         RETURN
+ *
+ *        Put L21 in standard form by partially undoing the interchanges
+ *        of rows in columns 1:k-1 looping backwards from k-1 to 1
+diff --git a/src/modules/lapack/dlapack.f b/src/modules/lapack/dlapack.f
+index 284657d6b9..f0bd3e0867 100644
+--- a/src/modules/lapack/dlapack.f
++++ b/src/modules/lapack/dlapack.f
+@@ -92173,7 +92173,7 @@
+       EXTERNAL           LSAME, IDAMAX
+ *     ..
+ *     .. External Subroutines ..
+-      EXTERNAL           DCOPY, DGEMMTR, DGEMV, DSCAL, DSWAP
++      EXTERNAL           DCOPY, DGEMV, DSCAL, DSWAP
+ *     ..
+ *     .. Intrinsic Functions ..
+       INTRINSIC          ABS, MAX, MIN, SQRT
+@@ -92439,9 +92439,9 @@
+ *
+ *        A11 := A11 - U12*D*U12**T = A11 - U12*W**T
+ *
+-         CALL DGEMMTR( 'Upper', 'No transpose', 'Transpose', K, N-K,
+-     $                 -ONE, A( 1, K+1 ), LDA, W( 1, KW+1 ), LDW,
+-     $                 ONE, A( 1, 1 ), LDA )
++*        DGEMMTR not implemented
++         INFO = -1
++         RETURN
+ *
+ *        Put U12 in standard form by partially undoing the interchanges
+ *        in columns k+1:n looping backwards from k+1 to n
+@@ -92718,9 +92718,9 @@
+ *
+ *        A22 := A22 - L21*D*L21**T = A22 - L21*W**T
+ *
+-         CALL DGEMMTR( 'Lower', 'No transpose', 'Transpose', N-K+1,
+-     $                 K-1, -ONE, A( K, 1 ), LDA, W( K, 1 ), LDW,
+-     $                 ONE, A( K, K ), LDA )
++*        DGEMMTR not implemented
++         INFO = -1
++         RETURN
+ *
+ *        Put L21 in standard form by partially undoing the interchanges
+ *        of rows in columns 1:k-1 looping backwards from k-1 to 1
