@@ -25,10 +25,9 @@ source:
       - 0014-Use-conda-s-tzdata-package.patch
       - 0015-Win32-Fix-COMPILED_BY-for-custom-GCC-pkgversion.patch
       - 0018-Fix-path-to-TCL-TK.patch
-      - 0019-Copy-dz-gemmtr.f-from-lapack-to-Rblas.patch  # [win]
 
 build:
-  number: 0
+  number: 1
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -91,6 +90,7 @@ outputs:
         - autoconf >=2.72                    # [unix]
         - m2-autoconf2.72                    # [win] 2.71
         - m2-automake-wrapper                # [win]
+        - create-forwarder-dll               # [win]
         - automake                           # [not win]
         - make                               # [not win]
         # shellcheck is used to check activation scripts; it is not yet built for linux-ppc64le.

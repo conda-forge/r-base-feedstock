@@ -305,9 +305,6 @@ Mingw_w64_makefiles() {
     echo "LEA_MALLOC = YES"                              > "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF = ${HOST}-"                           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     echo "BINPREF64 = ${HOST}-"                         >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "USE_ATLAS = YES"                              >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    echo "ATLAS_PATH = ${PREFIX}/Library/lib"           >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
-    sed -i.bak 's|-lf77blas -latlas|-llapack -lblas|g' src/extra/blas/Makefile.win
     echo "MULTI =   "                                   >> "${SRC_DIR}/src/gnuwin32/MkRules.local"
     # BUILD_HTML causes filenames with special characters to be created, see
     #   https://github.com/conda-forge/r-base-feedstock/pull/177#issuecomment-845279175
@@ -389,6 +386,12 @@ Mingw_w64_makefiles() {
     cat "${PREFIX}"/lib/R/etc/${R_ARCH}/Makeconf
 
     rm -rf ${PREFIX}/lib/R/share/zoneinfo
+
+    rm -rf ${PREFIX}/lib/R/bin/${R_ARCH}/Rblas.dll
+    rm -rf ${PREFIX}/lib/R/bin/${R_ARCH}/Rlapack.dll
+
+    create-forwarder-dll ${PREFIX}/libblas.dll ${PREFIX}/lib/R/bin/${R_ARCH}/Rblas.dll --no-temp-dir
+    create-forwarder-dll ${PREFIX}/liblapack.dll ${PREFIX}/lib/R/bin/${R_ARCH}/Rlapack.dll --no-temp-dir
 
     return 0
 }
