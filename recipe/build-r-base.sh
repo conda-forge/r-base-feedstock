@@ -390,8 +390,8 @@ Mingw_w64_makefiles() {
     rm -rf ${PREFIX}/lib/R/bin/${R_ARCH}/Rblas.dll
     rm -rf ${PREFIX}/lib/R/bin/${R_ARCH}/Rlapack.dll
 
-    create-forwarder-dll ${PREFIX}/libblas.dll ${PREFIX}/lib/R/bin/${R_ARCH}/Rblas.dll --no-temp-dir
-    create-forwarder-dll ${PREFIX}/liblapack.dll ${PREFIX}/lib/R/bin/${R_ARCH}/Rlapack.dll --no-temp-dir
+    create-forwarder-dll ${PREFIX_WIN}\\libblas.dll ${PREFIX_WIN}\\lib\\R\\bin\\${R_ARCH}\\Rblas.dll --no-temp-dir
+    create-forwarder-dll ${PREFIX_WIN}\\liblapack.dll ${PREFIX_WIN}\\lib\\R\\bin\\${R_ARCH}\\Rlapack.dll --no-temp-dir
 
     return 0
 }
