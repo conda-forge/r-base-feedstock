@@ -91,6 +91,7 @@ outputs:
         - m2-autoconf2.72                    # [win] 2.71
         - m2-automake-wrapper                # [win]
         - create-forwarder-dll               # [win]
+        - setuptools                         # [win]
         - automake                           # [not win]
         - make                               # [not win]
         # shellcheck is used to check activation scripts; it is not yet built for linux-ppc64le.
