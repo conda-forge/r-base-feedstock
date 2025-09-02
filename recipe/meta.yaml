@@ -30,7 +30,7 @@ source:
       - 0019-CVE-2024-27322.patch
 
 build:
-  number: 18
+  number: 19
   no_link:
     - lib/R/doc/html/packages.html
 
