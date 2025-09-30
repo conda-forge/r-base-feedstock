@@ -27,7 +27,7 @@ source:
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 2
+  number: 3
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -61,7 +61,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('fortran') }}
-        - gfortran_impl_{{ build_platform }} {{ fortran_compiler_version }}  # [(build_platform != target_platform) and linux]
+        - gfortran_impl_{{ build_platform }} {{ fortran_compiler_version }}  # [(build_platform != target_platform)]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - {{ cdt('libxrender') }}            # [linux]
         - {{ cdt('libxext') }}               # [linux]
