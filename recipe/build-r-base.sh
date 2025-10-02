@@ -463,6 +463,7 @@ Darwin() {
       sed -i'.bak' -r "s|-isysroot ${CONDA_BUILD_SYSROOT}||g" Makeconf
       sed -i'.bak' -r "s|$BUILD_PREFIX/lib/gcc|$PREFIX/lib/gcc|g" Makeconf
       sed -i'.bak' -r "s|-lemutls_w||g" Makeconf
+      sed -i'.bak' -r "s/-mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}//g" Makeconf
       rm Makeconf.bak
       # See: https://github.com/conda/conda/issues/6701
       chmod g+w Makeconf ldpaths
