@@ -30,7 +30,7 @@ source:
       - 0019-CVE-2024-27322.patch
 
 build:
-  number: 18
+  number: 19
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -64,6 +64,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('fortran') }}
+        - gfortran_impl_{{ build_platform }} {{ fortran_compiler_version }}  # [(build_platform != target_platform)]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - {{ cdt('libxrender') }}            # [linux]
         - {{ cdt('libxext') }}               # [linux]
