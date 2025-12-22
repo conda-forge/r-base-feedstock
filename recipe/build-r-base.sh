@@ -382,7 +382,6 @@ Mingw_w64_makefiles() {
 
     PREFIX_WIN=$(cygpath -w ${PREFIX})
 
-    sed -i "s|-lgfortran |${PREFIX}/Library/${HOST}/lib/libgfortran.dll.a |g" "${PREFIX}"/lib/R/etc/${R_ARCH}/Makeconf
     cat "${PREFIX}"/lib/R/etc/${R_ARCH}/Makeconf
 
     rm -rf ${PREFIX}/lib/R/share/zoneinfo
