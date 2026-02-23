@@ -52,6 +52,8 @@ outputs:
         - lib/R/etc/x64/ldpaths
         - lib/R/etc/x64/javaconf
       detect_binary_files_with_prefix: true
+      ignore_run_exports_from:
+        - freetype
       run_exports:
         weak:
           - {{ pin_subpackage("r-base", min_pin="x.x", max_pin="x.x") }}
@@ -142,6 +144,8 @@ outputs:
         - bwidget
         - tktable
         - pango                              # [not win]
+        # freetype needed for pkg-config
+        - freetype
         - icu
         - pcre2
         - tk
