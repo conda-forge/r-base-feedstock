@@ -213,7 +213,7 @@ Linux() {
 
     if cat src/include/config.h | grep "undef HAVE_PANGOCAIRO"; then
         echo "Did not find pangocairo, refusing to continue"
-        cat config.log | grep pango
+        cat config.log
         exit 1
     fi
 
