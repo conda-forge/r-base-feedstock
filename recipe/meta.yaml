@@ -112,6 +112,7 @@ outputs:
         - bwidget                             # [build_platform != target_platform]
         - tktable                             # [build_platform != target_platform]
         - pango                               # [build_platform != target_platform]
+        - freetype                            # [build_platform != target_platform]
         - xorg-xproto                         # [build_platform != target_platform]
         - xorg-kbproto                        # [build_platform != target_platform]
         - xorg-xextproto                      # [build_platform != target_platform]
