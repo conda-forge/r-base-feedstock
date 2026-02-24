@@ -24,10 +24,12 @@ fortran_compiler:
 - gfortran
 fortran_compiler_version:
 - '13'
+freetype:
+- '2'
 gsl:
 - '2.7'
 icu:
-- '75'
+- '78'
 libblas:
 - 3.9.* *netlib
 libcurl:

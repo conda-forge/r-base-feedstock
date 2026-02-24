@@ -27,7 +27,7 @@ source:
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 7
+  number: 8
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -49,6 +49,8 @@ outputs:
         - lib/R/etc/x64/ldpaths
         - lib/R/etc/x64/javaconf
       detect_binary_files_with_prefix: true
+      ignore_run_exports_from:
+        - freetype
       run_exports:
         weak:
           - {{ pin_subpackage("r-base", min_pin="x.x", max_pin="x.x") }}
@@ -107,6 +109,7 @@ outputs:
         - tktable                             # [build_platform != target_platform]
         - expat                               # [build_platform != target_platform]
         - pango                               # [build_platform != target_platform]
+        - freetype                            # [build_platform != target_platform]
         - xorg-xproto                         # [build_platform != target_platform]
         - xorg-kbproto                        # [build_platform != target_platform]
         - xorg-xextproto                      # [build_platform != target_platform]
@@ -141,6 +144,8 @@ outputs:
         - tktable
         - expat                              # [not win]
         - pango                              # [not win]
+        # freetype needed for pkg-config
+        - freetype
         - icu
         - pcre2
         - tk
