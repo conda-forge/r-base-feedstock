@@ -30,7 +30,7 @@ source:
       - 0019-CVE-2024-27322.patch
 
 build:
-  number: 21
+  number: 22
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -52,6 +52,8 @@ outputs:
         - lib/R/etc/x64/ldpaths
         - lib/R/etc/x64/javaconf
       detect_binary_files_with_prefix: true
+      ignore_run_exports_from:
+        - freetype
       run_exports:
         weak:
           - {{ pin_subpackage("r-base", min_pin="x.x", max_pin="x.x") }}
@@ -110,6 +112,7 @@ outputs:
         - bwidget                             # [build_platform != target_platform]
         - tktable                             # [build_platform != target_platform]
         - pango                               # [build_platform != target_platform]
+        - freetype                            # [build_platform != target_platform]
         - xorg-xproto                         # [build_platform != target_platform]
         - xorg-kbproto                        # [build_platform != target_platform]
         - xorg-xextproto                      # [build_platform != target_platform]
@@ -142,6 +145,8 @@ outputs:
         - bwidget
         - tktable
         - pango                              # [not win]
+        # freetype needed for pkg-config
+        - freetype
         - icu
         - pcre2
         - tk
