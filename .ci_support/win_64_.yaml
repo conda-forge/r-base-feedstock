@@ -24,6 +24,8 @@ fortran_compiler:
 - gfortran
 fortran_compiler_version:
 - '13'
+freetype:
+- '2'
 gsl:
 - '2.7'
 icu:
