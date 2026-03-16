@@ -147,7 +147,7 @@ outputs:
         - tzdata
         # sed is in host env because its path is recorded in R's shell wrapper
         - sed                                # [linux]
-        - xorgproto                          # [linux]
+        - xorg-xorgproto                          # [linux]
         - xorg-libsm                         # [linux]
         - xorg-libice                        # [linux]
         - xorg-libx11                        # [linux]
@@ -165,7 +165,6 @@ outputs:
         - {{ pin_compatible('llvm-openmp', max_pin=None) }}      # [osx]
         - curl
         - libuuid                              # [linux]
-        - xorg-libxt                           # [linux]
         - bwidget
         - tktable
         - tk
