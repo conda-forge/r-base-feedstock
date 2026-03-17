@@ -27,7 +27,7 @@ source:
       - 0018-Fix-path-to-TCL-TK.patch
 
 build:
-  number: 0
+  number: 1
   no_link:
     - lib/R/doc/html/packages.html
 
@@ -64,17 +64,6 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler('fortran') }}
         - gfortran_impl_{{ build_platform }} {{ fortran_compiler_version }}  # [build_platform != target_platform]
-        - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-        - {{ cdt('libxrender') }}            # [linux]
-        - {{ cdt('libxext') }}               # [linux]
-        - {{ cdt('libsm-devel') }}           # [linux]
-        - {{ cdt('libice-devel') }}          # [linux]
-        - {{ cdt('libx11-devel') }}          # [linux]
-        - {{ cdt('libxt') }}                 # [linux]
-        - {{ cdt('libxt-devel') }}           # [linux]
-        - {{ cdt('libxcb') }}                # [linux]
-        - {{ cdt('libxau') }}                # [linux]
-        - {{ cdt('java-1.7.0-openjdk') }}    # [linux]
         - {{ posix }}pkg-config
         - m2-base                            # [win]
         - m2-diffutils                       # [win]
@@ -159,6 +148,11 @@ outputs:
         - tzdata
         # sed is in host env because its path is recorded in R's shell wrapper
         - sed                                # [linux]
+        - xorg-xorgproto                     # [linux]
+        - xorg-libsm                         # [linux]
+        - xorg-libice                        # [linux]
+        - xorg-libx11                        # [linux]
+        - xorg-libxt                         # [linux]
       run:
         - _r-mutex 1.* anacondar_1
         # Needed by R CMD javareconf
