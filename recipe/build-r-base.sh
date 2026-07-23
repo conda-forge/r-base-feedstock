@@ -503,6 +503,11 @@ case "${target_platform}" in
       cp "${RECIPE_DIR}/${action}-${PKG_NAME}.sh" "${PREFIX}/etc/conda/${action}.d/"
     done
     ;;
+  win-* )
+    mkdir -p "${PREFIX}/etc/conda-build/dsolists.d"
+    sed "s/<SUBDIR>/${target_platform}/g" ${RECIPE_DIR}/dsolists.json > "${PREFIX}/etc/conda-build/dsolists.d/r-base.json"
+    cat "${PREFIX}/etc/conda-build/dsolists.d/r-base.json"
+    ;;
 esac
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
