@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "deny": [
+    "**/R.dll",
+    "**/Rblas.dll",
+    "**/Rlapack.dll",
+  ],    
+  "subdir": "dummy",
+} 
