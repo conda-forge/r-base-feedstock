@@ -11,7 +11,7 @@ fontconfig:
 freetype:
 - '2'
 gsl:
-- '2.7'
+- '2.8'
 icu:
 - '78'
 libblas:
