@@ -389,8 +389,10 @@ Mingw_w64_makefiles() {
     rm -rf ${PREFIX}/lib/R/bin/${R_ARCH}/Rblas.dll
     rm -rf ${PREFIX}/lib/R/bin/${R_ARCH}/Rlapack.dll
 
-    create-forwarder-dll ${PREFIX_WIN}\\Library\\bin\\libblas.dll ${PREFIX_WIN}\\lib\\R\\bin\\${R_ARCH}\\Rblas.dll --no-temp-dir
-    create-forwarder-dll ${PREFIX_WIN}\\Library\\bin\\liblapack.dll ${PREFIX_WIN}\\lib\\R\\bin\\${R_ARCH}\\Rlapack.dll --no-temp-dir
+    # Also install import libraries. R packages link with -L"$(R_HOME)/bin/x64" -lRblas;
+    # without Rblas.lib, ld links the forwarder DLL directly and auto-imports its functions as data, which fails to load when libblas.dll is mapped >2 GB away (gh-428).
+    create-forwarder-dll ${PREFIX_WIN}\\Library\\bin\\libblas.dll ${PREFIX_WIN}\\lib\\R\\bin\\${R_ARCH}\\Rblas.dll ${PREFIX_WIN}\\lib\\R\\bin\\${R_ARCH}\\Rblas.lib --no-temp-dir
+    create-forwarder-dll ${PREFIX_WIN}\\Library\\bin\\liblapack.dll ${PREFIX_WIN}\\lib\\R\\bin\\${R_ARCH}\\Rlapack.dll ${PREFIX_WIN}\\lib\\R\\bin\\${R_ARCH}\\Rlapack.lib --no-temp-dir
 
     return 0
 }
