@@ -37,7 +37,7 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
     export r_cv_prog_fc_cc_compat_complex=yes
     export r_cv_zdotu_is_usable=yes
 
-    if [[ "${target_platform}" == "osx-arm64" || "${target_platform}" == "linux-aarch64" || "${target_platform}" == "linux-ppc64le" ]]; then
+    if [[ "${target_platform}" == "osx-arm64" || "${target_platform}" == "linux-aarch64" || "${target_platform}" == "linux-ppc64le" || "${target_platform}" == "linux-riscv64" ]]; then
       export r_cv_func_calloc_works=yes
       export r_cv_func_isfinite_works=yes
       export r_cv_func_log1p_works=yes
@@ -53,7 +53,7 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
 
     if [[ "${target_platform}" == "osx-arm64"  ]]; then
       export r_cv_putenv_unset=no
-    elif [[ "${target_platform}" == "linux-aarch64" || "${target_platform}" == "linux-ppc64le" ]]; then
+    elif [[ "${target_platform}" == "linux-aarch64" || "${target_platform}" == "linux-ppc64le" || "${target_platform}" == "linux-riscv64" ]]; then
       export r_cv_putenv_unset=yes
     else
       echo "Unknown cross compiling architecture"
@@ -74,26 +74,8 @@ if [[ ${CONDA_BUILD_CROSS_COMPILATION:-0} == 1 ]]; then
       export FC=${FC//$HOST/$BUILD}
       export GFORTRAN=${FC//$HOST/$BUILD}
       export LD=${LD//$HOST/$BUILD}
-      export FFLAGS=${FFLAGS//$PREFIX/$BUILD_PREFIX}
-      export FORTRANFLAGS=${FORTRANFLAGS//$PREFIX/$BUILD_PREFIX}
-      # Filter out -march=.* from F*FLAGS
-      re='\-march\=[^[:space:]]*(.*)'
-      if [[ "${FFLAGS}" =~ $re ]]; then
-        export FFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
-      fi
-      re='\-march\=[^[:space:]]*(.*)'
-      if [[ "${FORTRANFLAGS}" =~ $re ]]; then
-        export FORTRANFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
-      fi
-      # Filter out -mtune=.* from F*FLAGS
-      re='\-mtune\=[^[:space:]]*(.*)'
-      if [[ "${FFLAGS}" =~ $re ]]; then
-        export FFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
-      fi
-      re='\-mtune\=[^[:space:]]*(.*)'
-      if [[ "${FORTRANFLAGS}" =~ $re ]]; then
-        export FORTRANFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
-      fi
+      export FFLAGS=""
+      export FORTRANFLAGS=""
       export LDFLAGS=${LDFLAGS//$PREFIX/$BUILD_PREFIX}
       export CPPFLAGS=${CPPFLAGS//$PREFIX/$BUILD_PREFIX}
       export NM=$($CC_FOR_BUILD -print-prog-name=nm)
