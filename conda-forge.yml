@@ -1,7 +1,7 @@
 bot:
   abi_migration_branches:
-    - 4.4.x
-    - 4.5.x
+  - 4.4.x
+  - 4.5.x
 build_platform:
   linux_ppc64le: linux_64
 conda_build:
