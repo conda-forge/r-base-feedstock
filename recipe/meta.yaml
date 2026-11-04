@@ -58,6 +58,7 @@ outputs:
           - {{ pin_subpackage("r-base", min_pin="x.x", max_pin="x.x") }}
     requirements:
       build:
+        - cross-r-base {{ r_base }}  # [build_platform != target_platform]
         - gnuconfig                          # [unix]
         - {{ stdlib('c') }}                  # [unix]
         - {{ compiler('c') }}                # [unix]
@@ -228,6 +229,7 @@ outputs:
     script: install-cross-activate.sh
     requirements:
       build:
+        - cross-r-base {{ r_base }}  # [build_platform != target_platform]
         # shellcheck is used to check activation scripts; it is not yet built for linux-ppc64le.
         - shellcheck  # [build_platform != "linux-ppc64le"]
       run:
