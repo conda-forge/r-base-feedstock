@@ -19,7 +19,7 @@ libblas:
 libcurl:
 - '8'
 libdeflate:
-- '1.25'
+- '1.26'
 libiconv:
 - '1'
 libjpeg_turbo:
