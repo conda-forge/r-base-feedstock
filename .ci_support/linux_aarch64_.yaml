@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/aarch64
 bzip2:
 - '1'
 c_compiler:
@@ -19,7 +21,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '15'
 docker_image:
-- quay.io/condaforge/linux-anvil-x86_64:alma10
+- quay.io/condaforge/linux-anvil-aarch64:alma10
 expat:
 - '2'
 fortran_compiler:
@@ -39,7 +41,7 @@ libblas:
 libcurl:
 - '8'
 libdeflate:
-- '1.25'
+- '1.26'
 libiconv:
 - '1'
 libjpeg_turbo:
