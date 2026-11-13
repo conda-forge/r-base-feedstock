@@ -67,7 +67,7 @@ outputs:
         - {{ compiler('m2w64_c') }}          # [win]
         - {{ compiler('m2w64_cxx') }}        # [win]
         - {{ compiler('m2w64_fortran') }}    # [win]
-        - {{ posix }}pkg-config
+        - {{ posix }}pkgconf
         - m2-base                            # [win]
         - m2-diffutils                       # [win]
         - m2-make                            # [win]
