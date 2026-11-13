@@ -103,6 +103,7 @@ outputs:
         - tktable                             # [build_platform != target_platform]
         - expat                               # [build_platform != target_platform]
         - pango                               # [build_platform != target_platform]
+        - harfbuzz                            # [build_platform != target_platform]
         - freetype                            # [build_platform != target_platform]
         - xorg-xproto                         # [build_platform != target_platform]
         - xorg-kbproto                        # [build_platform != target_platform]
@@ -138,6 +139,8 @@ outputs:
         - tktable
         - expat                              # [not win]
         - pango                              # [not win]
+        # harfbuzz provides the .pc files pangocairo.pc requires
+        - harfbuzz                           # [not win]
         # freetype needed for pkg-config
         - freetype
         - icu
