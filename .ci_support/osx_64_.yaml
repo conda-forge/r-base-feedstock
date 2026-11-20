@@ -30,12 +30,14 @@ fortran_compiler_version:
 - '15'
 freetype:
 - '2'
+gettext:
+- '0.25'
 glib:
 - '2'
 gsl:
 - '2.7'
 icu:
-- '78'
+- '79'
 libblas:
 - 3.9.* *netlib
 libcurl:
