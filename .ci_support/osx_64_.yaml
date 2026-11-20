@@ -30,6 +30,8 @@ fortran_compiler_version:
 - '15'
 freetype:
 - '2'
+gettext:
+- '0.25'
 glib:
 - '2'
 gsl:
